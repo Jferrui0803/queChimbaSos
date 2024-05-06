@@ -4,6 +4,12 @@
  */
 package com.mycompany.qchimbasos;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author DAW MAÑANA
@@ -13,15 +19,35 @@ public class Registro extends javax.swing.JFrame {
     /**
      * Creates new form Registro
      */
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/usuario";
+    static final String USER = "root";
+    static final String PASS = "";
+
+    // Atributos variables
+    Connection conexion = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    public static Registro reg;
+
     public Registro() {
+
         initComponents();
+        setLocationRelativeTo(null);
     }
-    
-    
 
-    
+    public Connection conecta() {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("CONECTADA");
+        } catch (SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+        return con;
+    }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,22 +59,32 @@ public class Registro extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jUsu1 = new javax.swing.JTextField();
+        jPasswd1 = new javax.swing.JTextField();
+        jPasswd2 = new javax.swing.JTextField();
         jCrearUsuario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro de usuarios"));
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuario"));
+        jUsu1.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuario"));
 
-        jTextField2.setBorder(javax.swing.BorderFactory.createTitledBorder("Contraseña"));
+        jPasswd1.setBorder(javax.swing.BorderFactory.createTitledBorder("Contraseña"));
 
-        jTextField3.setBorder(javax.swing.BorderFactory.createTitledBorder("Confirmar Contraseña"));
+        jPasswd2.setBorder(javax.swing.BorderFactory.createTitledBorder("Confirmar Contraseña"));
+        jPasswd2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswd2ActionPerformed(evt);
+            }
+        });
 
         jCrearUsuario.setText("Crear Usuario");
+        jCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCrearUsuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -59,9 +95,9 @@ public class Registro extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)))
+                            .addComponent(jUsu1)
+                            .addComponent(jPasswd1)
+                            .addComponent(jPasswd2, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(145, 145, 145)
                         .addComponent(jCrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -71,11 +107,11 @@ public class Registro extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jUsu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPasswd1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPasswd2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jCrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(52, Short.MAX_VALUE))
@@ -111,6 +147,60 @@ public class Registro extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCrearUsuarioActionPerformed
+        // TODO add your handling code here:
+        String usuario = jUsu1.getText();
+        String passwd1 = jPasswd1.getText();
+        String passwd2 = jPasswd2.getText();
+
+        if (!passwd1.equals(passwd2)) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+            return;
+        }
+        // hsaghas
+        // Verificar en la base de datos
+        try {
+            conexion = conecta();
+            String sql = "INSERT INTO usuario (Nombre, Contraseña) VALUES (?, ?)";
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, usuario);
+            ps.setString(2, passwd1);
+            int filasInsertadas = ps.executeUpdate();
+             
+
+            if (filasInsertadas > 0) {
+                // Si las credenciales son correctas, muestra un mensaje de éxito
+                javax.swing.JOptionPane.showMessageDialog(null, "Usuario creado correctamente");
+
+                // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
+            } else {
+                // Si las credenciales son incorrectas, muestra un mensaje de error
+                javax.swing.JOptionPane.showMessageDialog(null, "Algo salio mal");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        } finally {
+            try {
+                // Cerrar recursos
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conexion != null) {
+                    conexion.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error al cerrar recursos: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jCrearUsuarioActionPerformed
+
+    private void jPasswd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswd2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswd2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,8 +241,8 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JButton jCrearUsuario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jPasswd1;
+    private javax.swing.JTextField jPasswd2;
+    private javax.swing.JTextField jUsu1;
     // End of variables declaration//GEN-END:variables
 }

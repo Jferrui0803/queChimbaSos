@@ -4,6 +4,11 @@
  */
 package com.mycompany.qchimbasos;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,6 +16,16 @@ import javax.swing.JOptionPane;
  * @author DAW MAÑANA
  */
 public class InicioSesion extends javax.swing.JFrame {
+    
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/usuario";
+    static final String USER = "root";
+    static final String PASS = "";
+
+    // Atributos variables
+    Connection conexion = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
 
     public static Registro reg;        
     public InicioSesion() {
@@ -19,6 +34,17 @@ public class InicioSesion extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    
+    public Connection conecta() {
+        Connection con = null;
+        try {
+            con = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("CONECTADA");
+        } catch (SQLException ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
+        return con;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,7 +161,40 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void jEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEntrarActionPerformed
         // TODO add your handling code here:
-             
+             String usuario = jTusuario.getText();
+    String contraseña = new String(jTcontraseña.getPassword());
+
+    // Verificar en la base de datos
+    try {
+        conexion = conecta();
+        String sql = "SELECT * FROM usuario WHERE nombre=? AND contraseña=?";
+        ps = conexion.prepareStatement(sql);
+        ps.setString(1, usuario);
+        ps.setString(2, contraseña);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            // Si las credenciales son correctas, muestra un mensaje de éxito
+            javax.swing.JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
+
+            // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
+        } else {
+            // Si las credenciales son incorrectas, muestra un mensaje de error
+            javax.swing.JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos");
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    } finally {
+        try {
+            // Cerrar recursos
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conexion != null) conexion.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al cerrar recursos: " + ex.getMessage());
+        }
+    }
+ 
     }//GEN-LAST:event_jEntrarActionPerformed
 
     private void jTcontraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTcontraseñaActionPerformed
