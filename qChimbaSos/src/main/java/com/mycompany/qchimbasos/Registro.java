@@ -66,6 +66,7 @@ public class Registro extends javax.swing.JFrame {
         jPasswd1 = new javax.swing.JTextField();
         jPasswd2 = new javax.swing.JTextField();
         jCrearUsuario = new javax.swing.JButton();
+        Volver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +90,13 @@ public class Registro extends javax.swing.JFrame {
             }
         });
 
+        Volver.setText("Salir");
+        Volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -105,6 +113,10 @@ public class Registro extends javax.swing.JFrame {
                         .addGap(145, 145, 145)
                         .addComponent(jCrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(175, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(Volver)
+                .addGap(51, 51, 51))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,7 +129,9 @@ public class Registro extends javax.swing.JFrame {
                 .addComponent(jPasswd2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jCrearUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Volver)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -156,14 +170,18 @@ public class Registro extends javax.swing.JFrame {
         String usuario = jUsu1.getText();
         String passwd1 = jPasswd1.getText();
         String passwd2 = jPasswd2.getText();
-
+        
+        // Excepción para que el campo usuario no este vacio
         if (usuario.isBlank() || usuario.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(null, "El usuario no puede estar vacio");
+            JOptionPane.showMessageDialog(rootPane, "El usuario no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+        // Excepción para que no este vacio ningun campo de contraseña
         } else if (passwd1.isBlank() || passwd1.isEmpty() || passwd2.isBlank() || passwd2.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Algun campo de la contraseña esta vacio");
+            JOptionPane.showMessageDialog(rootPane, "Algún campo de la contraseña esta vacio", "Error", JOptionPane.ERROR_MESSAGE);
+        // Excepcion en caso de que las contraseñas no coincidan
         } else if (!passwd1.equals(passwd2)) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
-        } else if (!passwd2.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$._#=%*]).{8,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+        // Excepción en caso de que no se cumplan los requisitos de contraseña
+        } else if (!passwd2.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$._#-@=%*]).{8,}$")) {
             JOptionPane.showMessageDialog(rootPane, "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un dígito y un carácter especial.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
 
@@ -187,7 +205,7 @@ public class Registro extends javax.swing.JFrame {
                     // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
                 } else {
                     // Si las credenciales son incorrectas, muestra un mensaje de error
-                    javax.swing.JOptionPane.showMessageDialog(null, "Algo salio mal");
+                    JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (SQLException ex) {
                 if (ex instanceof SQLIntegrityConstraintViolationException) {
@@ -222,6 +240,10 @@ public class Registro extends javax.swing.JFrame {
     private void jPasswd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswd2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswd2ActionPerformed
+
+    private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
+        dispose();
+    }//GEN-LAST:event_VolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -259,6 +281,7 @@ public class Registro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Volver;
     private javax.swing.JButton jCrearUsuario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
