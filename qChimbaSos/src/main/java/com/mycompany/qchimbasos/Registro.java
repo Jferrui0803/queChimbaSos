@@ -170,18 +170,6 @@ public class Registro extends javax.swing.JFrame {
                 //Sentencia para añadir un nuevo usuario y contraseña 
                 String sql = "INSERT INTO usuario (Nombre, Contraseña) VALUES (?, ?)";
 
-                //Sentencia para comprobar si existe en la base de datos
-                String query = "SELECT * FROM usuario WHERE nombre=?";
-
-                ps = conexion.prepareStatement(query);
-                ps.setString(1, usuario);
-                rs = ps.executeQuery();
-                if (rs.next())  {
-                    // Si las credenciales son iguales, muestra un mensaje de error
-                    javax.swing.JOptionPane.showMessageDialog(null, "Inicio de no valido , el usuario ya existe ");
-                    return;
-                }
-
                 ps = conexion.prepareStatement(sql);
                 ps.setString(1, usuario);
                 ps.setString(2, passwd1);
@@ -198,7 +186,7 @@ public class Registro extends javax.swing.JFrame {
                     javax.swing.JOptionPane.showMessageDialog(null, "Algo salio mal");
                 }
             } catch (SQLException ex) {
-                System.out.println("Error: " + ex.getMessage());
+                javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage());
             } finally {
                 try {
                     // Cerrar recursos
