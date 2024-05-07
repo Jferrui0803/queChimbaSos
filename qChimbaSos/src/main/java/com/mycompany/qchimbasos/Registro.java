@@ -20,7 +20,7 @@ public class Registro extends javax.swing.JFrame {
      * Creates new form Registro
      */
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/usuario";
+    static final String DB_URL = "jdbc:mysql://localhost/pruebas";
     static final String USER = "root";
     static final String PASS = "";
 
@@ -37,6 +37,7 @@ public class Registro extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    // Creamos método para hacer la conexión a la base de datos
     public Connection conecta() {
         Connection con = null;
         try {
@@ -154,48 +155,69 @@ public class Registro extends javax.swing.JFrame {
         String passwd1 = jPasswd1.getText();
         String passwd2 = jPasswd2.getText();
 
-        if (!passwd1.equals(passwd2)) {
+        if (usuario.isBlank() || usuario.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(null, "El usuario no puede estar vacio");
+        } else if (passwd1.isBlank() || passwd1.isEmpty() || passwd2.isBlank() || passwd2.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Algun campo de la contraseña esta vacio");
+        } else if (!passwd1.equals(passwd2)) {
             javax.swing.JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
-            return;
-        }
-        // hsaghas
-        // Verificar en la base de datos
-        try {
-            conexion = conecta();
-            String sql = "INSERT INTO usuario (Nombre, Contraseña) VALUES (?, ?)";
-            ps = conexion.prepareStatement(sql);
-            ps.setString(1, usuario);
-            ps.setString(2, passwd1);
-            int filasInsertadas = ps.executeUpdate();
-             
+        } else {
 
-            if (filasInsertadas > 0) {
-                // Si las credenciales son correctas, muestra un mensaje de éxito
-                javax.swing.JOptionPane.showMessageDialog(null, "Usuario creado correctamente");
-
-                // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
-            } else {
-                // Si las credenciales son incorrectas, muestra un mensaje de error
-                javax.swing.JOptionPane.showMessageDialog(null, "Algo salio mal");
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        } finally {
+            // Verificar en la base de datos
             try {
-                // Cerrar recursos
-                if (rs != null) {
-                    rs.close();
+                conexion = conecta();
+
+                //Sentencia para añadir un nuevo usuario y contraseña 
+                String sql = "INSERT INTO usuario (Nombre, Contraseña) VALUES (?, ?)";
+
+                //Sentencia para comprobar si existe en la base de datos
+                String query = "SELECT * FROM usuario WHERE nombre=?";
+
+                ps = conexion.prepareStatement(query);
+                ps.setString(1, usuario);
+                rs = ps.executeQuery();
+                if (rs.next())  {
+                    // Si las credenciales son iguales, muestra un mensaje de error
+                    javax.swing.JOptionPane.showMessageDialog(null, "Inicio de no valido , el usuario ya existe ");
+                    return;
                 }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (conexion != null) {
-                    conexion.close();
+
+                ps = conexion.prepareStatement(sql);
+                ps.setString(1, usuario);
+                ps.setString(2, passwd1);
+                int filasInsertadas = ps.executeUpdate();
+
+                if (filasInsertadas > 0) {
+                    // Si las credenciales son correctas, muestra un mensaje de éxito
+                    javax.swing.JOptionPane.showMessageDialog(null, "Usuario creado correctamente");
+
+                    dispose();
+                    // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
+                } else {
+                    // Si las credenciales son incorrectas, muestra un mensaje de error
+                    javax.swing.JOptionPane.showMessageDialog(null, "Algo salio mal");
                 }
             } catch (SQLException ex) {
-                System.out.println("Error al cerrar recursos: " + ex.getMessage());
+                System.out.println("Error: " + ex.getMessage());
+            } finally {
+                try {
+                    // Cerrar recursos
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (ps != null) {
+                        ps.close();
+                    }
+                    if (conexion != null) {
+                        conexion.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error al cerrar recursos: " + ex.getMessage());
+                }
             }
         }
+
+
     }//GEN-LAST:event_jCrearUsuarioActionPerformed
 
     private void jPasswd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswd2ActionPerformed
