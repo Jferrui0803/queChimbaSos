@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +22,7 @@ public class Registro extends javax.swing.JFrame {
      * Creates new form Registro
      */
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/pruebas";
+    static final String DB_URL = "jdbc:mysql://localhost/usuario";
     static final String USER = "root";
     static final String PASS = "";
 
@@ -161,6 +163,8 @@ public class Registro extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(null, "Algun campo de la contraseña esta vacio");
         } else if (!passwd1.equals(passwd2)) {
             javax.swing.JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+        } else if (!passwd2.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$._#=%*]).{8,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un dígito y un carácter especial.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
 
             // Verificar en la base de datos
@@ -186,7 +190,14 @@ public class Registro extends javax.swing.JFrame {
                     javax.swing.JOptionPane.showMessageDialog(null, "Algo salio mal");
                 }
             } catch (SQLException ex) {
-                javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage());
+                if (ex instanceof SQLIntegrityConstraintViolationException) {
+                    if (ex.getMessage().contains("Duplicate entry")) {
+                        JOptionPane.showMessageDialog(rootPane, "El usuario ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+
             } finally {
                 try {
                     // Cerrar recursos

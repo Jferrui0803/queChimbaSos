@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 public class InicioSesion extends javax.swing.JFrame {
     
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/pruebas";
+    static final String DB_URL = "jdbc:mysql://localhost/usuario";
     static final String USER = "root";
     static final String PASS = "";
 
@@ -66,6 +66,7 @@ public class InicioSesion extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jBregistro = new javax.swing.JButton();
         JFoto1 = new javax.swing.JButton();
+        showPasswordCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,10 +100,17 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
-        JFoto1.setText("jButton1");
+        JFoto1.setText("Salir del programa");
         JFoto1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JFoto1ActionPerformed(evt);
+            }
+        });
+
+        showPasswordCheckBox.setText("Ver Contraseña");
+        showPasswordCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showPasswordCheckBoxActionPerformed(evt);
             }
         });
 
@@ -119,12 +127,15 @@ public class InicioSesion extends javax.swing.JFrame {
                             .addComponent(jb2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTcontraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTcontraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showPasswordCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jTusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(361, 361, 361)
                         .addComponent(jEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(480, Short.MAX_VALUE))
+                .addContainerGap(440, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +144,7 @@ public class InicioSesion extends javax.swing.JFrame {
                         .addGap(112, 112, 112))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(JFoto1)
-                        .addGap(311, 311, 311))))
+                        .addGap(355, 355, 355))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(186, 186, 186)
@@ -152,7 +163,8 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jb2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTcontraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTcontraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showPasswordCheckBox))
                 .addGap(74, 74, 74)
                 .addComponent(jEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60)
@@ -170,14 +182,16 @@ public class InicioSesion extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(540, Short.MAX_VALUE))
+                .addContainerGap(534, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -223,7 +237,8 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_jEntrarActionPerformed
 
     private void jTcontraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTcontraseñaActionPerformed
-        // TODO add your handling code here:
+        char echoChar = (showPasswordCheckBox.isSelected()) ? '\u0000' : '\u2022';
+        jTcontraseña.setEchoChar(echoChar);
     }//GEN-LAST:event_jTcontraseñaActionPerformed
 
     private void jBregistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBregistroActionPerformed
@@ -233,8 +248,13 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBregistroActionPerformed
 
     private void JFoto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JFoto1ActionPerformed
-        
+    dispose();
     }//GEN-LAST:event_JFoto1ActionPerformed
+
+    private void showPasswordCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordCheckBoxActionPerformed
+        char echoChar = (showPasswordCheckBox.isSelected()) ? '\u0000' : '\u2022';
+        jTcontraseña.setEchoChar(echoChar);
+    }//GEN-LAST:event_showPasswordCheckBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,5 +301,6 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JTextField jTusuario;
     private javax.swing.JLabel jb1;
     private javax.swing.JLabel jb2;
+    private javax.swing.JCheckBox showPasswordCheckBox;
     // End of variables declaration//GEN-END:variables
 }

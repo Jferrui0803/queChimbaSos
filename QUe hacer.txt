@@ -1,0 +1,2 @@
+1. Hacer control de errores en clase de usuario y personalizar excepciones.
+2. Mejorar interfaz grafica, imagenes
