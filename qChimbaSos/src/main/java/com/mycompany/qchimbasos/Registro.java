@@ -72,10 +72,13 @@ public class Registro extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro de usuarios"));
 
+        jUsu1.setBackground(new java.awt.Color(214, 217, 223));
         jUsu1.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuario"));
 
+        jPasswd1.setBackground(new java.awt.Color(214, 217, 223));
         jPasswd1.setBorder(javax.swing.BorderFactory.createTitledBorder("Contraseña"));
 
+        jPasswd2.setBackground(new java.awt.Color(214, 217, 223));
         jPasswd2.setBorder(javax.swing.BorderFactory.createTitledBorder("Confirmar Contraseña"));
         jPasswd2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,17 +173,17 @@ public class Registro extends javax.swing.JFrame {
         String usuario = jUsu1.getText();
         String passwd1 = jPasswd1.getText();
         String passwd2 = jPasswd2.getText();
-        
+
         // Excepción para que el campo usuario no este vacio
         if (usuario.isBlank() || usuario.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "El usuario no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
-        // Excepción para que no este vacio ningun campo de contraseña
+            // Excepción para que no este vacio ningun campo de contraseña
         } else if (passwd1.isBlank() || passwd1.isEmpty() || passwd2.isBlank() || passwd2.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Algún campo de la contraseña esta vacio", "Error", JOptionPane.ERROR_MESSAGE);
-        // Excepcion en caso de que las contraseñas no coincidan
+            // Excepcion en caso de que las contraseñas no coincidan
         } else if (!passwd1.equals(passwd2)) {
             JOptionPane.showMessageDialog(rootPane, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
-        // Excepción en caso de que no se cumplan los requisitos de contraseña
+            // Excepción en caso de que no se cumplan los requisitos de contraseña
         } else if (!passwd2.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$._#-@=%*]).{8,}$")) {
             JOptionPane.showMessageDialog(rootPane, "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un dígito y un carácter especial.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
@@ -207,14 +210,21 @@ public class Registro extends javax.swing.JFrame {
                     // Si las credenciales son incorrectas, muestra un mensaje de error
                     JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+
+            } catch (SQLIntegrityConstraintViolationException ex) {
+                 JOptionPane.showMessageDialog(rootPane, "El usuario de nombre: " + 
+                         usuario + " , ya está registrado en la base de datos", "Error",
+                         JOptionPane.ERROR_MESSAGE);
+
             } catch (SQLException ex) {
-                if (ex instanceof SQLIntegrityConstraintViolationException) {
-                    if (ex.getMessage().contains("Duplicate entry")) {
-                        JOptionPane.showMessageDialog(rootPane, "El usuario ya existe", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage());
-                }
+                System.out.println(ex.getMessage());
+//                if (ex instanceof SQLIntegrityConstraintViolationException) {
+//                    if (ex.getMessage().contains("Duplicate entry")) {
+//                        JOptionPane.showMessageDialog(rootPane, "El usuario ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                } else {
+//                    javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage());
+//                }
 
             } finally {
                 try {
