@@ -1,3 +1,5 @@
 1. Hacer barra de busqueda en menu.
 2. Enlazar barra de busqueda con menu.
 3. Cuando el usuario se registre aparezcan distintas opciones en el menu.
+4. Trabajar con clases
+5. En los pictogramas hacer un enum y a cada valor del enum que se le asocie un pictograma
