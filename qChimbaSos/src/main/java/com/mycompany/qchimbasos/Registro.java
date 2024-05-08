@@ -22,7 +22,7 @@ public class Registro extends javax.swing.JFrame {
      * Creates new form Registro
      */
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/usuario";
+    static final String DB_URL = "jdbc:mysql://localhost/qchimbasos";
     static final String USER = "root";
     static final String PASS = "";
 

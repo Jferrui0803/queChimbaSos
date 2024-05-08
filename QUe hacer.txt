@@ -1,1 +1,3 @@
-1. Hacer barra de busqueda en menu
+1. Hacer barra de busqueda en menu.
+2. Enlazar barra de busqueda con menu.
+3. Cuando el usuario se registre aparezcan distintas opciones en el menu.
