@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2024 a las 09:44:35
+-- Tiempo de generación: 09-05-2024 a las 18:21:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,17 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `qchimbasos`
 --
-CREATE DATABASE IF NOT EXISTS `qchimbasos` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish2_ci;
+
+CREATE DATABASE IF NOT EXISTS `qchimbasos` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
 USE `qchimbasos`;
+
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `almacena`
+-- Estructura de tabla para la tabla `almacenes`
 --
 
-CREATE TABLE `almacena` (
-  `ID_P` varchar(5) NOT NULL,
-  `CODIGO` varchar(10) NOT NULL
+CREATE TABLE `almacenes` (
+  `ID` int(7) NOT NULL,
+  `Nombre` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `auxiliares`
+--
+
+CREATE TABLE `auxiliares` (
+  `ID` int(7) NOT NULL,
+  `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `Tipo_Material` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -40,8 +55,51 @@ CREATE TABLE `almacena` (
 --
 
 CREATE TABLE `formato` (
-  `COD_FORM` varchar(3) NOT NULL,
-  `FORMATO` varchar(50) NOT NULL
+  `ID` int(5) NOT NULL,
+  `Formato` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario_auxiliares`
+--
+
+CREATE TABLE `inventario_auxiliares` (
+  `ID` int(7) NOT NULL,
+  `ID_Almacen` int(7) NOT NULL,
+  `ID_Auxiliares` int(7) NOT NULL,
+  `ID_Ubicacion` int(7) NOT NULL,
+  `Cantidad` int(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario_materiales`
+--
+
+CREATE TABLE `inventario_materiales` (
+  `ID` int(7) NOT NULL,
+  `ID_Almacen` int(7) NOT NULL,
+  `ID_Material` int(7) NOT NULL,
+  `ID_Ubicacion` int(7) NOT NULL,
+  `Cantidad` int(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario_reactivos`
+--
+
+CREATE TABLE `inventario_reactivos` (
+  `ID` int(7) NOT NULL,
+  `ID_Almacen` int(7) NOT NULL,
+  `ID_Producto` int(7) NOT NULL,
+  `ID_Ubicacion` int(7) NOT NULL,
+  `Cantidad` int(30) NOT NULL,
+  `Fecha_caducidad` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -51,92 +109,59 @@ CREATE TABLE `formato` (
 --
 
 CREATE TABLE `materiales` (
-  `ID_M` varchar(5) NOT NULL,
-  `COD_FORM` varchar(3) NOT NULL,
-  `NumeroSerie` varchar(50) DEFAULT NULL,
-  `Nombre` varchar(100) DEFAULT NULL,
-  `Localizacion` varchar(50) DEFAULT NULL,
-  `UbicacionPrecisa` varchar(100) DEFAULT NULL,
-  `Subcategoria` varchar(50) DEFAULT NULL,
-  `StockMinimo` int(11) DEFAULT NULL,
-  `Descripcion` text DEFAULT NULL,
-  `FechaCompra` date DEFAULT NULL
+  `ID` int(7) NOT NULL,
+  `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `Tipo_Material` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `Descipcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `Nº Serie` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `producto`
+-- Estructura de tabla para la tabla `productos_quimicos`
 --
 
-CREATE TABLE `producto` (
-  `ID_P` varchar(5) NOT NULL,
-  `COD_FORM` varchar(3) NOT NULL,
-  `Nombre` varchar(100) DEFAULT NULL,
-  `Cantidad` int(11) DEFAULT NULL,
-  `Localizacion` varchar(50) DEFAULT NULL,
-  `UbicacionPrecisa` varchar(100) DEFAULT NULL,
-  `StockMinimo` int(11) DEFAULT NULL
+CREATE TABLE `productos_quimicos` (
+  `ID_Producto` int(5) NOT NULL,
+  `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `ID_Formato` int(7) NOT NULL,
+  `Grado Pureza` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `productosauxiliares`
+-- Estructura de tabla para la tabla `relacion_prod_riesgo`
 --
 
-CREATE TABLE `productosauxiliares` (
-  `ID_A` varchar(5) NOT NULL,
-  `COD_FORM` varchar(3) NOT NULL,
-  `Nombre` varchar(100) NOT NULL,
-  `Formato` varchar(50) DEFAULT NULL,
-  `Cantidad` int(11) DEFAULT NULL,
-  `Localizacion` varchar(50) DEFAULT NULL,
-  `UbicacionPrecisa` varchar(100) DEFAULT NULL,
-  `StockMinimo` int(11) DEFAULT NULL
+CREATE TABLE `relacion_prod_riesgo` (
+  `ID` int(7) NOT NULL,
+  `ID_Producto` int(7) NOT NULL,
+  `ID_Riesgo` int(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reactivos`
+-- Estructura de tabla para la tabla `tipo_riesgos`
 --
 
-CREATE TABLE `reactivos` (
-  `ID_R` varchar(5) NOT NULL,
-  `Nombre` varchar(100) NOT NULL,
-  `COD_FORM` varchar(3) NOT NULL,
-  `Cantidad` int(11) DEFAULT NULL,
-  `Localizacion` varchar(50) DEFAULT NULL,
-  `UbicacionPrecisa` varchar(100) DEFAULT NULL,
-  `Riesgos` varchar(100) DEFAULT NULL,
-  `GradoPurity` varchar(50) DEFAULT NULL,
-  `FechaCaducidad` date DEFAULT NULL,
-  `StockMinimo` int(11) DEFAULT NULL
+CREATE TABLE `tipo_riesgos` (
+  `ID` int(7) NOT NULL,
+  `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `Descripcion` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `salas`
+-- Estructura de tabla para la tabla `ubicaciones`
 --
 
-CREATE TABLE `salas` (
-  `CODIGO` varchar(10) NOT NULL,
-  `NOMBRE` varchar(50) DEFAULT NULL,
-  `CAJON` varchar(10) DEFAULT NULL,
-  `ESTANTERIA` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
---
-
-CREATE TABLE `usuario` (
-  `NOMBRE` varchar(50) NOT NULL,
-  `CONTRASEÑA` varchar(20) NOT NULL
+CREATE TABLE `ubicaciones` (
+  `ID` int(7) NOT NULL,
+  `Ubicacion` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -144,82 +169,193 @@ CREATE TABLE `usuario` (
 --
 
 --
--- Indices de la tabla `almacena`
+-- Indices de la tabla `almacenes`
 --
-ALTER TABLE `almacena`
-  ADD PRIMARY KEY (`ID_P`,`CODIGO`);
+ALTER TABLE `almacenes`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `auxiliares`
+--
+ALTER TABLE `auxiliares`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indices de la tabla `formato`
 --
 ALTER TABLE `formato`
-  ADD PRIMARY KEY (`COD_FORM`);
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `inventario_auxiliares`
+--
+ALTER TABLE `inventario_auxiliares`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_Almacen` (`ID_Almacen`),
+  ADD KEY `ID_Auxiliares` (`ID_Auxiliares`),
+  ADD KEY `ID_Ubicacion` (`ID_Ubicacion`);
+
+--
+-- Indices de la tabla `inventario_materiales`
+--
+ALTER TABLE `inventario_materiales`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_Almacen` (`ID_Almacen`),
+  ADD KEY `ID_Material` (`ID_Material`),
+  ADD KEY `ID_Ubicacion` (`ID_Ubicacion`);
+
+--
+-- Indices de la tabla `inventario_reactivos`
+--
+ALTER TABLE `inventario_reactivos`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_Almacen` (`ID_Almacen`),
+  ADD KEY `ID_Ubicacion` (`ID_Ubicacion`),
+  ADD KEY `ID_Producto` (`ID_Producto`);
 
 --
 -- Indices de la tabla `materiales`
 --
 ALTER TABLE `materiales`
-  ADD PRIMARY KEY (`ID_M`),
-  ADD KEY `FK_M2` (`COD_FORM`);
+  ADD PRIMARY KEY (`ID`);
 
 --
--- Indices de la tabla `producto`
+-- Indices de la tabla `productos_quimicos`
 --
-ALTER TABLE `producto`
-  ADD PRIMARY KEY (`ID_P`);
+ALTER TABLE `productos_quimicos`
+  ADD PRIMARY KEY (`ID_Producto`),
+  ADD KEY `ID_Formato` (`ID_Formato`);
 
 --
--- Indices de la tabla `productosauxiliares`
+-- Indices de la tabla `relacion_prod_riesgo`
 --
-ALTER TABLE `productosauxiliares`
-  ADD PRIMARY KEY (`Nombre`),
-  ADD KEY `FK_A` (`ID_A`),
-  ADD KEY `FK_A2` (`COD_FORM`);
+ALTER TABLE `relacion_prod_riesgo`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_Riesgo` (`ID_Riesgo`),
+  ADD KEY `ID_Producto` (`ID_Producto`);
 
 --
--- Indices de la tabla `reactivos`
+-- Indices de la tabla `tipo_riesgos`
 --
-ALTER TABLE `reactivos`
-  ADD PRIMARY KEY (`Nombre`),
-  ADD KEY `FK_R` (`ID_R`),
-  ADD KEY `FK_R2` (`COD_FORM`);
+ALTER TABLE `tipo_riesgos`
+  ADD PRIMARY KEY (`ID`);
 
 --
--- Indices de la tabla `salas`
+-- Indices de la tabla `ubicaciones`
 --
-ALTER TABLE `salas`
-  ADD PRIMARY KEY (`CODIGO`);
+ALTER TABLE `ubicaciones`
+  ADD PRIMARY KEY (`ID`);
 
 --
--- Indices de la tabla `usuario`
+-- AUTO_INCREMENT de las tablas volcadas
 --
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`NOMBRE`);
+
+--
+-- AUTO_INCREMENT de la tabla `almacenes`
+--
+ALTER TABLE `almacenes`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `auxiliares`
+--
+ALTER TABLE `auxiliares`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `formato`
+--
+ALTER TABLE `formato`
+  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `inventario_auxiliares`
+--
+ALTER TABLE `inventario_auxiliares`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `inventario_materiales`
+--
+ALTER TABLE `inventario_materiales`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `inventario_reactivos`
+--
+ALTER TABLE `inventario_reactivos`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `materiales`
+--
+ALTER TABLE `materiales`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `productos_quimicos`
+--
+ALTER TABLE `productos_quimicos`
+  MODIFY `ID_Producto` int(5) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `relacion_prod_riesgo`
+--
+ALTER TABLE `relacion_prod_riesgo`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_riesgos`
+--
+ALTER TABLE `tipo_riesgos`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `ubicaciones`
+--
+ALTER TABLE `ubicaciones`
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `materiales`
+-- Filtros para la tabla `inventario_auxiliares`
 --
-ALTER TABLE `materiales`
-  ADD CONSTRAINT `FK_M1` FOREIGN KEY (`ID_M`) REFERENCES `producto` (`ID_P`),
-  ADD CONSTRAINT `FK_M2` FOREIGN KEY (`COD_FORM`) REFERENCES `formato` (`COD_FORM`);
+ALTER TABLE `inventario_auxiliares`
+  ADD CONSTRAINT `inventario_auxiliares_ibfk_1` FOREIGN KEY (`ID_Almacen`) REFERENCES `almacenes` (`ID`),
+  ADD CONSTRAINT `inventario_auxiliares_ibfk_2` FOREIGN KEY (`ID_Auxiliares`) REFERENCES `auxiliares` (`ID`),
+  ADD CONSTRAINT `inventario_auxiliares_ibfk_3` FOREIGN KEY (`ID_Ubicacion`) REFERENCES `ubicaciones` (`ID`);
 
 --
--- Filtros para la tabla `productosauxiliares`
+-- Filtros para la tabla `inventario_materiales`
 --
-ALTER TABLE `productosauxiliares`
-  ADD CONSTRAINT `FK_A` FOREIGN KEY (`ID_A`) REFERENCES `producto` (`ID_P`),
-  ADD CONSTRAINT `FK_A2` FOREIGN KEY (`COD_FORM`) REFERENCES `formato` (`COD_FORM`);
+ALTER TABLE `inventario_materiales`
+  ADD CONSTRAINT `inventario_materiales_ibfk_1` FOREIGN KEY (`ID_Almacen`) REFERENCES `almacenes` (`ID`),
+  ADD CONSTRAINT `inventario_materiales_ibfk_2` FOREIGN KEY (`ID_Material`) REFERENCES `materiales` (`ID`),
+  ADD CONSTRAINT `inventario_materiales_ibfk_3` FOREIGN KEY (`ID_Ubicacion`) REFERENCES `ubicaciones` (`ID`);
 
 --
--- Filtros para la tabla `reactivos`
+-- Filtros para la tabla `inventario_reactivos`
 --
-ALTER TABLE `reactivos`
-  ADD CONSTRAINT `FK_R` FOREIGN KEY (`ID_R`) REFERENCES `producto` (`ID_P`),
-  ADD CONSTRAINT `FK_R2` FOREIGN KEY (`COD_FORM`) REFERENCES `formato` (`COD_FORM`);
+ALTER TABLE `inventario_reactivos`
+  ADD CONSTRAINT `inventario_reactivos_ibfk_1` FOREIGN KEY (`ID_Almacen`) REFERENCES `almacenes` (`ID`),
+  ADD CONSTRAINT `inventario_reactivos_ibfk_2` FOREIGN KEY (`ID_Ubicacion`) REFERENCES `ubicaciones` (`ID`),
+  ADD CONSTRAINT `inventario_reactivos_ibfk_3` FOREIGN KEY (`ID_Producto`) REFERENCES `productos_quimicos` (`ID_Producto`);
+
+--
+-- Filtros para la tabla `productos_quimicos`
+--
+ALTER TABLE `productos_quimicos`
+  ADD CONSTRAINT `productos_quimicos_ibfk_1` FOREIGN KEY (`ID_Formato`) REFERENCES `formato` (`ID`);
+
+--
+-- Filtros para la tabla `relacion_prod_riesgo`
+--
+ALTER TABLE `relacion_prod_riesgo`
+  ADD CONSTRAINT `relacion_prod_riesgo_ibfk_1` FOREIGN KEY (`ID_Riesgo`) REFERENCES `tipo_riesgos` (`ID`),
+  ADD CONSTRAINT `relacion_prod_riesgo_ibfk_2` FOREIGN KEY (`ID_Producto`) REFERENCES `productos_quimicos` (`ID_Producto`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
