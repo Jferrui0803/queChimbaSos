@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-05-2024 a las 18:21:18
+-- Tiempo de generación: 11-05-2024 a las 01:52:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,11 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `qchimbasos`
 --
-
 CREATE DATABASE IF NOT EXISTS `qchimbasos` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
 USE `qchimbasos`;
-
-
 -- --------------------------------------------------------
 
 --
@@ -33,8 +30,17 @@ USE `qchimbasos`;
 
 CREATE TABLE `almacenes` (
   `ID` int(7) NOT NULL,
-  `Nombre` int(100) NOT NULL
+  `Nombre` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `almacenes`
+--
+
+INSERT INTO `almacenes` (`ID`, `Nombre`) VALUES
+(1, 'Almacen 1 /principal'),
+(2, 'Almacen General'),
+(3, 'Laboratorio Instrumental');
 
 -- --------------------------------------------------------
 
@@ -58,6 +64,26 @@ CREATE TABLE `formato` (
   `ID` int(5) NOT NULL,
   `Formato` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `formato`
+--
+
+INSERT INTO `formato` (`ID`, `Formato`) VALUES
+(1, '1Kg'),
+(2, '100 g'),
+(3, '250 g'),
+(4, '500 g'),
+(5, '5 g'),
+(6, 'No viene reflejado'),
+(7, '1 L'),
+(8, '500 mL'),
+(9, '5 Kg'),
+(10, '2.5 L'),
+(11, '250 mL'),
+(12, '100 mL'),
+(13, '250 g,1 kg'),
+(14, '10 g');
 
 -- --------------------------------------------------------
 
@@ -84,7 +110,8 @@ CREATE TABLE `inventario_materiales` (
   `ID_Almacen` int(7) NOT NULL,
   `ID_Material` int(7) NOT NULL,
   `ID_Ubicacion` int(7) NOT NULL,
-  `Cantidad` int(7) NOT NULL
+  `Cantidad` int(7) NOT NULL,
+  `Fecha_compra` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -123,11 +150,18 @@ CREATE TABLE `materiales` (
 --
 
 CREATE TABLE `productos_quimicos` (
-  `ID_Producto` int(5) NOT NULL,
+  `ID` int(5) NOT NULL,
   `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `ID_Formato` int(7) NOT NULL,
-  `Grado Pureza` int(10) NOT NULL
+  `Grado Pureza` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos_quimicos`
+--
+
+INSERT INTO `productos_quimicos` (`ID`, `Nombre`, `ID_Formato`, `Grado Pureza`) VALUES
+(1, 'AMONIO NITRATO', 1, 'No viene reflejado');
 
 -- --------------------------------------------------------
 
@@ -141,6 +175,14 @@ CREATE TABLE `relacion_prod_riesgo` (
   `ID_Riesgo` int(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `relacion_prod_riesgo`
+--
+
+INSERT INTO `relacion_prod_riesgo` (`ID`, `ID_Producto`, `ID_Riesgo`) VALUES
+(1, 1, 1),
+(2, 1, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -152,6 +194,20 @@ CREATE TABLE `tipo_riesgos` (
   `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `Descripcion` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_riesgos`
+--
+
+INSERT INTO `tipo_riesgos` (`ID`, `Nombre`, `Descripcion`) VALUES
+(1, 'Comburente', 'El comburente es una sustancia que oxida al combustible en las reacciones de combustión.'),
+(2, 'Corrosivo', 'Sustancia que puede destruir o dañar irreversiblemente otra superficie o sustancia con la cual entra en contacto'),
+(3, 'Toxicidad aguda', 'Está en presencia de un producto químico que es extremadamente tóxico en contacto con la piel, si se inhala o ingiere, y que puede ser mortal.'),
+(4, 'Irritante ', 'Sustancias químicas que causan enrojecimiento, resequedad y grietas al contacto con la piel.'),
+(5, 'Nocivo', 'Sustancias que pueden causar daño en el organismo humano, bien sea por inhalación, en contacto con la piel, o por ingestión.'),
+(6, 'Peligroso para el medio ambiente', 'En caso de contacto con el medioambiente, constituiría o podría constituir un peligro inmediato o futuro para uno o más componentes del medioambiente.'),
+(7, 'Carcinógeno', 'Sustancia o mezcla de sustancias que induce cáncer o aumenta su incidencia.'),
+(8, 'Inflamable', 'Sustancia que se quema con facilidad');
 
 -- --------------------------------------------------------
 
@@ -223,7 +279,7 @@ ALTER TABLE `materiales`
 -- Indices de la tabla `productos_quimicos`
 --
 ALTER TABLE `productos_quimicos`
-  ADD PRIMARY KEY (`ID_Producto`),
+  ADD PRIMARY KEY (`ID`),
   ADD KEY `ID_Formato` (`ID_Formato`);
 
 --
@@ -254,7 +310,7 @@ ALTER TABLE `ubicaciones`
 -- AUTO_INCREMENT de la tabla `almacenes`
 --
 ALTER TABLE `almacenes`
-  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `auxiliares`
@@ -266,7 +322,7 @@ ALTER TABLE `auxiliares`
 -- AUTO_INCREMENT de la tabla `formato`
 --
 ALTER TABLE `formato`
-  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario_auxiliares`
@@ -296,19 +352,19 @@ ALTER TABLE `materiales`
 -- AUTO_INCREMENT de la tabla `productos_quimicos`
 --
 ALTER TABLE `productos_quimicos`
-  MODIFY `ID_Producto` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `relacion_prod_riesgo`
 --
 ALTER TABLE `relacion_prod_riesgo`
-  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_riesgos`
 --
 ALTER TABLE `tipo_riesgos`
-  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `ubicaciones`
@@ -342,7 +398,7 @@ ALTER TABLE `inventario_materiales`
 ALTER TABLE `inventario_reactivos`
   ADD CONSTRAINT `inventario_reactivos_ibfk_1` FOREIGN KEY (`ID_Almacen`) REFERENCES `almacenes` (`ID`),
   ADD CONSTRAINT `inventario_reactivos_ibfk_2` FOREIGN KEY (`ID_Ubicacion`) REFERENCES `ubicaciones` (`ID`),
-  ADD CONSTRAINT `inventario_reactivos_ibfk_3` FOREIGN KEY (`ID_Producto`) REFERENCES `productos_quimicos` (`ID_Producto`);
+  ADD CONSTRAINT `inventario_reactivos_ibfk_3` FOREIGN KEY (`ID_Producto`) REFERENCES `productos_quimicos` (`ID`);
 
 --
 -- Filtros para la tabla `productos_quimicos`
@@ -355,7 +411,7 @@ ALTER TABLE `productos_quimicos`
 --
 ALTER TABLE `relacion_prod_riesgo`
   ADD CONSTRAINT `relacion_prod_riesgo_ibfk_1` FOREIGN KEY (`ID_Riesgo`) REFERENCES `tipo_riesgos` (`ID`),
-  ADD CONSTRAINT `relacion_prod_riesgo_ibfk_2` FOREIGN KEY (`ID_Producto`) REFERENCES `productos_quimicos` (`ID_Producto`);
+  ADD CONSTRAINT `relacion_prod_riesgo_ibfk_2` FOREIGN KEY (`ID_Producto`) REFERENCES `productos_quimicos` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
