@@ -10,14 +10,14 @@ import static com.mycompany.qchimbasos.InicioSesion.reg;
  *
  * @author DAW MAÑANA
  */
-public class VentanaPrincipal extends javax.swing.JFrame {
+public class busquedaAlum extends javax.swing.JFrame {
 
     /**
-     * Creates new form VentanaPrincipal
+     * Creates new form busquedaAlum
      */
     
-    public static InicioSesion ins; 
-    public VentanaPrincipal() {
+    public static Login log; 
+    public busquedaAlum() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -86,8 +86,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBotonUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonUsuarioActionPerformed
-        ins = new InicioSesion();
-        ins.setVisible(true);
+        log = new Login();
+        log.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jBotonUsuarioActionPerformed
 
     /**
@@ -107,20 +108,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(busquedaAlum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(busquedaAlum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(busquedaAlum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(busquedaAlum.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaPrincipal().setVisible(true);
+                new busquedaAlum().setVisible(true);
             }
         });
     }

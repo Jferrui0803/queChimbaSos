@@ -122,6 +122,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jUsu1ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="jPasswd1">
               <Properties>
@@ -134,6 +137,9 @@
                   </Border>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPasswd1ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="jPasswd2">
               <Properties>

@@ -74,9 +74,19 @@ public class Registro extends javax.swing.JFrame {
 
         jUsu1.setBackground(new java.awt.Color(214, 217, 223));
         jUsu1.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuario"));
+        jUsu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jUsu1ActionPerformed(evt);
+            }
+        });
 
         jPasswd1.setBackground(new java.awt.Color(214, 217, 223));
         jPasswd1.setBorder(javax.swing.BorderFactory.createTitledBorder("Contraseña"));
+        jPasswd1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswd1ActionPerformed(evt);
+            }
+        });
 
         jPasswd2.setBackground(new java.awt.Color(214, 217, 223));
         jPasswd2.setBorder(javax.swing.BorderFactory.createTitledBorder("Confirmar Contraseña"));
@@ -254,6 +264,14 @@ public class Registro extends javax.swing.JFrame {
     private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
         dispose();
     }//GEN-LAST:event_VolverActionPerformed
+
+    private void jUsu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jUsu1ActionPerformed
+
+    private void jPasswd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswd1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswd1ActionPerformed
 
     /**
      * @param args the command line arguments
