@@ -4,22 +4,25 @@
  */
 package com.mycompany.qchimbasos.clases;
 
+import Excepciones.NombreIncorrectoException;
+
 /**
  *
  * @author tadeo
  */
 public class Reactivos {
 
-private String nombre;
-private String id_formato;
-private String grado_pureza;
-private int codigoFormat;
+    private String nombre;
+    private String id_formato;
+    private String grado_pureza;
+    private int codigoFormat;
 
-    public Reactivos(String nombre, String id_formato, String grado_pureza) {
+    private Reactivos(String nombre, String id_formato, String grado_pureza) {
+
         this.nombre = nombre;
         this.id_formato = id_formato;
         this.grado_pureza = grado_pureza;
-        
+
         switch (id_formato) {
             case "1kg" -> {
                 this.codigoFormat = 1;
@@ -67,6 +70,17 @@ private int codigoFormat;
         }
     }
 
+    public static Reactivos crearReactivos(String nombre, String id_formato, String grado_pureza) {
+        
+        
+        if (validarNombre(nombre)) {
+            return null;
+        }
+        
+        return new Reactivos(nombre,id_formato,grado_pureza);
+
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -94,13 +108,17 @@ private int codigoFormat;
     public int getCodigoFormat() {
         return codigoFormat;
     }
-    
+
     @Override
     public String toString() {
         return "Reactivos{" + "nombre=" + nombre + ", id_formato=" + id_formato + ", grado_pureza=" + grado_pureza + '}';
     }
 
+    public static boolean validarNombre(String nombre) throws NombreIncorrectoException {
+        if (nombre.isBlank() || nombre.isEmpty()) {
+            throw new NombreIncorrectoException();
+        }
+        return nombre.isBlank() || nombre.isEmpty();
+    }
 
-
-    
 }

@@ -6,6 +6,8 @@ package com.mycompany.qchimbasos.clases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -18,6 +20,10 @@ public class Conexion {
     private String DB_URL;
     private String USER;
     private String PASS;
+    // Atributos variables
+    Connection conexion = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
 
     public Conexion(String JDBC_DRIVER, String DB_URL, String USER, String PASS) {
         this.JDBC_DRIVER = JDBC_DRIVER;
@@ -39,6 +45,22 @@ public class Conexion {
             System.out.println("ERROR: " + ex.getMessage());
         }
         return con;
+    }
+    
+    public  void cerrar() {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conexion != null) {
+                conexion.close();
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
     
     

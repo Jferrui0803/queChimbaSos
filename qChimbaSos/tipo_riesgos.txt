@@ -1,0 +1,27 @@
+Nombre: Comburente
+Descripción: El comburente es una sustancia que oxida al combustible en las reacciones de combustión.
+
+Nombre: Corrosivo
+Descripción: Sustancia que puede destruir o dañar irreversiblemente otra superficie o sustancia con la cual entra en contacto
+
+Nombre: Toxicidad aguda
+Descripción: Está en presencia de un producto químico que es extremadamente tóxico en contacto con la piel, si se inhala o ingiere, y que puede ser mortal.
+
+Nombre: Irritante 
+Descripción: Sustancias químicas que causan enrojecimiento, resequedad y grietas al contacto con la piel.
+
+Nombre: Nocivo
+Descripción: Sustancias que pueden causar daño en el organismo humano, bien sea por inhalación, en contacto con la piel, o por ingestión.
+
+Nombre: Peligroso para el medio ambiente
+Descripción: En caso de contacto con el medioambiente, constituiría o podría constituir un peligro inmediato o futuro para uno o más componentes del medioambiente.
+
+Nombre: Carcinógeno
+Descripción: Sustancia o mezcla de sustancias que induce cáncer o aumenta su incidencia.
+
+Nombre: Inflamable
+Descripción: Sustancia que se quema con facilidad
+
+Nombre: Atención
+Descripción: Precaución con el producto
+

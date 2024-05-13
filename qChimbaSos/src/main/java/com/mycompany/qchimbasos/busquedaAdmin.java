@@ -6,6 +6,12 @@ package com.mycompany.qchimbasos;
 
 import static com.mycompany.qchimbasos.Login.bsqAdmin;
 import static com.mycompany.qchimbasos.Register.log;
+import com.mycompany.qchimbasos.clases.Conexion;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  *
@@ -16,11 +22,12 @@ public class busquedaAdmin extends javax.swing.JFrame {
     /**
      * Creates new form busquedaAlum
      */
-    
+    private Conexion conexion;
+
     public static Modificacion modif;
     public static Login log;
     public static AgregacionReactivo reac;
-    
+
     public busquedaAdmin() {
         initComponents();
         setLocationRelativeTo(null);
@@ -51,9 +58,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
         jLubicacion1 = new javax.swing.JLabel();
         jtakeUbicacion1 = new javax.swing.JTextField();
         jscrollTabla = new javax.swing.JScrollBar();
-        jBagregar = new javax.swing.JButton();
         jBmodificar = new javax.swing.JButton();
         jBbuscar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -134,13 +141,6 @@ public class busquedaAdmin extends javax.swing.JFrame {
             }
         });
 
-        jBagregar.setText("Agregar/Eliminar");
-        jBagregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBagregarActionPerformed(evt);
-            }
-        });
-
         jBmodificar.setText("Modificar");
         jBmodificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,6 +152,13 @@ public class busquedaAdmin extends javax.swing.JFrame {
         jBbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBbuscarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Tipos de Riesgos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -211,11 +218,11 @@ public class busquedaAdmin extends javax.swing.JFrame {
                                 .addGap(298, 298, 298)
                                 .addComponent(jBbuscar))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(186, 186, 186)
-                                .addComponent(jBmodificar)
-                                .addGap(78, 78, 78)
-                                .addComponent(jBagregar)))
-                        .addContainerGap(266, Short.MAX_VALUE))))
+                                .addGap(134, 134, 134)
+                                .addComponent(jButton1)
+                                .addGap(107, 107, 107)
+                                .addComponent(jBmodificar)))
+                        .addContainerGap(292, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,17 +262,13 @@ public class busquedaAdmin extends javax.swing.JFrame {
                         .addComponent(jBbuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jBsalir)
-                        .addGap(39, 39, 39))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jBmodificar)
-                            .addComponent(jBagregar))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBmodificar)
+                    .addComponent(jButton1))
+                .addGap(16, 16, 16)
+                .addComponent(jBsalir)
+                .addGap(39, 39, 39))
         );
 
         jMenu1.setText("Agregar Producto");
@@ -340,25 +343,19 @@ public class busquedaAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtakeUbicacion1ActionPerformed
 
-    private void jBagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBagregarActionPerformed
-        // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_jBagregarActionPerformed
-
     private void jBmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBmodificarActionPerformed
         // TODO add your handling code here:
-        
+
         modif = new Modificacion();
         modif.setVisible(true);
     }//GEN-LAST:event_jBmodificarActionPerformed
 
     private void jBsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsalirActionPerformed
         // TODO add your handling code here:
-       log = new Login();
-       log.setVisible(true);
+        log = new Login();
+        log.setVisible(true);
         dispose();
-        
+
     }//GEN-LAST:event_jBsalirActionPerformed
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
@@ -371,9 +368,47 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-       reac= new AgregacionReactivo();
-       reac.setVisible(true);
+        reac = new AgregacionReactivo();
+        reac.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            // Conectar a la base de datos
+            this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+
+            // Crear una declaración
+            Statement stmt = this.conexion.conecta().createStatement();
+
+            // Ejecutar una consulta SQL para recuperar los datos de tipo_riesgos
+            String sql = "SELECT nombre, descripcion FROM tipo_riesgos";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Crear un nuevo archivo de texto
+            String txtFilePath = "tipo_riesgos.txt";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(txtFilePath));
+
+            // Escribir los datos en el archivo de texto
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String descripcion = rs.getString("descripcion");
+                writer.write("Nombre: " + nombre + "\n");
+                writer.write("Descripción: " + descripcion + "\n\n");
+            }
+
+            // Cerrar el escritor y la conexión a la base de datos
+            writer.close();
+            this.conexion.cerrar();
+
+            System.out.println("Archivo de texto creado exitosamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -426,10 +461,10 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBagregar;
     private javax.swing.JButton jBbuscar;
     private javax.swing.JButton jBmodificar;
     private javax.swing.JButton jBsalir;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLnombre;
