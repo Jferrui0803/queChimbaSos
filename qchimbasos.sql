@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-05-2024 a las 19:47:22
+-- Tiempo de generación: 13-05-2024 a las 18:50:10
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -154,14 +154,14 @@ CREATE TABLE `materiales` (
   `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `Tipo_Material` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `Descipcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
-  `Nº Serie` int(10) DEFAULT NULL
+  `Nº_Serie` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `materiales`
 --
 
-INSERT INTO `materiales` (`ID`, `Nombre`, `Tipo_Material`, `Descipcion`, `Nº Serie`) VALUES
+INSERT INTO `materiales` (`ID`, `Nombre`, `Tipo_Material`, `Descipcion`, `Nº_Serie`) VALUES
 (1, 'Vasos de precipitados', 'plástico', '1000 ml', 0),
 (2, 'Vasos de precipitados', 'plástico', '500ml', 0),
 (3, 'Vaso de precipitados', 'plástico', '1000 ml', 0),
@@ -186,14 +186,14 @@ CREATE TABLE `productos_quimicos` (
   `ID` int(5) NOT NULL,
   `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `ID_Formato` int(7) NOT NULL,
-  `Grado Pureza` varchar(50) NOT NULL
+  `Grado_Pureza` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `productos_quimicos`
 --
 
-INSERT INTO `productos_quimicos` (`ID`, `Nombre`, `ID_Formato`, `Grado Pureza`) VALUES
+INSERT INTO `productos_quimicos` (`ID`, `Nombre`, `ID_Formato`, `Grado_Pureza`) VALUES
 (1, 'AMONIO NITRATO', 1, 'No viene reflejado'),
 (2, 'BROMURO DE AMONIO (PARA ANÁLISIS)', 1, '99%'),
 (3, 'AZUFRE SUBLIMADO (AZUFRE FLOR)', 1, 'Puro'),
@@ -618,6 +618,43 @@ CREATE TABLE `ubicaciones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `ubicaciones`
+--
+
+INSERT INTO `ubicaciones` (`ID`, `Ubicacion`) VALUES
+(1, '1CA'),
+(2, '2N'),
+(3, '3N'),
+(4, '4N'),
+(5, '5N'),
+(6, '8l'),
+(7, 'estantería 1, balda 3'),
+(8, 'estantería 1,balda 4'),
+(9, 'C1'),
+(10, 'C2'),
+(11, 'P1'),
+(12, 'P2'),
+(13, 'Estantería 0, balda 4');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `Nombre` varchar(100) NOT NULL,
+  `Contraseña` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`Nombre`, `Contraseña`) VALUES
+('admin', 'admin');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -767,7 +804,7 @@ ALTER TABLE `tipo_riesgos`
 -- AUTO_INCREMENT de la tabla `ubicaciones`
 --
 ALTER TABLE `ubicaciones`
-  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas

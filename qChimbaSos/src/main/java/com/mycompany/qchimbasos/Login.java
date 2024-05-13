@@ -1,10 +1,11 @@
 package com.mycompany.qchimbasos;
 
-import static com.mycompany.qchimbasos.InicioSesion.DB_URL;
-import static com.mycompany.qchimbasos.InicioSesion.PASS;
-import static com.mycompany.qchimbasos.InicioSesion.USER;
-import static com.mycompany.qchimbasos.InicioSesion.reg;
+import static com.mycompany.qchimbasos.Login.DB_URL;
+import static com.mycompany.qchimbasos.Login.PASS;
+import static com.mycompany.qchimbasos.Login.USER;
+import static com.mycompany.qchimbasos.Login.reg;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -28,11 +29,18 @@ public class Login extends javax.swing.JFrame {
 
     public static Register reg; 
     public static busquedaAlum bsqA;
+    public static busquedaAdmin bsqAdmin;
     
     public Login() {
         initComponents();
+        
+        // Metodo para iniciar la ventana en el centro
+        setLocationRelativeTo(null);
+        
+   
     }
     
+    // Conexion a la BD
     public Connection conecta() {
         Connection con = null;
         try {
@@ -50,9 +58,9 @@ public class Login extends javax.swing.JFrame {
 
         bg = new javax.swing.JPanel();
         jBregistro = new javax.swing.JButton();
-        header = new javax.swing.JPanel();
         exitBtn = new javax.swing.JPanel();
         exitButton = new javax.swing.JButton();
+        header = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         userLabel = new javax.swing.JLabel();
         jTusuario = new javax.swing.JTextField();
@@ -84,22 +92,10 @@ public class Login extends javax.swing.JFrame {
         });
         bg.add(jBregistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, 130, 40));
 
-        header.setBackground(new java.awt.Color(255, 255, 255));
-        header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                headerMouseDragged(evt);
-            }
-        });
-        header.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                headerMousePressed(evt);
-            }
-        });
-
         exitBtn.setBackground(new java.awt.Color(255, 255, 255));
 
         exitButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        exitButton.setText("X");
+        exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salida.png"))); // NOI18N
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -116,25 +112,35 @@ public class Login extends javax.swing.JFrame {
         );
         exitBtnLayout.setVerticalGroup(
             exitBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(exitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+            .addComponent(exitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        bg.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        header.setBackground(new java.awt.Color(255, 255, 255));
+        header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                headerMouseDragged(evt);
+            }
+        });
+        header.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                headerMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(exitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 518, Short.MAX_VALUE))
+            .addGap(0, 560, Short.MAX_VALUE)
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(exitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1, Short.MAX_VALUE))
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        bg.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 560, 40));
+        bg.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 560, 50));
 
         title.setFont(new java.awt.Font("Roboto Black", 1, 24)); // NOI18N
         title.setText("INICIAR SESIÓN");
@@ -182,6 +188,11 @@ public class Login extends javax.swing.JFrame {
                 jTcontraseñaMousePressed(evt);
             }
         });
+        jTcontraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTcontraseñaActionPerformed(evt);
+            }
+        });
         bg.add(jTcontraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 410, 30));
 
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
@@ -226,17 +237,6 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
-        xMouse = evt.getX();
-        yMouse = evt.getY();
-    }//GEN-LAST:event_headerMousePressed
-
-    private void headerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseDragged
-        int x = evt.getXOnScreen();
-        int y = evt.getYOnScreen();
-        this.setLocation(x - xMouse, y - yMouse);
-    }//GEN-LAST:event_headerMouseDragged
-
     private void jTusuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTusuarioMousePressed
         if (jTusuario.getText().equals("Ingrese su nombre de usuario")) {
             jTusuario.setText("");
@@ -259,6 +259,7 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTcontraseñaMousePressed
 
+   
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
        String usuario = jTusuario.getText();
@@ -277,6 +278,8 @@ public class Login extends javax.swing.JFrame {
                 // Si las credenciales son correctas, muestra un mensaje de éxito
                 javax.swing.JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
                 
+                bsqAdmin = new busquedaAdmin();
+                bsqAdmin.setVisible(true);
                 dispose();
             } else {
                 // Si las credenciales son incorrectas, muestra un mensaje de error
@@ -324,6 +327,23 @@ public class Login extends javax.swing.JFrame {
         bsqA.setVisible(true);
         dispose();
     }//GEN-LAST:event_loginAlumnoActionPerformed
+
+    private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_headerMousePressed
+
+    private void headerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseDragged
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xMouse, y - yMouse);
+    }//GEN-LAST:event_headerMouseDragged
+
+    private void jTcontraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTcontraseñaActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_jTcontraseñaActionPerformed
 
     /**
      * @param args the command line arguments

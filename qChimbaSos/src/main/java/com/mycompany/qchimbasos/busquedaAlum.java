@@ -4,7 +4,7 @@
  */
 package com.mycompany.qchimbasos;
 
-import static com.mycompany.qchimbasos.InicioSesion.reg;
+import static com.mycompany.qchimbasos.Login.reg;
 
 /**
  *

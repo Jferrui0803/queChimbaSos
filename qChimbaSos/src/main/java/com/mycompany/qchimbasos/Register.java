@@ -1,9 +1,9 @@
 package com.mycompany.qchimbasos;
 
-import static com.mycompany.qchimbasos.InicioSesion.DB_URL;
-import static com.mycompany.qchimbasos.InicioSesion.PASS;
-import static com.mycompany.qchimbasos.InicioSesion.USER;
-import static com.mycompany.qchimbasos.InicioSesion.reg;
+import static com.mycompany.qchimbasos.Register.DB_URL;
+import static com.mycompany.qchimbasos.Register.PASS;
+import static com.mycompany.qchimbasos.Register.USER;
+import static com.mycompany.qchimbasos.Register.reg;
 import static com.mycompany.qchimbasos.busquedaAlum.log;
 import java.awt.Color;
 import java.sql.Connection;
@@ -28,11 +28,12 @@ public class Register extends javax.swing.JFrame {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public static Registro reg;
+    public static Register reg;
     public static Login log;
     
     public Register() {
         initComponents();
+        setLocationRelativeTo(null);
     }
     
     public Connection conecta() {
@@ -52,9 +53,9 @@ public class Register extends javax.swing.JFrame {
 
         bg = new javax.swing.JPanel();
         logoIZV = new javax.swing.JLabel();
-        header = new javax.swing.JPanel();
         exitBtn = new javax.swing.JPanel();
         exitButton = new javax.swing.JButton();
+        header = new javax.swing.JPanel();
         title = new javax.swing.JLabel();
         userLabel = new javax.swing.JLabel();
         jUsu = new javax.swing.JTextField();
@@ -81,22 +82,10 @@ public class Register extends javax.swing.JFrame {
         logoIZV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logoizv.png"))); // NOI18N
         bg.add(logoIZV, new org.netbeans.lib.awtextra.AbsoluteConstraints(548, 0, -1, 500));
 
-        header.setBackground(new java.awt.Color(255, 255, 255));
-        header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                headerMouseDragged(evt);
-            }
-        });
-        header.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                headerMousePressed(evt);
-            }
-        });
-
         exitBtn.setBackground(new java.awt.Color(255, 255, 255));
 
         exitButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        exitButton.setText("X");
+        exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/salida.png"))); // NOI18N
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -113,25 +102,35 @@ public class Register extends javax.swing.JFrame {
         );
         exitBtnLayout.setVerticalGroup(
             exitBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(exitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+            .addComponent(exitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        bg.add(exitBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        header.setBackground(new java.awt.Color(255, 255, 255));
+        header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                headerMouseDragged(evt);
+            }
+        });
+        header.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                headerMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(exitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 508, Short.MAX_VALUE))
+            .addGap(0, 550, Short.MAX_VALUE)
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(exitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1, Short.MAX_VALUE))
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        bg.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 40));
+        bg.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 50));
 
         title.setFont(new java.awt.Font("Roboto Black", 1, 24)); // NOI18N
         title.setText("Registrate");
@@ -236,17 +235,6 @@ public class Register extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
-        xMouse = evt.getX();
-        yMouse = evt.getY();
-    }//GEN-LAST:event_headerMousePressed
-
-    private void headerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseDragged
-        int x = evt.getXOnScreen();
-        int y = evt.getYOnScreen();
-        this.setLocation(x - xMouse, y - yMouse);
-    }//GEN-LAST:event_headerMouseDragged
 
     private void jUsuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jUsuMousePressed
         if (jUsu.getText().equals("Ingrese su nombre de usuario")) {
@@ -359,11 +347,6 @@ public class Register extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jUsuActionPerformed
 
-    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_exitButtonActionPerformed
-
     private void jshowPasswd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jshowPasswd1ActionPerformed
         // TODO add your handling code here:
         char echoChar = (jshowPasswd1.isSelected()) ? '\u0000' : '\u2022';
@@ -392,6 +375,24 @@ public class Register extends javax.swing.JFrame {
     private void jPasswd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswd1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswd1ActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        // TODO add your handling code here:
+       log = new Login();
+       log.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_headerMousePressed
+
+    private void headerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseDragged
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xMouse, y - yMouse);
+    }//GEN-LAST:event_headerMouseDragged
 
     /**
      * @param args the command line arguments
