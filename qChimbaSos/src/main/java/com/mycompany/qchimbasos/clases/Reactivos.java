@@ -18,7 +18,7 @@ public class Reactivos {
     private String gradoPuereza;
     private int codigoFormat;
 
-    private Reactivos(String nombre, String id_formato, String grado_pureza) {
+    public Reactivos(String nombre, String id_formato, String grado_pureza) {
 
         this.nombre = nombre;
         this.idFormato = id_formato;

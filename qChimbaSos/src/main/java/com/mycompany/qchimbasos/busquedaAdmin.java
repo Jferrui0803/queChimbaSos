@@ -7,13 +7,16 @@ package com.mycompany.qchimbasos;
 import static com.mycompany.qchimbasos.Login.bsqAdmin;
 import static com.mycompany.qchimbasos.Register.log;
 import com.mycompany.qchimbasos.clases.Conexion;
+import com.mycompany.qchimbasos.clases.Reactivos;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -29,8 +32,10 @@ public class busquedaAdmin extends javax.swing.JFrame {
     /**
      * Creates new form busquedaAlum
      */
+    String tabla;
     private Conexion conexion;
-
+    private Reactivos reactivo;
+    
     public static Modificacion modif;
     public static Login log;
     public static AgregacionReactivo reac;
@@ -64,21 +69,22 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }
 
     public void mostrarMateriales() {
+        tabla = "Materiales";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
         DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("ID");
         mt.addColumn("Nombre");
         mt.addColumn("Tipo_Material");
         mt.addColumn("Descripcion");
         mt.addColumn("Nº_Serie");
-        
-        //Falta la Ubicacion y la Localizacion INNER JOIN 
 
+        //Falta la Ubicacion y la Localizacion INNER JOIN 
         jTable1.setModel(mt);
 
         try {
             Connection con = this.conexion.conecta();
             Statement stmt = con.createStatement();
-            String query = "SELECT Nombre, Tipo_Material, Descripcion, Nº_Serie FROM Materiales ";
+            String query = "SELECT ID, Nombre, Tipo_Material, Descripcion, Nº_Serie FROM Materiales ";
             ResultSet rs = stmt.executeQuery(query);
 
             // Limpiar la tabla antes de agregar nuevos datos
@@ -86,11 +92,12 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
             // Iterar a través de los resultados y agregarlos a la tabla
             while (rs.next()) {
+                int id = rs.getInt("ID");
                 String nombreProducto = rs.getString("Nombre");
                 String tipoMaterial = rs.getString("Tipo_Material");
                 String descripcion = rs.getString("Descripcion");
                 String numeroSerie = rs.getString("Nº_Serie");
-                mt.addRow(new Object[]{nombreProducto, tipoMaterial, descripcion, numeroSerie});
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion, numeroSerie});
             }
 
             // Cerrar la conexión
@@ -102,24 +109,23 @@ public class busquedaAdmin extends javax.swing.JFrame {
         }
 
     }
-    
-    
+
     public void mostrarReactivos() {
+        tabla = "productos_quimicos";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
         DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("ID");
         mt.addColumn("Nombre");
         mt.addColumn("Grado de Pureza");
         mt.addColumn("Formato");
-    
-        
-        //Falta la Ubicacion y la Localizacion INNER JOIN 
 
+        //Falta la Ubicacion y la Localizacion INNER JOIN 
         jTable1.setModel(mt);
 
         try {
             Connection con = this.conexion.conecta();
             Statement stmt = con.createStatement();
-            String query = "SELECT p.Nombre , p.Grado_pureza , f.formato FROM productos_quimicos p  JOIN formato f  ON p.ID_formato = f.ID ";
+            String query = "SELECT p.ID, p.Nombre , p.Grado_pureza , f.formato FROM productos_quimicos p  JOIN formato f  ON p.ID_formato = f.ID ";
             ResultSet rs = stmt.executeQuery(query);
 
             // Limpiar la tabla antes de agregar nuevos datos
@@ -127,11 +133,12 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
             // Iterar a través de los resultados y agregarlos a la tabla
             while (rs.next()) {
+                int id = rs.getInt("p.ID");
                 String nombreProducto = rs.getString("P.Nombre");
                 String tipoMaterial = rs.getString("p.Grado_pureza");
                 String descripcion = rs.getString("f.formato");
-               
-                mt.addRow(new Object[]{nombreProducto, tipoMaterial, descripcion});
+
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion});
             }
 
             // Cerrar la conexión
@@ -143,22 +150,22 @@ public class busquedaAdmin extends javax.swing.JFrame {
         }
 
     }
-    
+
     public void mostrarAuxiliares() {
+        tabla = "auxiliares";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
         DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("ID");
         mt.addColumn("Nombre");
         mt.addColumn("Tipo_Material");
-    
-        
-        //Falta la Ubicacion y la Localizacion INNER JOIN 
 
+        //Falta la Ubicacion y la Localizacion INNER JOIN 
         jTable1.setModel(mt);
 
         try {
             Connection con = this.conexion.conecta();
             Statement stmt = con.createStatement();
-            String query = "SELECT nombre, tipo_material FROM auxiliares";
+            String query = "SELECT ID, nombre, tipo_material FROM auxiliares";
             ResultSet rs = stmt.executeQuery(query);
 
             // Limpiar la tabla antes de agregar nuevos datos
@@ -166,11 +173,11 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
             // Iterar a través de los resultados y agregarlos a la tabla
             while (rs.next()) {
+                int id = rs.getInt("ID");
                 String nombreProducto = rs.getString("nombre");
                 String tipoMaterial = rs.getString("tipo_material");
-               
-               
-                mt.addRow(new Object[]{nombreProducto, tipoMaterial});
+
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial});
             }
 
             // Cerrar la conexión
@@ -210,6 +217,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
         jBmodificar = new javax.swing.JButton();
         jBbuscar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jBeliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuReactivo = new javax.swing.JMenuItem();
@@ -313,6 +321,13 @@ public class busquedaAdmin extends javax.swing.JFrame {
             }
         });
 
+        jBeliminar.setText("Eliminar");
+        jBeliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBeliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -365,9 +380,11 @@ public class busquedaAdmin extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGap(134, 134, 134)
                                 .addComponent(jButton1)
-                                .addGap(93, 93, 93)
+                                .addGap(18, 18, 18)
                                 .addComponent(jBmodificar)
-                                .addGap(83, 83, 83)
+                                .addGap(18, 18, 18)
+                                .addComponent(jBeliminar)
+                                .addGap(67, 67, 67)
                                 .addComponent(jBsalir)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -399,20 +416,21 @@ public class busquedaAdmin extends javax.swing.JFrame {
                         .addComponent(jLubicacion1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jBbuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jBsalir)
+                        .addGap(61, 61, 61))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jBmodificar)
-                            .addComponent(jButton1))
-                        .addGap(90, 90, 90))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jBsalir)
-                        .addGap(61, 61, 61))))
+                            .addComponent(jButton1)
+                            .addComponent(jBeliminar))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jMenu1.setText("Agregar Producto");
@@ -493,10 +511,19 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jtakeUbicacion1ActionPerformed
 
     private void jBmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBmodificarActionPerformed
-        // TODO add your handling code here:
+        
+        if (tabla.equals("productos_quimicos")) {
+            int filaSeleccionada = jTable1.getSelectedRow();
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int idRegistro = (int) modelo.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
+            String formato = (String) modelo.getValueAt(filaSeleccionada, 2);
+            String pureza = (String) modelo.getValueAt(filaSeleccionada, 3);
+            this.reactivo = new Reactivos(nombre, formato, pureza);
+            modif = new Modificacion(this.reactivo, idRegistro);
+            modif.setVisible(true);
+        }
 
-        modif = new Modificacion();
-        modif.setVisible(true);
     }//GEN-LAST:event_jBmodificarActionPerformed
 
     private void jBsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsalirActionPerformed
@@ -508,17 +535,17 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jBsalirActionPerformed
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
-        
-        String consulta =  (String) jComboBox1.getSelectedItem();
-        
-        if (consulta.equals("Materiales")){
+
+        String consulta = (String) jComboBox1.getSelectedItem();
+
+        if (consulta.equals("Materiales")) {
             mostrarMateriales();
         }
-        if (consulta.equals("Auxiliares")){
+        if (consulta.equals("Auxiliares")) {
             mostrarAuxiliares();
         }
-        
-        if (consulta.equals("Reactivos")){
+
+        if (consulta.equals("Reactivos")) {
             mostrarReactivos();
         }
 
@@ -542,38 +569,44 @@ public class busquedaAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         try {
-            // Conectar a la base de datos
-            this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+            // Obtener la fila seleccionada en la tabla
+            int filaSeleccionada = jTable1.getSelectedRow();
 
-            // Crear una declaración
-            Statement stmt = this.conexion.conecta().createStatement();
+            // Verificar si se seleccionó una fila
+            if (filaSeleccionada != -1) {
+                // Obtener el ID del registro seleccionado en la tabla
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int idRegistro = (int) modelo.getValueAt(filaSeleccionada, 0);
 
-            // Ejecutar una consulta SQL para recuperar los datos de tipo_riesgos
-            String sql = "SELECT nombre, descripcion FROM tipo_riesgos";
-            ResultSet rs = stmt.executeQuery(sql);
+                // Conectar a la base de datos
+                this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+                Statement stmt = this.conexion.conecta().createStatement();
 
-            // Crear un nuevo archivo de texto
-            String txtFilePath = "tipo_riesgos.txt";
-            BufferedWriter writer = new BufferedWriter(new FileWriter(txtFilePath));
+                // Ejecutar una consulta SQL para eliminar el registro de la base de datos
+                String sqlEliminar = "DELETE FROM tipo_riesgos WHERE id = " + idRegistro; // Suponiendo que el campo de ID se llama "id"
+                int filasEliminadas = stmt.executeUpdate(sqlEliminar);
 
-            // Escribir los datos en el archivo de texto
-            while (rs.next()) {
-                String nombre = rs.getString("nombre");
-                String descripcion = rs.getString("descripcion");
-                writer.write("Nombre: " + nombre + "\n");
-                writer.write("Descripción: " + descripcion + "\n\n");
+                // Verificar si se eliminó correctamente el registro de la base de datos
+                if (filasEliminadas > 0) {
+                    // Eliminar la fila correspondiente de la tabla visual
+                    modelo.removeRow(filaSeleccionada);
+
+                    System.out.println("Registro eliminado correctamente de la base de datos y de la tabla.");
+                } else {
+                    System.out.println("No se pudo eliminar el registro de la base de datos.");
+                }
+
+                // Cerrar la conexión a la base de datos
+                this.conexion.cerrar();
+            } else {
+                System.out.println("No se ha seleccionado ninguna fila.");
             }
-
-            // Cerrar el escritor y la conexión a la base de datos
-            writer.close();
-            this.conexion.cerrar();
-
-            System.out.println("Archivo de texto creado exitosamente.");
-        } catch (IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }        // TODO add your handling code here:
+        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuAuxiliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAuxiliarActionPerformed
@@ -581,6 +614,42 @@ public class busquedaAdmin extends javax.swing.JFrame {
         aux = new AgregacionAuxiliar();
         aux.setVisible(true);
     }//GEN-LAST:event_jMenuAuxiliarActionPerformed
+
+    private void jBeliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBeliminarActionPerformed
+        try {
+
+            int filaSeleccionada = jTable1.getSelectedRow();
+
+            if (filaSeleccionada != -1) {
+
+                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+                int idRegistro = (int) modelo.getValueAt(filaSeleccionada, 0);
+
+                this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+                Statement stmt = this.conexion.conecta().createStatement();
+
+                String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
+                int filasEliminadas = stmt.executeUpdate(sqlEliminar);
+
+                if (filasEliminadas > 0) {
+                    modelo.removeRow(filaSeleccionada);
+
+                    System.out.println("Registro eliminado correctamente de la base de datos y de la tabla.");
+                } else {
+                    System.out.println("No se pudo eliminar el registro de la base de datos.");
+                }
+
+                this.conexion.cerrar();
+            } else {
+                System.out.println("No se ha seleccionado ninguna fila.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jBeliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -634,6 +703,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBbuscar;
+    private javax.swing.JButton jBeliminar;
     private javax.swing.JButton jBmodificar;
     private javax.swing.JButton jBsalir;
     private javax.swing.JButton jButton1;
