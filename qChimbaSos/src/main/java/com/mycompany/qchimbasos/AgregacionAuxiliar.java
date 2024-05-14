@@ -4,6 +4,18 @@
  */
 package com.mycompany.qchimbasos;
 
+import com.mycompany.qchimbasos.clases.Conexion;
+import com.mycompany.qchimbasos.clases.Reactivos;
+import static com.mycompany.qchimbasos.clases.Reactivos.crearReactivos;
+import com.mycompany.qchimbasos.clases.Auxiliares;
+import static com.mycompany.qchimbasos.clases.Auxiliares.crearAuxiliar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author DAW MAÑANA
@@ -13,6 +25,12 @@ public class AgregacionAuxiliar extends javax.swing.JFrame {
     /**
      * Creates new form AgregacionAuxiliar
      */
+    private Conexion conexion;
+    private Reactivos reactivos;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    private Auxiliares auxiliares;
+
     public AgregacionAuxiliar() {
         initComponents();
         setLocationRelativeTo(null);
@@ -67,9 +85,7 @@ public class AgregacionAuxiliar extends javax.swing.JFrame {
             }
         });
 
-        jBañadir.setBackground(new java.awt.Color(0, 76, 125));
         jBañadir.setFont(new java.awt.Font("Microsoft YaHei", 1, 24)); // NOI18N
-        jBañadir.setForeground(new java.awt.Color(255, 255, 255));
         jBañadir.setText("Añadir");
         jBañadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,7 +178,40 @@ public class AgregacionAuxiliar extends javax.swing.JFrame {
     }//GEN-LAST:event_jBSalirActionPerformed
 
     private void jBañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBañadirActionPerformed
-        // TODO add your handling code here:
+        
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+
+        // Creamos un nuevo auxiliar, en el que se recoge el nombre y el tipo de material
+        this.auxiliares = crearAuxiliar(jTextNombre.getText(), jTextTMaterial.getText());
+    
+        try {
+            Connection conec = this.conexion.conecta();
+
+            //Sentencia para añadir un nuevo usuario y contraseña 
+            String sql = "INSERT INTO auxiliares (Nombre, Tipo_Material) VALUES (?, ?)";
+
+            ps = conec.prepareStatement(sql);
+            ps.setString(1,this.auxiliares.getNombre());
+            ps.setString(2, this.auxiliares.getTipo_material());
+
+            int filasInsertadas = ps.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                // Si las credenciales son correctas, muestra un mensaje de éxito
+                javax.swing.JOptionPane.showMessageDialog(null, "Producto auxiliar agregado");
+
+                // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
+            } else {
+                // Si las credenciales son incorrectas, muestra un mensaje de error
+                JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            JOptionPane.showMessageDialog(rootPane, "El producto de nombre: "
+                    + this.reactivos.getNombre() + " , ya está registrado en la base de datos", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }        // TODO add your handling code here:
 
     }//GEN-LAST:event_jBañadirActionPerformed
 

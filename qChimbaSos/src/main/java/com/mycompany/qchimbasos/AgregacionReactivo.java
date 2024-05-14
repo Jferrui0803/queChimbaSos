@@ -78,9 +78,7 @@ public class AgregacionReactivo extends javax.swing.JFrame {
             }
         });
 
-        jBañadir.setBackground(new java.awt.Color(0, 76, 125));
         jBañadir.setFont(new java.awt.Font("Microsoft YaHei", 1, 24)); // NOI18N
-        jBañadir.setForeground(new java.awt.Color(255, 255, 255));
         jBañadir.setText("Añadir");
         jBañadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,9 +124,9 @@ public class AgregacionReactivo extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(238, 238, 238)
+                        .addGap(197, 197, 197)
                         .addComponent(jBañadir)
-                        .addGap(31, 31, 31)
+                        .addGap(72, 72, 72)
                         .addComponent(jBSalir)))
                 .addContainerGap(184, Short.MAX_VALUE))
         );
@@ -204,7 +202,7 @@ public class AgregacionReactivo extends javax.swing.JFrame {
             ps = conec.prepareStatement(sql);
             ps.setString(1, this.reactivos.getNombre());
             ps.setInt(2, this.reactivos.getCodigoFormat());
-            ps.setString(3, this.reactivos.getGrado_pureza());
+            ps.setString(3, this.reactivos.getGradoPuereza());
 
             int filasInsertadas = ps.executeUpdate();
 

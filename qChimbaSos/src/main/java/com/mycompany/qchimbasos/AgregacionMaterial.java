@@ -5,6 +5,11 @@
 package com.mycompany.qchimbasos;
 
 import com.mycompany.qchimbasos.clases.Conexion;
+import com.mycompany.qchimbasos.clases.Materiales;
+import static com.mycompany.qchimbasos.clases.Materiales.crearMateriales;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
 
@@ -13,6 +18,13 @@ import javax.swing.JOptionPane;
  * @author DAW MAÑANA
  */
 public class AgregacionMaterial extends javax.swing.JFrame {
+
+    private Conexion conexion;
+    private AgregacionMaterial Materiales;
+    private PreparedStatement ps;
+    private Object auxiliares;
+    private Object jTextTMaterial;
+    private Materiales material;
 
     /**
      * Creates new form AgregacionMaterial
@@ -82,9 +94,7 @@ public class AgregacionMaterial extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel5.setText("Nº de Serie");
 
-        jBañadir.setBackground(new java.awt.Color(0, 76, 125));
         jBañadir.setFont(new java.awt.Font("Microsoft YaHei", 1, 24)); // NOI18N
-        jBañadir.setForeground(new java.awt.Color(255, 255, 255));
         jBañadir.setText("Añadir");
         jBañadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,6 +208,39 @@ public class AgregacionMaterial extends javax.swing.JFrame {
 
     private void jBañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBañadirActionPerformed
         // TODO add your handling code here:
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+
+        // Creamos un nuevo material, en el que se recoge el nombre, la selección del material con un CASTEO, la descripción y el nº de serie
+        this.material = crearMateriales(jTextNombre.getText(), (String) jComboBoxMaterial.getSelectedItem()
+                ,jTextDescripcion.getText() ,Integer.parseInt(jTextNSerie.getText()));
+                
+        
+        try {
+            Connection conec = this.conexion.conecta();
+
+            //Sentencia para añadir un nuevo usuario y contraseña 
+            String sql = "INSERT INTO materiales (Nombre, Tipo_Material, Descripcion, Nº_Serie ) VALUES (?,?,?,?)";
+
+            ps = conec.prepareStatement(sql);
+            ps.setString(1,this.material.getNombre());
+            ps.setString(2, this.material.getTipo_material());
+            ps.setString(3, this.material.getDescripcion());
+            ps.setInt(4, this.material.getNumero_serie());
+
+            int filasInsertadas = ps.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                // Si las credenciales son correctas, muestra un mensaje de éxito
+                javax.swing.JOptionPane.showMessageDialog(null, "Material agregado");
+
+                // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
+            } else {
+                // Si las credenciales son incorrectas, muestra un mensaje de error
+                JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+               } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }        // TODO add your handling code here:
         
     }//GEN-LAST:event_jBañadirActionPerformed
 

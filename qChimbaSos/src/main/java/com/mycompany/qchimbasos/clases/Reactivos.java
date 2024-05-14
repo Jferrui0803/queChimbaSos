@@ -4,6 +4,7 @@
  */
 package com.mycompany.qchimbasos.clases;
 
+import Excepciones.LongitudNSerieIncorrectaException;
 import Excepciones.NombreIncorrectoException;
 
 /**
@@ -13,15 +14,15 @@ import Excepciones.NombreIncorrectoException;
 public class Reactivos {
 
     private String nombre;
-    private String id_formato;
-    private String grado_pureza;
+    private String idFormato;
+    private String gradoPuereza;
     private int codigoFormat;
 
     private Reactivos(String nombre, String id_formato, String grado_pureza) {
 
         this.nombre = nombre;
-        this.id_formato = id_formato;
-        this.grado_pureza = grado_pureza;
+        this.idFormato = id_formato;
+        this.gradoPuereza = grado_pureza;
         setCodigoFormat(id_formato);
 
     }
@@ -53,26 +54,26 @@ public class Reactivos {
         this.nombre = nombre;
     }
 
-    public String getId_formato() {
+    public String getIdFormato() {
 
-        return id_formato;
+        return idFormato;
     }
 
-    public void setId_formato(String id_formato) {
-        this.id_formato = id_formato;
+    public void setIdFormato(String idFormato) {
+        this.idFormato = idFormato;
     }
 
-    public String getGrado_pureza() {
-        return grado_pureza;
+    public String getGradoPuereza() {
+        return gradoPuereza;
     }
 
-    public void setGrado_pureza(String grado_pureza) {
+    public void setGradoPuereza(String gradoPuereza) {
 
-        if (grado_pureza.isBlank() || grado_pureza.isEmpty()) {
-            this.grado_pureza = "No viene reflejado";
+        if (gradoPuereza.isBlank() || gradoPuereza.isEmpty()) {
+            this.gradoPuereza = "No viene reflejado";
 
         }
-        this.grado_pureza = grado_pureza;
+        this.gradoPuereza = gradoPuereza;
     }
 
     public int getCodigoFormat() {
@@ -129,7 +130,7 @@ public class Reactivos {
 
     @Override
     public String toString() {
-        return "Reactivos{" + "nombre=" + nombre + ", id_formato=" + id_formato + ", grado_pureza=" + grado_pureza + '}';
+        return "Reactivos{" + "nombre=" + nombre + ", id_formato=" + idFormato + ", grado_pureza=" + gradoPuereza + '}';
     }
 
     public static boolean validarNombre(String nombre) throws NombreIncorrectoException {

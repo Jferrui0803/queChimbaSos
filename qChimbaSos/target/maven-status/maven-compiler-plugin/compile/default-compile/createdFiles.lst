@@ -52,6 +52,7 @@ com\mycompany\qchimbasos\AgregacionMaterial$1.class
 com\mycompany\qchimbasos\AgregacionMaterial$4.class
 com\mycompany\qchimbasos\Login$6.class
 com\mycompany\qchimbasos\busquedaAdmin$6.class
+Excepciones\LongitudNSerieIncorrectaException.class
 com\mycompany\qchimbasos\Register$8.class
 com\mycompany\qchimbasos\Login$5.class
 com\mycompany\qchimbasos\AgregacionMaterial.class

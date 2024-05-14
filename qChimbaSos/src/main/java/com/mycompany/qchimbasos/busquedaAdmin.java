@@ -10,8 +10,10 @@ import com.mycompany.qchimbasos.clases.Conexion;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -92,7 +94,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
             }
         });
 
-        jLproductos.setForeground(new java.awt.Color(153, 153, 153));
+        jLproductos.setForeground(new java.awt.Color(102, 102, 102));
         jLproductos.setText("Productos *");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -114,7 +116,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
             }
         });
 
-        jLproductos1.setForeground(new java.awt.Color(153, 153, 153));
+        jLproductos1.setForeground(new java.awt.Color(102, 102, 102));
         jLproductos1.setText("Formato");
 
         jtakeUbicacion.addActionListener(new java.awt.event.ActionListener() {
@@ -129,13 +131,13 @@ public class busquedaAdmin extends javax.swing.JFrame {
             }
         });
 
-        jLnombre.setForeground(new java.awt.Color(153, 153, 153));
+        jLnombre.setForeground(new java.awt.Color(102, 102, 102));
         jLnombre.setText("Nombre");
 
-        jLubicacion.setForeground(new java.awt.Color(153, 153, 153));
+        jLubicacion.setForeground(new java.awt.Color(102, 102, 102));
         jLubicacion.setText("Ubicación");
 
-        jLubicacion1.setForeground(new java.awt.Color(153, 153, 153));
+        jLubicacion1.setForeground(new java.awt.Color(102, 102, 102));
         jLubicacion1.setText("Localización");
 
         jtakeUbicacion1.addActionListener(new java.awt.event.ActionListener() {
@@ -210,17 +212,18 @@ public class busquedaAdmin extends javax.swing.JFrame {
                             .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(298, 298, 298)
-                        .addComponent(jBbuscar)
-                        .addContainerGap(361, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(134, 134, 134)
-                        .addComponent(jButton1)
-                        .addGap(107, 107, 107)
-                        .addComponent(jBmodificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBsalir)
-                        .addGap(110, 110, 110))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(298, 298, 298)
+                                .addComponent(jBbuscar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(134, 134, 134)
+                                .addComponent(jButton1)
+                                .addGap(93, 93, 93)
+                                .addComponent(jBmodificar)
+                                .addGap(83, 83, 83)
+                                .addComponent(jBsalir)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,17 +256,17 @@ public class busquedaAdmin extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jBbuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jBmodificar)
-                            .addComponent(jButton1)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jBsalir)))
-                .addGap(54, 54, 54))
+                            .addComponent(jButton1))
+                        .addGap(90, 90, 90))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jBsalir)
+                        .addGap(61, 61, 61))))
         );
 
         jMenu1.setText("Agregar Producto");
@@ -360,6 +363,41 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
         // TODO add your handling code here:
+         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+    DefaultTableModel mt = new DefaultTableModel();
+    mt.addColumn("Nombre");
+    mt.addColumn("Tipo_Material");
+    mt.addColumn("Descripcion");
+    mt.addColumn("Nº_Serie");
+
+    jTable1.setModel(mt);
+
+    try {
+        Connection con = this.conexion.conecta();
+        Statement stmt = con.createStatement();
+        String query = "SELECT Nombre, Tipo_Material, Descripcion, Nº_Serie FROM Materiales ";
+        ResultSet rs = stmt.executeQuery(query);
+
+        // Limpiar la tabla antes de agregar nuevos datos
+        mt.setRowCount(0);
+
+        // Iterar a través de los resultados y agregarlos a la tabla
+        while (rs.next()) {
+            String nombreProducto = rs.getString("Nombre");
+            String tipoMaterial = rs.getString("Tipo_Material");
+            String descripcion = rs.getString("Descripcion");
+            String numeroSerie = rs.getString("Nº_Serie");
+            mt.addRow(new Object[]{nombreProducto, tipoMaterial, descripcion, numeroSerie});
+        }
+
+        // Cerrar la conexión
+        rs.close();
+        stmt.close();
+        con.close();
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+        
     }//GEN-LAST:event_jBbuscarActionPerformed
 
     private void jMenuMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMaterialActionPerformed

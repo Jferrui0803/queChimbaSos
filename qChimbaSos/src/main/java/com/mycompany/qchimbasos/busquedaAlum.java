@@ -61,7 +61,7 @@ public class busquedaAlum extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logoizv.png"))); // NOI18N
 
-        jLproductos.setForeground(new java.awt.Color(153, 153, 153));
+        jLproductos.setForeground(new java.awt.Color(102, 102, 102));
         jLproductos.setText("Productos *");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reactivos", "Auxiliares", "Materiales" }));
@@ -71,7 +71,7 @@ public class busquedaAlum extends javax.swing.JFrame {
             }
         });
 
-        jLnombre.setForeground(new java.awt.Color(153, 153, 153));
+        jLnombre.setForeground(new java.awt.Color(102, 102, 102));
         jLnombre.setText("Nombre");
 
         jtakeNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -80,7 +80,7 @@ public class busquedaAlum extends javax.swing.JFrame {
             }
         });
 
-        jLproductos1.setForeground(new java.awt.Color(153, 153, 153));
+        jLproductos1.setForeground(new java.awt.Color(102, 102, 102));
         jLproductos1.setText("Formato");
 
         jtakeFormato.addActionListener(new java.awt.event.ActionListener() {
@@ -89,7 +89,7 @@ public class busquedaAlum extends javax.swing.JFrame {
             }
         });
 
-        jLubicacion.setForeground(new java.awt.Color(153, 153, 153));
+        jLubicacion.setForeground(new java.awt.Color(102, 102, 102));
         jLubicacion.setText("Ubicación");
 
         jtakeUbicacion.addActionListener(new java.awt.event.ActionListener() {
@@ -98,7 +98,7 @@ public class busquedaAlum extends javax.swing.JFrame {
             }
         });
 
-        jLubicacion1.setForeground(new java.awt.Color(153, 153, 153));
+        jLubicacion1.setForeground(new java.awt.Color(102, 102, 102));
         jLubicacion1.setText("Localización");
 
         jtakeUbicacion1.addActionListener(new java.awt.event.ActionListener() {

@@ -4,21 +4,39 @@
  */
 package com.mycompany.qchimbasos.clases;
 
+import Excepciones.LongitudNSerieIncorrectaException;
+import Excepciones.NombreIncorrectoException;
+
 /**
  *
  * @author tadeo
  */
 public class Materiales {
+
     private String nombre;
-    private String tipo_material;
+    private String tipoMaterial;
     private String descripcion;
-    private int numero_serie;
+    private int numeroSerie;
 
     public Materiales(String nombre, String tipo_material, String descripcion, int numero_serie) {
         this.nombre = nombre;
-        this.tipo_material = tipo_material;
+        this.tipoMaterial = tipo_material;
         this.descripcion = descripcion;
-        this.numero_serie = numero_serie;
+        this.numeroSerie = numero_serie;
+    }
+
+    public static Materiales crearMateriales(String nombre, String tipo_material, String descripcion, int numero_serie) {
+        try {
+            if (!(validarNombre(nombre)) || !(validarNSerie(numero_serie))) {
+
+                return new Materiales(nombre, tipo_material, descripcion, numero_serie);
+            }
+
+        } catch (NombreIncorrectoException |  LongitudNSerieIncorrectaException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage());
+            return null; 
+        }
+        return new Materiales(nombre, tipo_material, descripcion, numero_serie);
     }
 
     public String getNombre() {
@@ -30,11 +48,11 @@ public class Materiales {
     }
 
     public String getTipo_material() {
-        return tipo_material;
+        return tipoMaterial;
     }
 
     public void setTipo_material(String tipo_material) {
-        this.tipo_material = tipo_material;
+        this.tipoMaterial = tipo_material;
     }
 
     public String getDescripcion() {
@@ -46,12 +64,28 @@ public class Materiales {
     }
 
     public int getNumero_serie() {
-        return numero_serie;
+        return numeroSerie;
     }
 
     public void setNumero_serie(int numero_serie) {
-        this.numero_serie = numero_serie;
+        this.numeroSerie = numero_serie;
     }
-    
-    
+
+    public static boolean validarNombre(String nombre) throws NombreIncorrectoException {
+        if (nombre.isBlank() || nombre.isEmpty()) {
+            throw new NombreIncorrectoException();
+        }
+        return nombre.isBlank() || nombre.isEmpty();
+    }
+
+    public static boolean validarNSerie(int numero_serie) throws LongitudNSerieIncorrectaException {
+        String nSerie = Integer.toString(numero_serie);
+        if (nSerie.length() > 6 || nSerie.length() < 6) {
+            throw new LongitudNSerieIncorrectaException();
+
+        }
+        return nSerie.length() > 6 || nSerie.length() < 6;
+
+    }
+
 }

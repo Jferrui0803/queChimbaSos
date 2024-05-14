@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-05-2024 a las 18:50:10
+-- Tiempo de generación: 14-05-2024 a las 14:30:46
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -110,8 +110,23 @@ CREATE TABLE `inventario_auxiliares` (
   `ID_Almacen` int(7) NOT NULL,
   `ID_Auxiliares` int(7) NOT NULL,
   `ID_Ubicacion` int(7) NOT NULL,
-  `Cantidad` int(7) NOT NULL
+  `Cantidad` int(7) NOT NULL,
+  `Stock_Minimo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inventario_auxiliares`
+--
+
+INSERT INTO `inventario_auxiliares` (`ID`, `ID_Almacen`, `ID_Auxiliares`, `ID_Ubicacion`, `Cantidad`, `Stock_Minimo`) VALUES
+(1, 2, 1, 13, 4, 0),
+(2, 2, 2, 13, 2, 0),
+(3, 2, 3, 13, 2, 0),
+(4, 2, 4, 13, 1, 0),
+(5, 2, 5, 13, 10, 0),
+(6, 2, 6, 13, 3, 0),
+(7, 2, 7, 13, 4, 0),
+(8, 2, 8, 13, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -125,8 +140,28 @@ CREATE TABLE `inventario_materiales` (
   `ID_Material` int(7) NOT NULL,
   `ID_Ubicacion` int(7) NOT NULL,
   `Cantidad` int(7) NOT NULL,
-  `Fecha_compra` date NOT NULL
+  `Fecha_compra` varchar(100) NOT NULL,
+  `Stock_Minimo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inventario_materiales`
+--
+
+INSERT INTO `inventario_materiales` (`ID`, `ID_Almacen`, `ID_Material`, `ID_Ubicacion`, `Cantidad`, `Fecha_compra`, `Stock_Minimo`) VALUES
+(1, 2, 1, 7, 2, '', 0),
+(2, 2, 2, 7, 2, '', 0),
+(3, 2, 3, 7, 1, '', 0),
+(4, 2, 4, 7, 1, '', 0),
+(5, 2, 5, 7, 0, '', 0),
+(6, 2, 6, 7, 0, '', 0),
+(7, 2, 7, 7, 0, '', 0),
+(8, 2, 8, 8, 0, '', 0),
+(9, 2, 9, 8, 0, '', 0),
+(10, 3, 10, 9, 1, '', 0),
+(11, 3, 11, 10, 1, '', 0),
+(12, 3, 12, 11, 1, '', 0),
+(13, 3, 13, 12, 1, '', 0);
 
 -- --------------------------------------------------------
 
@@ -140,8 +175,171 @@ CREATE TABLE `inventario_reactivos` (
   `ID_Producto` int(7) NOT NULL,
   `ID_Ubicacion` int(7) NOT NULL,
   `Cantidad` int(30) NOT NULL,
-  `Fecha_caducidad` date NOT NULL
+  `Fecha_caducidad` varchar(100) NOT NULL,
+  `Stock_Minimo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inventario_reactivos`
+--
+
+INSERT INTO `inventario_reactivos` (`ID`, `ID_Almacen`, `ID_Producto`, `ID_Ubicacion`, `Cantidad`, `Fecha_caducidad`, `Stock_Minimo`) VALUES
+(1, 1, 1, 5, 1, '', 0),
+(2, 1, 2, 5, 2, '', 0),
+(3, 1, 3, 5, 2, '', 0),
+(4, 1, 4, 5, 2, '', 0),
+(5, 1, 5, 5, 1, '', 0),
+(6, 1, 6, 5, 1, '', 0),
+(7, 1, 7, 5, 2, '', 0),
+(8, 1, 8, 5, 2, '', 0),
+(9, 1, 9, 5, 1, '', 0),
+(10, 1, 10, 5, 1, '', 0),
+(11, 1, 11, 5, 1, '', 0),
+(12, 1, 12, 5, 1, '', 0),
+(13, 1, 13, 5, 1, '', 0),
+(14, 1, 14, 5, 1, '', 0),
+(15, 1, 15, 5, 1, '', 0),
+(16, 1, 16, 5, 1, '', 0),
+(17, 1, 17, 5, 1, '', 0),
+(18, 1, 18, 4, 1, '', 0),
+(19, 1, 19, 4, 1, '11-2012', 0),
+(20, 1, 20, 4, 1, '7-2016', 0),
+(21, 1, 21, 4, 1, '', 0),
+(22, 1, 22, 4, 1, '3-2016', 0),
+(23, 1, 23, 4, 1, '9-2010', 0),
+(24, 1, 24, 4, 1, '', 0),
+(25, 1, 25, 4, 1, '', 0),
+(26, 1, 26, 4, 1, '', 0),
+(27, 1, 27, 4, 1, '', 0),
+(28, 1, 28, 4, 1, '', 0),
+(29, 1, 29, 4, 1, '', 0),
+(30, 1, 30, 4, 1, '', 0),
+(31, 1, 31, 4, 1, '', 0),
+(32, 1, 32, 4, 2, '', 0),
+(33, 1, 33, 4, 1, '10-2015', 0),
+(34, 1, 34, 4, 2, '', 0),
+(35, 1, 35, 4, 1, '2-2015', 0),
+(36, 1, 36, 4, 1, '', 0),
+(37, 1, 37, 4, 1, '', 0),
+(38, 1, 38, 4, 1, '', 0),
+(39, 1, 39, 4, 1, '', 0),
+(40, 1, 40, 4, 1, '', 0),
+(41, 1, 41, 4, 1, '', 0),
+(42, 1, 42, 4, 1, '8-2019', 0),
+(43, 1, 43, 4, 1, '', 0),
+(44, 1, 44, 4, 1, '', 0),
+(45, 1, 45, 4, 1, '', 0),
+(46, 1, 46, 4, 1, '', 0),
+(47, 1, 47, 4, 1, '', 0),
+(48, 1, 48, 3, 4, '', 0),
+(49, 1, 49, 3, 1, '', 0),
+(50, 1, 50, 3, 1, '', 0),
+(51, 1, 51, 3, 1, '', 0),
+(52, 1, 52, 3, 1, '', 0),
+(53, 1, 53, 3, 1, '7-2011', 0),
+(54, 1, 54, 3, 2, '', 0),
+(55, 1, 55, 3, 1, '', 0),
+(56, 1, 56, 3, 1, '', 0),
+(57, 1, 57, 3, 1, '', 0),
+(58, 1, 58, 3, 1, '', 0),
+(59, 1, 59, 3, 2, '5-2009 y 11-2012', 0),
+(60, 1, 60, 3, 1, '', 0),
+(61, 1, 61, 3, 2, '', 0),
+(62, 1, 62, 3, 1, '', 0),
+(63, 1, 63, 3, 1, '', 0),
+(64, 1, 64, 3, 1, '', 0),
+(65, 1, 65, 3, 2, '1-2-2022 y no viene reflejada', 0),
+(66, 1, 66, 3, 1, '31-5-2015', 0),
+(67, 1, 67, 3, 1, '6-2028', 0),
+(68, 1, 68, 3, 1, '', 0),
+(69, 1, 69, 3, 2, '', 0),
+(70, 1, 70, 3, 1, '', 0),
+(71, 1, 71, 3, 1, '', 0),
+(72, 1, 72, 3, 1, '', 0),
+(73, 1, 73, 3, 1, '', 0),
+(74, 1, 74, 3, 1, '3-2015', 0),
+(75, 1, 75, 3, 1, '10-2012', 0),
+(76, 1, 76, 3, 1, '10/2009', 0),
+(77, 1, 77, 3, 1, '5/2009', 0),
+(78, 1, 78, 3, 1, '', 0),
+(79, 1, 79, 3, 1, '', 0),
+(80, 1, 80, 2, 1, '', 0),
+(81, 1, 81, 2, 1, '9-2016', 0),
+(82, 1, 82, 2, 1, '', 0),
+(83, 1, 83, 2, 1, '', 0),
+(84, 1, 84, 2, 1, '', 0),
+(85, 1, 85, 2, 1, '31-7-2007', 0),
+(86, 1, 86, 2, 1, '', 0),
+(87, 1, 87, 2, 1, '2-2029', 0),
+(88, 1, 88, 2, 1, '6-2010', 0),
+(89, 1, 89, 2, 1, '10-11-2004', 0),
+(90, 1, 90, 2, 3, '', 0),
+(91, 1, 91, 2, 1, '', 0),
+(92, 1, 92, 2, 1, '', 0),
+(93, 1, 93, 2, 1, '10-2013', 0),
+(94, 1, 94, 2, 1, '10-2017', 0),
+(95, 1, 95, 2, 1, '', 0),
+(96, 1, 96, 2, 1, '', 0),
+(97, 1, 97, 2, 1, '', 0),
+(98, 1, 98, 2, 1, '1-2025', 0),
+(99, 1, 99, 2, 1, '12-2011', 0),
+(100, 1, 100, 2, 1, '9-2010', 0),
+(101, 1, 101, 2, 1, '', 0),
+(102, 1, 102, 2, 1, '', 0),
+(103, 1, 103, 2, 1, '', 0),
+(104, 1, 104, 2, 1, '', 0),
+(105, 1, 105, 2, 1, '', 0),
+(106, 1, 106, 2, 2, '', 0),
+(107, 1, 107, 2, 1, '10-2011', 0),
+(108, 1, 108, 2, 1, '', 0),
+(109, 1, 109, 2, 2, '', 0),
+(110, 1, 110, 2, 1, '', 0),
+(111, 1, 111, 1, 1, '7-2028', 0),
+(112, 1, 112, 1, 1, '', 0),
+(113, 1, 113, 1, 1, '', 0),
+(114, 1, 114, 1, 1, '7-2014', 0),
+(115, 1, 115, 1, 1, '', 0),
+(116, 1, 116, 1, 1, '', 0),
+(117, 1, 117, 1, 4, '5-6-2029', 0),
+(118, 1, 118, 1, 3, '2-2028', 0),
+(119, 1, 119, 1, 1, '2-11-2013', 0),
+(120, 1, 120, 1, 2, '1-2030', 0),
+(121, 1, 121, 1, 1, '6-2010', 0),
+(122, 1, 122, 1, 1, '9-2014', 0),
+(123, 1, 123, 1, 1, '12-2008', 0),
+(124, 1, 124, 1, 2, '11-2024', 0),
+(125, 1, 125, 1, 1, '8-2024', 0),
+(126, 1, 126, 1, 3, '', 0),
+(127, 1, 127, 1, 3, '', 0),
+(128, 1, 128, 1, 1, '3-2025', 0),
+(129, 1, 129, 1, 1, '', 0),
+(130, 1, 130, 1, 1, '', 0),
+(131, 1, 131, 1, 1, '12-2008', 0),
+(132, 1, 132, 1, 3, '', 0),
+(133, 1, 133, 1, 1, '11-2012', 0),
+(134, 1, 134, 1, 1, '', 0),
+(135, 1, 135, 1, 1, '', 0),
+(136, 1, 136, 6, 1, '', 0),
+(137, 1, 137, 6, 1, '', 0),
+(138, 1, 138, 6, 2, '', 0),
+(139, 1, 139, 6, 1, '', 0),
+(140, 1, 140, 6, 4, '', 0),
+(141, 1, 141, 6, 1, '', 0),
+(142, 1, 142, 6, 2, '', 0),
+(143, 1, 143, 6, 1, '', 0),
+(144, 1, 144, 6, 1, '2-2012', 0),
+(145, 1, 145, 6, 1, '', 0),
+(146, 1, 146, 6, 2, '', 0),
+(147, 1, 147, 6, 1, '', 0),
+(148, 1, 148, 6, 1, '', 0),
+(149, 1, 149, 6, 1, '28-2-2007', 0),
+(150, 1, 150, 6, 1, '', 0),
+(151, 1, 151, 6, 1, '', 0),
+(152, 1, 152, 6, 1, '', 0),
+(153, 1, 153, 6, 1, '11-2011', 0),
+(154, 1, 154, 6, 1, '', 0),
+(155, 1, 155, 6, 1, '', 0),
+(156, 1, 156, 6, 2, '', 0);
 
 -- --------------------------------------------------------
 
@@ -153,7 +351,7 @@ CREATE TABLE `materiales` (
   `ID` int(7) NOT NULL,
   `Nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `Tipo_Material` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
-  `Descipcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `Descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `Nº_Serie` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -161,7 +359,7 @@ CREATE TABLE `materiales` (
 -- Volcado de datos para la tabla `materiales`
 --
 
-INSERT INTO `materiales` (`ID`, `Nombre`, `Tipo_Material`, `Descipcion`, `Nº_Serie`) VALUES
+INSERT INTO `materiales` (`ID`, `Nombre`, `Tipo_Material`, `Descripcion`, `Nº_Serie`) VALUES
 (1, 'Vasos de precipitados', 'plástico', '1000 ml', 0),
 (2, 'Vasos de precipitados', 'plástico', '500ml', 0),
 (3, 'Vaso de precipitados', 'plástico', '1000 ml', 0),
@@ -349,7 +547,8 @@ INSERT INTO `productos_quimicos` (`ID`, `Nombre`, `ID_Formato`, `Grado_Pureza`) 
 (153, 'ÁCIDO ETILENDIAMINOTETRAACÉTICO SAL DISÓDICA 2-HIDRATO', 3, '99 %'),
 (154, 'SODIO MOLIBDATO 2-HIDRATO', 1, '99 %'),
 (155, 'SODIO MOLIBDATO CRIST', 1, '99 %'),
-(156, 'MOLIBDENO (VI) ÓXIDO', 3, '99 %');
+(156, 'MOLIBDENO (VI) ÓXIDO', 3, '99 %'),
+(158, 'BROMOOOK', 2, '20%');
 
 -- --------------------------------------------------------
 
@@ -762,19 +961,19 @@ ALTER TABLE `formato`
 -- AUTO_INCREMENT de la tabla `inventario_auxiliares`
 --
 ALTER TABLE `inventario_auxiliares`
-  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario_materiales`
 --
 ALTER TABLE `inventario_materiales`
-  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario_reactivos`
 --
 ALTER TABLE `inventario_reactivos`
-  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
 
 --
 -- AUTO_INCREMENT de la tabla `materiales`
@@ -786,7 +985,7 @@ ALTER TABLE `materiales`
 -- AUTO_INCREMENT de la tabla `productos_quimicos`
 --
 ALTER TABLE `productos_quimicos`
-  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
 
 --
 -- AUTO_INCREMENT de la tabla `relacion_prod_riesgo`
