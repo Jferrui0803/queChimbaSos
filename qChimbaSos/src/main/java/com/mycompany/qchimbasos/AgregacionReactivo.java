@@ -78,7 +78,9 @@ public class AgregacionReactivo extends javax.swing.JFrame {
             }
         });
 
+        jBañadir.setBackground(new java.awt.Color(0, 76, 125));
         jBañadir.setFont(new java.awt.Font("Microsoft YaHei", 1, 24)); // NOI18N
+        jBañadir.setForeground(new java.awt.Color(255, 255, 255));
         jBañadir.setText("Añadir");
         jBañadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,9 +126,9 @@ public class AgregacionReactivo extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(197, 197, 197)
+                        .addGap(238, 238, 238)
                         .addComponent(jBañadir)
-                        .addGap(72, 72, 72)
+                        .addGap(31, 31, 31)
                         .addComponent(jBSalir)))
                 .addContainerGap(184, Short.MAX_VALUE))
         );

@@ -82,7 +82,9 @@ public class AgregacionMaterial extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel5.setText("Nº de Serie");
 
+        jBañadir.setBackground(new java.awt.Color(0, 76, 125));
         jBañadir.setFont(new java.awt.Font("Microsoft YaHei", 1, 24)); // NOI18N
+        jBañadir.setForeground(new java.awt.Color(255, 255, 255));
         jBañadir.setText("Añadir");
         jBañadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

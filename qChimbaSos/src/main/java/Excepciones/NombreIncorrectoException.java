@@ -11,7 +11,7 @@ package Excepciones;
 public class NombreIncorrectoException extends Exception {
 
     public NombreIncorrectoException() {
-        super("El usuario no puede estar vacio");
+        super("El producto no puede estar vacio");
 
     }
 }
