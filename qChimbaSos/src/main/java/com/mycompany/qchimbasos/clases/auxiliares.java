@@ -8,11 +8,11 @@ package com.mycompany.qchimbasos.clases;
  *
  * @author tadeo
  */
-public class auxiliares {
+public class Auxiliares {
    private String nombre;
    private String tipo_material;
 
-    public auxiliares(String nombre, String tipo_material) {
+    public Auxiliares(String nombre, String tipo_material) {
         this.nombre = nombre;
         this.tipo_material = tipo_material;
     }

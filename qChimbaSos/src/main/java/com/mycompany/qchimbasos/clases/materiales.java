@@ -8,13 +8,13 @@ package com.mycompany.qchimbasos.clases;
  *
  * @author tadeo
  */
-public class materiales {
+public class Materiales {
     private String nombre;
     private String tipo_material;
     private String descripcion;
     private int numero_serie;
 
-    public materiales(String nombre, String tipo_material, String descripcion, int numero_serie) {
+    public Materiales(String nombre, String tipo_material, String descripcion, int numero_serie) {
         this.nombre = nombre;
         this.tipo_material = tipo_material;
         this.descripcion = descripcion;

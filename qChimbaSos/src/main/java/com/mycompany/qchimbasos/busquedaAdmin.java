@@ -27,6 +27,8 @@ public class busquedaAdmin extends javax.swing.JFrame {
     public static Modificacion modif;
     public static Login log;
     public static AgregacionReactivo reac;
+    public static AgregacionMaterial mat;
+    public static AgregacionAuxiliar aux;
 
     public busquedaAdmin() {
         initComponents();
@@ -57,15 +59,14 @@ public class busquedaAdmin extends javax.swing.JFrame {
         jLubicacion = new javax.swing.JLabel();
         jLubicacion1 = new javax.swing.JLabel();
         jtakeUbicacion1 = new javax.swing.JTextField();
-        jscrollTabla = new javax.swing.JScrollBar();
         jBmodificar = new javax.swing.JButton();
         jBbuscar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuReactivo = new javax.swing.JMenuItem();
+        jMenuAuxiliar = new javax.swing.JMenuItem();
+        jMenuMaterial = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -131,8 +132,10 @@ public class busquedaAdmin extends javax.swing.JFrame {
         jLnombre.setForeground(new java.awt.Color(153, 153, 153));
         jLnombre.setText("Nombre");
 
+        jLubicacion.setForeground(new java.awt.Color(153, 153, 153));
         jLubicacion.setText("Ubicación");
 
+        jLubicacion1.setForeground(new java.awt.Color(153, 153, 153));
         jLubicacion1.setText("Localización");
 
         jtakeUbicacion1.addActionListener(new java.awt.event.ActionListener() {
@@ -172,9 +175,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jscrollTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addGap(22, 22, 22))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,20 +210,17 @@ public class busquedaAdmin extends javax.swing.JFrame {
                             .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(298, 298, 298)
+                        .addComponent(jBbuscar)
+                        .addContainerGap(361, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(134, 134, 134)
+                        .addComponent(jButton1)
+                        .addGap(107, 107, 107)
+                        .addComponent(jBmodificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jBsalir)
-                        .addGap(107, 107, 107))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(298, 298, 298)
-                                .addComponent(jBbuscar))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(134, 134, 134)
-                                .addComponent(jButton1)
-                                .addGap(107, 107, 107)
-                                .addComponent(jBmodificar)))
-                        .addContainerGap(292, Short.MAX_VALUE))))
+                        .addGap(110, 110, 110))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,45 +250,47 @@ public class busquedaAdmin extends javax.swing.JFrame {
                         .addComponent(jLubicacion1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(25, 25, 25)
+                .addComponent(jBbuscar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(127, 127, 127)
-                        .addComponent(jscrollTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBbuscar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBmodificar)
-                    .addComponent(jButton1))
-                .addGap(16, 16, 16)
-                .addComponent(jBsalir)
-                .addGap(39, 39, 39))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jBmodificar)
+                            .addComponent(jButton1)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jBsalir)))
+                .addGap(54, 54, 54))
         );
 
         jMenu1.setText("Agregar Producto");
 
-        jMenuItem1.setText("Reactivo");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuReactivo.setText("Reactivo");
+        jMenuReactivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuReactivoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(jMenuReactivo);
 
-        jMenuItem2.setText("Auxiliar");
-        jMenu1.add(jMenuItem2);
-
-        jMenuItem3.setText("Material");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jMenuAuxiliar.setText("Auxiliar");
+        jMenuAuxiliar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                jMenuAuxiliarActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        jMenu1.add(jMenuAuxiliar);
+
+        jMenuMaterial.setText("Material");
+        jMenuMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuMaterialActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuMaterial);
 
         jMenuBar1.add(jMenu1);
 
@@ -362,15 +362,18 @@ public class busquedaAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jBbuscarActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void jMenuMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMaterialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+        mat = new AgregacionMaterial();
+        mat.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuMaterialActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuReactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuReactivoActionPerformed
         // TODO add your handling code here:
         reac = new AgregacionReactivo();
         reac.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMenuReactivoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -409,6 +412,12 @@ public class busquedaAdmin extends javax.swing.JFrame {
             e.printStackTrace();
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuAuxiliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAuxiliarActionPerformed
+        // TODO add your handling code here:
+        aux = new AgregacionAuxiliar();
+        aux.setVisible(true);
+    }//GEN-LAST:event_jMenuAuxiliarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -474,17 +483,16 @@ public class busquedaAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLubicacion1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem jMenuAuxiliar;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuMaterial;
+    private javax.swing.JMenuItem jMenuReactivo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JScrollBar jscrollTabla;
     private javax.swing.JTextField jtakeFormato;
     private javax.swing.JTextField jtakeNombre;
     private javax.swing.JTextField jtakeUbicacion;
