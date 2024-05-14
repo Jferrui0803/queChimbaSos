@@ -7,11 +7,14 @@ package com.mycompany.qchimbasos;
 import com.mycompany.qchimbasos.clases.Conexion;
 import com.mycompany.qchimbasos.clases.Materiales;
 import static com.mycompany.qchimbasos.clases.Materiales.crearMateriales;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
  *
@@ -26,12 +29,31 @@ public class AgregacionMaterial extends javax.swing.JFrame {
     private Object jTextTMaterial;
     private Materiales material;
 
-    /**
-     * Creates new form AgregacionMaterial
-     */
+    
+    private void cerrarVentana(){
+        String botones[] = {"Cerrar" ,"Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(rootPane, "¿Quieres cerrar la ventana?", "¡Cuidado!",
+                0, 0, null, botones, EXIT_ON_CLOSE);
+        if(eleccion == JOptionPane.YES_OPTION){
+            dispose();
+        }else if (eleccion == JOptionPane.NO_OPTION){
+            System.out.println("Cierre cancelado");
+        }
+    }
+    
+    
     public AgregacionMaterial() {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cerrarVentana();
+            }
+             
+        });
     }
 
     /**

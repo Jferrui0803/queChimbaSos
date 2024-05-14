@@ -8,12 +8,15 @@ import static com.mycompany.qchimbasos.Register.log;
 import com.mycompany.qchimbasos.clases.Conexion;
 import com.mycompany.qchimbasos.clases.Reactivos;
 import static com.mycompany.qchimbasos.clases.Reactivos.crearReactivos;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
  *
@@ -26,9 +29,29 @@ public class AgregacionReactivo extends javax.swing.JFrame {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
+    private void cerrarVentana() {
+        String botones[] = {"Cerrar", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(rootPane, "¿Quieres cerrar la ventana?", "¡Cuidado!",
+                0, 0, null, botones, EXIT_ON_CLOSE);
+        if (eleccion == JOptionPane.YES_OPTION) {
+            dispose();
+        } else if (eleccion == JOptionPane.NO_OPTION) {
+            System.out.println("Cierre cancelado");
+        }
+    }
+
     public AgregacionReactivo() {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cerrarVentana();
+            }
+
+        });
 
     }
 
@@ -189,7 +212,7 @@ public class AgregacionReactivo extends javax.swing.JFrame {
     private void jBañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBañadirActionPerformed
 
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
-        
+
         // Creamos un nuevo reactivo, en el que se recoge el nombre, la selección de producto con un CASTEO y el grado de pureza
         this.reactivos = crearReactivos(jTextNombre.getText(), (String) jComboBoxFormato.getSelectedItem(), jTextGP.getText());
 
@@ -215,10 +238,10 @@ public class AgregacionReactivo extends javax.swing.JFrame {
                 // Si las credenciales son incorrectas, muestra un mensaje de error
                 JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }catch(SQLIntegrityConstraintViolationException ex) {
-                 JOptionPane.showMessageDialog(rootPane, "El producto de nombre: " + 
-                         this.reactivos.getNombre() + " , ya está registrado en la base de datos", "Error",
-                         JOptionPane.ERROR_MESSAGE);    
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            JOptionPane.showMessageDialog(rootPane, "El producto de nombre: "
+                    + this.reactivos.getNombre() + " , ya está registrado en la base de datos", "Error",
+                    JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

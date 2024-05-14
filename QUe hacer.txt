@@ -1,4 +1,5 @@
-1. Hacer barra de busqueda en menu.
-2. Enlazar barra de busqueda con menu.
-3. Cuando el usuario se registre aparezcan distintas opciones en el menu.
-
+1.Empezar consultas con filtros 
+2.¿Gestion de almacenamiento?
+3. Modificar datos 
+4. Borrar
+5. Si da tiempo implementar alguna forma de ver pictogramas

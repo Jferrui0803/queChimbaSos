@@ -5,6 +5,11 @@
 package com.mycompany.qchimbasos;
 
 import static com.mycompany.qchimbasos.Login.reg;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  *
@@ -12,14 +17,36 @@ import static com.mycompany.qchimbasos.Login.reg;
  */
 public class busquedaAlum extends javax.swing.JFrame {
 
-    /**
-     * Creates new form busquedaAlum
-     */
+  
     
     public static Login log; 
+    
+    private void cerrarVentana(){
+        String botones[] = {"Cerrar" ,"Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(rootPane, "¿Quieres cerrar la aplicación?", "¡Cuidado!",
+                0, 0, null, botones, EXIT_ON_CLOSE);
+        if(eleccion == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }else if (eleccion == JOptionPane.NO_OPTION){
+            System.out.println("Cierre cancelado");
+        }
+    }
+    
+    
     public busquedaAlum() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cerrarVentana();
+            }
+             
+        });
+
     }
 
     /**

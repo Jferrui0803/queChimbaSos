@@ -7,12 +7,17 @@ package com.mycompany.qchimbasos;
 import static com.mycompany.qchimbasos.Login.bsqAdmin;
 import static com.mycompany.qchimbasos.Register.log;
 import com.mycompany.qchimbasos.clases.Conexion;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,9 +37,150 @@ public class busquedaAdmin extends javax.swing.JFrame {
     public static AgregacionMaterial mat;
     public static AgregacionAuxiliar aux;
 
+    private void cerrarVentana() {
+        String botones[] = {"Cerrar", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(rootPane, "¿Quieres cerrar la aplicación?", "¡Cuidado!",
+                0, 0, null, botones, EXIT_ON_CLOSE);
+        if (eleccion == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        } else if (eleccion == JOptionPane.NO_OPTION) {
+            System.out.println("Cierre cancelado");
+        }
+    }
+
     public busquedaAdmin() {
         initComponents();
         setLocationRelativeTo(null);
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cerrarVentana();
+            }
+
+        });
+    }
+
+    public void mostrarMateriales() {
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+        DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("Nombre");
+        mt.addColumn("Tipo_Material");
+        mt.addColumn("Descripcion");
+        mt.addColumn("Nº_Serie");
+        
+        //Falta la Ubicacion y la Localizacion INNER JOIN 
+
+        jTable1.setModel(mt);
+
+        try {
+            Connection con = this.conexion.conecta();
+            Statement stmt = con.createStatement();
+            String query = "SELECT Nombre, Tipo_Material, Descripcion, Nº_Serie FROM Materiales ";
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Limpiar la tabla antes de agregar nuevos datos
+            mt.setRowCount(0);
+
+            // Iterar a través de los resultados y agregarlos a la tabla
+            while (rs.next()) {
+                String nombreProducto = rs.getString("Nombre");
+                String tipoMaterial = rs.getString("Tipo_Material");
+                String descripcion = rs.getString("Descripcion");
+                String numeroSerie = rs.getString("Nº_Serie");
+                mt.addRow(new Object[]{nombreProducto, tipoMaterial, descripcion, numeroSerie});
+            }
+
+            // Cerrar la conexión
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+    
+    
+    public void mostrarReactivos() {
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+        DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("Nombre");
+        mt.addColumn("Grado de Pureza");
+        mt.addColumn("Formato");
+    
+        
+        //Falta la Ubicacion y la Localizacion INNER JOIN 
+
+        jTable1.setModel(mt);
+
+        try {
+            Connection con = this.conexion.conecta();
+            Statement stmt = con.createStatement();
+            String query = "SELECT p.Nombre , p.Grado_pureza , f.formato FROM productos_quimicos p  JOIN formato f  ON p.ID_formato = f.ID ";
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Limpiar la tabla antes de agregar nuevos datos
+            mt.setRowCount(0);
+
+            // Iterar a través de los resultados y agregarlos a la tabla
+            while (rs.next()) {
+                String nombreProducto = rs.getString("P.Nombre");
+                String tipoMaterial = rs.getString("p.Grado_pureza");
+                String descripcion = rs.getString("f.formato");
+               
+                mt.addRow(new Object[]{nombreProducto, tipoMaterial, descripcion});
+            }
+
+            // Cerrar la conexión
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+    
+    public void mostrarAuxiliares() {
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+        DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("Nombre");
+        mt.addColumn("Tipo_Material");
+    
+        
+        //Falta la Ubicacion y la Localizacion INNER JOIN 
+
+        jTable1.setModel(mt);
+
+        try {
+            Connection con = this.conexion.conecta();
+            Statement stmt = con.createStatement();
+            String query = "SELECT nombre, tipo_material FROM auxiliares";
+            ResultSet rs = stmt.executeQuery(query);
+
+            // Limpiar la tabla antes de agregar nuevos datos
+            mt.setRowCount(0);
+
+            // Iterar a través de los resultados y agregarlos a la tabla
+            while (rs.next()) {
+                String nombreProducto = rs.getString("nombre");
+                String tipoMaterial = rs.getString("tipo_material");
+               
+               
+                mt.addRow(new Object[]{nombreProducto, tipoMaterial});
+            }
+
+            // Cerrar la conexión
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     /**
@@ -362,49 +508,27 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jBsalirActionPerformed
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
-        // TODO add your handling code here:
-         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
-    DefaultTableModel mt = new DefaultTableModel();
-    mt.addColumn("Nombre");
-    mt.addColumn("Tipo_Material");
-    mt.addColumn("Descripcion");
-    mt.addColumn("Nº_Serie");
-
-    jTable1.setModel(mt);
-
-    try {
-        Connection con = this.conexion.conecta();
-        Statement stmt = con.createStatement();
-        String query = "SELECT Nombre, Tipo_Material, Descripcion, Nº_Serie FROM Materiales ";
-        ResultSet rs = stmt.executeQuery(query);
-
-        // Limpiar la tabla antes de agregar nuevos datos
-        mt.setRowCount(0);
-
-        // Iterar a través de los resultados y agregarlos a la tabla
-        while (rs.next()) {
-            String nombreProducto = rs.getString("Nombre");
-            String tipoMaterial = rs.getString("Tipo_Material");
-            String descripcion = rs.getString("Descripcion");
-            String numeroSerie = rs.getString("Nº_Serie");
-            mt.addRow(new Object[]{nombreProducto, tipoMaterial, descripcion, numeroSerie});
+        
+        String consulta =  (String) jComboBox1.getSelectedItem();
+        
+        if (consulta.equals("Materiales")){
+            mostrarMateriales();
+        }
+        if (consulta.equals("Auxiliares")){
+            mostrarAuxiliares();
+        }
+        
+        if (consulta.equals("Reactivos")){
+            mostrarReactivos();
         }
 
-        // Cerrar la conexión
-        rs.close();
-        stmt.close();
-        con.close();
-    } catch (Exception ex) {
-        ex.printStackTrace();
-    }
-        
     }//GEN-LAST:event_jBbuscarActionPerformed
 
     private void jMenuMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMaterialActionPerformed
         // TODO add your handling code here:
         mat = new AgregacionMaterial();
         mat.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuMaterialActionPerformed
 
     private void jMenuReactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuReactivoActionPerformed
@@ -413,6 +537,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
         reac.setVisible(true);
     }//GEN-LAST:event_jMenuReactivoActionPerformed
 
+    // BOTONO PARA CREAR UN ARCHIVO DE TEXTO COON TODOS LOS RIESGOOOOS
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
 
