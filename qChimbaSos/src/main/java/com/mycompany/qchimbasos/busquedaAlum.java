@@ -5,11 +5,16 @@
 package com.mycompany.qchimbasos;
 
 import static com.mycompany.qchimbasos.Login.reg;
+import com.mycompany.qchimbasos.clases.Conexion;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,36 +22,248 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public class busquedaAlum extends javax.swing.JFrame {
 
-  
-    
-    public static Login log; 
-    
-    private void cerrarVentana(){
-        String botones[] = {"Cerrar" ,"Cancelar"};
+    String tabla;
+    private Conexion conexion;
+    public static Login log;
+
+    private void cerrarVentana() {
+        String botones[] = {"Cerrar", "Cancelar"};
         int eleccion = JOptionPane.showOptionDialog(rootPane, "¿Quieres cerrar la aplicación?", "¡Cuidado!",
                 0, 0, null, botones, EXIT_ON_CLOSE);
-        if(eleccion == JOptionPane.YES_OPTION){
+        if (eleccion == JOptionPane.YES_OPTION) {
             System.exit(0);
-        }else if (eleccion == JOptionPane.NO_OPTION){
+        } else if (eleccion == JOptionPane.NO_OPTION) {
             System.out.println("Cierre cancelado");
         }
     }
-    
-    
+
     public busquedaAlum() {
         initComponents();
         setLocationRelativeTo(null);
-        
+
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 cerrarVentana();
             }
-             
+
         });
 
+    }
+
+    public void mostrarMateriales() {
+        String nombre = jtakeNombre.getText();
+
+        tabla = "materiales";
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+        DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("ID");
+        mt.addColumn("Nombre");
+        mt.addColumn("Tipo_Material");
+        mt.addColumn("Descripcion");
+        mt.addColumn("Nº_Serie");
+        mt.addColumn("Localizacion");
+        mt.addColumn("Ubicacion");
+        mt.addColumn("Cantidad");
+        mt.addColumn("Stock_Minimo");
+        mt.addColumn("Fecha_compra");
+
+        jTable1.setModel(mt);
+
+        try {
+            Connection con = this.conexion.conecta();
+
+            // Construir la consulta SQL
+            String query = "SELECT M.ID, M.Nombre, M.Tipo_Material, M.Descripcion, "
+                    + "M.Nº_Serie, AL.Nombre AS Localizacion, U.Ubicacion, "
+                    + "IM.Cantidad, IM.Stock_minimo, IM.Fecha_compra "
+                    + "FROM Materiales M "
+                    + "JOIN Inventario_Materiales IM ON M.ID = IM.ID_Material "
+                    + "JOIN almacenes AL ON IM.ID_almacen = AL.ID "
+                    + "JOIN Ubicaciones U ON IM.ID_ubicacion = U.ID ";
+
+            // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty()) {
+                query += "WHERE M.Nombre = ?";
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            // Si el nombre no está vacío, asignar el valor como parámetro
+            if (!nombre.trim().isEmpty()) {
+                pstmt.setString(1, nombre);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // Limpiar la tabla antes de agregar nuevos datos
+            mt.setRowCount(0);
+
+            // Iterar a través de los resultados y agregarlos a la tabla
+            while (rs.next()) {
+                int id = rs.getInt("M.ID");
+                String nombreProducto = rs.getString("M.Nombre");
+                String tipoMaterial = rs.getString("M.Tipo_Material");
+                String descripcion = rs.getString("M.Descripcion");
+                String numeroSerie = rs.getString("M.Nº_Serie");
+                String localizacion = rs.getString("Localizacion");
+                String ubicacion = rs.getString("U.Ubicacion");
+                String cantidad = rs.getString("IM.Cantidad");
+                String stock = rs.getString("IM.Stock_minimo");
+                String fecha = rs.getString("IM.Fecha_compra");
+
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion, numeroSerie, localizacion, ubicacion, cantidad, stock, fecha});
+            }
+
+            // Cerrar la conexión
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void mostrarReactivos() {
+        String nombre = jtakeNombre.getText();
+
+        tabla = "productos_quimicos";
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+        DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("ID");
+        mt.addColumn("Nombre");
+        mt.addColumn("Grado de Pureza");
+        mt.addColumn("Formato");
+        mt.addColumn("Localizacion");
+        mt.addColumn("Ubicacion");
+        mt.addColumn("Cantidad");
+        mt.addColumn("Stock_Minimo");
+        mt.addColumn("Fecha_caducidad");
+
+        jTable1.setModel(mt);
+
+        try {
+            Connection con = this.conexion.conecta();
+
+            // Construir la consulta SQL
+            String query = "SELECT p.ID, p.Nombre, p.Grado_pureza, f.formato, AL.Nombre AS Localizacion, "
+                    + "U.ubicacion, IM.Cantidad, IM.Stock_minimo, IM.Fecha_caducidad "
+                    + "FROM productos_quimicos p "
+                    + "JOIN formato f ON p.ID_formato = f.ID "
+                    + "JOIN inventario_reactivos IM ON p.ID = IM.ID_Producto "
+                    + "JOIN ALMACENES AL ON IM.ID_almacen = AL.ID "
+                    + "JOIN UBICACIONES U ON IM.ID_UBICACION = U.ID ";
+
+            // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty()) {
+                query += "WHERE p.Nombre = ?";
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            // Si el nombre no está vacío, asignar el valor como parámetro
+            if (!nombre.trim().isEmpty()) {
+                pstmt.setString(1, nombre);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // Limpiar la tabla antes de agregar nuevos datos
+            mt.setRowCount(0);
+
+            // Iterar a través de los resultados y agregarlos a la tabla
+            while (rs.next()) {
+                int id = rs.getInt("p.ID");
+                String nombreProducto = rs.getString("p.Nombre");
+                String tipoMaterial = rs.getString("p.Grado_pureza");
+                String descripcion = rs.getString("f.formato");
+                String localizacion = rs.getString("Localizacion");
+                String ubicacion = rs.getString("U.ubicacion");
+                String cantidad = rs.getString("IM.Cantidad");
+                String stock = rs.getString("IM.Stock_minimo");
+                String fecha = rs.getString("IM.Fecha_caducidad");
+
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion, localizacion, ubicacion, cantidad, stock, fecha});
+            }
+
+            // Cerrar la conexión
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void mostrarAuxiliares() {
+
+        String nombre = jtakeNombre.getText();
+        System.out.println(nombre);
+        tabla = "auxiliares";
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+        DefaultTableModel mt = new DefaultTableModel();
+        mt.addColumn("ID");
+        mt.addColumn("Nombre");
+        mt.addColumn("Tipo_Material");
+        mt.addColumn("Almacen");
+        mt.addColumn("Ubicacion");
+        mt.addColumn("Cantidad");
+        mt.addColumn("Stock_minimo");
+
+//Falta la Ubicacion y la Localizacion INNER JOIN 
+        jTable1.setModel(mt);
+
+        try {
+            Connection con = this.conexion.conecta();
+
+            // Usando una consulta preparada con parámetros
+            String query = "SELECT A.ID, A.nombre, A.tipo_material, AL.Nombre AS Almacen, "
+                    + "U.Ubicacion AS Ubicacion, IM.Cantidad, IM.Stock_Minimo FROM auxiliares A "
+                    + "LEFT JOIN inventario_auxiliares IM ON A.ID = IM.ID_Auxiliares "
+                    + "LEFT JOIN almacenes AL ON IM.ID_Almacen = AL.ID "
+                    + "LEFT JOIN ubicaciones U ON IM.ID_Ubicacion = U.ID ";
+
+            // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty()) {
+                query += "WHERE A.Nombre = ?";
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            // Si el nombre no está vacío, asignar el valor como parámetro
+            if (!nombre.trim().isEmpty()) {
+                pstmt.setString(1, nombre);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // Limpiar la tabla antes de agregar nuevos datos
+            mt.setRowCount(0);
+
+            // Iterar a través de los resultados y agregarlos a la tabla
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String nombreProducto = rs.getString("nombre");
+                String tipoMaterial = rs.getString("tipo_material");
+                String almacen = rs.getString("Almacen");
+                String ubi = rs.getString("Ubicacion");
+                String cantidad = rs.getString("Cantidad");
+                String stock = rs.getString("Stock_Minimo");
+
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, almacen, ubi, cantidad, stock});
+            }
+
+            // Cerrar la conexión
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -307,6 +524,20 @@ public class busquedaAlum extends javax.swing.JFrame {
 
     private void jBbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBbuscarActionPerformed
         // TODO add your handling code here:
+        String consulta = (String) jComboBox1.getSelectedItem();
+
+        if (consulta.equals("Materiales")) {
+            mostrarMateriales();
+        }
+        if (consulta.equals("Auxiliares")) {
+            mostrarAuxiliares();
+        }
+
+        if (consulta.equals("Reactivos")) {
+            mostrarReactivos();
+        }
+
+
     }//GEN-LAST:event_jBbuscarActionPerformed
 
     private void jBsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsalirActionPerformed

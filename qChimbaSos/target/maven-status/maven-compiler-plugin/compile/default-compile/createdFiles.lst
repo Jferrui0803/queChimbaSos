@@ -1,4 +1,3 @@
-com\mycompany\qchimbasos\Almacen1$1.class
 com\mycompany\qchimbasos\busquedaAdmin$10.class
 com\mycompany\qchimbasos\Login$10.class
 com\mycompany\qchimbasos\AgregacionReactivo$2.class
@@ -11,7 +10,6 @@ com\mycompany\qchimbasos\AgregacionReactivo$5.class
 com\mycompany\qchimbasos\clases\InventarioAuxiliares.class
 com\mycompany\qchimbasos\Register$10.class
 com\mycompany\qchimbasos\busquedaAdmin$9.class
-com\mycompany\qchimbasos\clases\InventarioReactivosProvisional.class
 com\mycompany\qchimbasos\Register$1.class
 com\mycompany\qchimbasos\Login$3.class
 com\mycompany\qchimbasos\AgregacionMaterial$2.class
@@ -52,12 +50,10 @@ com\mycompany\qchimbasos\busquedaAdmin$8.class
 com\mycompany\qchimbasos\busquedaAlum$3.class
 com\mycompany\qchimbasos\Register$11.class
 com\mycompany\qchimbasos\AgregacionMaterial$6.class
-com\mycompany\qchimbasos\Almacen1.class
 com\mycompany\qchimbasos\Login$4.class
 com\mycompany\qchimbasos\busquedaAlum$6.class
 com\mycompany\qchimbasos\Register$3.class
 com\mycompany\qchimbasos\metdodosMeter.class
-com\mycompany\qchimbasos\clases\InventarioProvisional.class
 com\mycompany\qchimbasos\Modificacion$2.class
 com\mycompany\qchimbasos\Login$1.class
 com\mycompany\qchimbasos\AgregacionMaterial$9.class
@@ -81,7 +77,6 @@ com\mycompany\qchimbasos\busquedaAdmin$3.class
 com\mycompany\qchimbasos\busquedaAlum$8.class
 com\mycompany\qchimbasos\AgregacionReactivo$7.class
 com\mycompany\qchimbasos\AgregacionAuxiliar$5.class
-com\mycompany\qchimbasos\Almacen1$2.class
 com\mycompany\qchimbasos\busquedaAlum$1.class
 com\mycompany\qchimbasos\Login$9.class
 com\mycompany\qchimbasos\Modificacion$5.class
@@ -97,6 +92,5 @@ com\mycompany\qchimbasos\Login$8.class
 com\mycompany\qchimbasos\Modificacion.class
 com\mycompany\qchimbasos\AgregacionReactivo$1.class
 com\mycompany\qchimbasos\Login$2.class
-com\mycompany\qchimbasos\Almacen1$3.class
 com\mycompany\qchimbasos\busquedaAlum$7.class
 com\mycompany\qchimbasos\Login$12.class
