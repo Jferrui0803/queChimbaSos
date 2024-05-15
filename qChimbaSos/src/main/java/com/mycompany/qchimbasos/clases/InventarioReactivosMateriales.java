@@ -18,12 +18,12 @@ public class InventarioReactivosMateriales {
     private String fechaCaducidad;
     private int stockMinimo;
 
-    public InventarioReactivosMateriales(String idAlmacen, String idUbicacion, int cantidad, String fechaCaducidad, int stockMinimo) {
+    public InventarioReactivosMateriales(String idAlmacen, String idUbicacion, int cantidad, int stockMinimo, String fechaCaducidad ) {
         this.idAlmacen = idAlmacen;
         this.idUbicacion = idUbicacion;
         this.cantidad = cantidad;
-        this.fechaCaducidad = fechaCaducidad;
         this.stockMinimo = stockMinimo;
+        this.fechaCaducidad = fechaCaducidad;
         setCodigoAlmacen(idAlmacen);
         setCodigoUbicacion(idUbicacion);
 

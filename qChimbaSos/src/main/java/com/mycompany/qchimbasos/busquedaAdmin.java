@@ -6,8 +6,15 @@ package com.mycompany.qchimbasos;
 
 import static com.mycompany.qchimbasos.Login.bsqAdmin;
 import static com.mycompany.qchimbasos.Register.log;
+import com.mycompany.qchimbasos.clases.Auxiliares;
+import static com.mycompany.qchimbasos.clases.Auxiliares.crearAuxiliar;
 import com.mycompany.qchimbasos.clases.Conexion;
+import com.mycompany.qchimbasos.clases.InventarioAuxiliares;
+import com.mycompany.qchimbasos.clases.InventarioReactivosMateriales;
+import com.mycompany.qchimbasos.clases.Materiales;
+import static com.mycompany.qchimbasos.clases.Materiales.crearMateriales;
 import com.mycompany.qchimbasos.clases.Reactivos;
+import static com.mycompany.qchimbasos.clases.Reactivos.crearReactivos;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
@@ -38,8 +45,14 @@ public class busquedaAdmin extends javax.swing.JFrame {
     String tabla;
     private Conexion conexion;
     private Reactivos reactivo;
+    private Materiales material;
+    private Auxiliares auxiliar;
+    private InventarioReactivosMateriales inventarioReactivoMateriales;
+    private InventarioAuxiliares inventarioAuxiliar;
 
-    public static ModificacionReactivo modif;
+    public static ModificacionReactivo modifReact;
+    public static ModificacionMaterial modifMat;
+    public static ModificacionAuxiliar modifAux;
     public static Login log;
     public static AgregacionReactivo reac;
     public static AgregacionMaterial mat;
@@ -73,6 +86,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
     public void mostrarMateriales() {
         String nombre = jtakeNombre.getText();
+        String formato = (String) jComboBoxFormato.getSelectedItem();
+        String ubi = (String) jComboBoxUbi.getSelectedItem();
+        String localizac = (String) jComboBoxLocal.getSelectedItem();
 
         tabla = "materiales";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
@@ -103,15 +119,35 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     + "JOIN Ubicaciones U ON IM.ID_ubicacion = U.ID ";
 
             // Si el nombre no está vacío, agregar filtro
-            if (!nombre.trim().isEmpty()) {
-                query += "WHERE M.Nombre = ?";
+                // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
+                query += "WHERE p.Nombre = ?";
+
+            }
+
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                query += "WHERE U.Ubicacion = ?";
+
+            }
+
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                query += "WHERE AL.Nombre = ?";
+
             }
 
             PreparedStatement pstmt = con.prepareStatement(query);
 
             // Si el nombre no está vacío, asignar el valor como parámetro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
                 pstmt.setString(1, nombre);
+            }
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                pstmt.setString(1, ubi);
+
+            }
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                pstmt.setString(1, localizac);
+
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -147,6 +183,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
     public void mostrarReactivos() {
         String nombre = jtakeNombre.getText();
+        String formato = (String) jComboBoxFormato.getSelectedItem();
+        String ubi = (String) jComboBoxUbi.getSelectedItem();
+        String localizac = (String) jComboBoxLocal.getSelectedItem();
 
         tabla = "productos_quimicos";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
@@ -175,16 +214,45 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     + "JOIN ALMACENES AL ON IM.ID_almacen = AL.ID "
                     + "JOIN UBICACIONES U ON IM.ID_UBICACION = U.ID ";
 
-            // Si el nombre no está vacío, agregar filtro
-            if (!nombre.trim().isEmpty()) {
+             // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
                 query += "WHERE p.Nombre = ?";
+
             }
+
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                query += "WHERE U.Ubicacion = ?";
+
+            }
+
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                query += "WHERE AL.Nombre = ?";
+
+            }
+            
+            if (!formato.trim().isEmpty() && localizac.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                query += "WHERE f.formato = ?";
+
+            }
+
 
             PreparedStatement pstmt = con.prepareStatement(query);
 
             // Si el nombre no está vacío, asignar el valor como parámetro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
                 pstmt.setString(1, nombre);
+            }
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                pstmt.setString(1, ubi);
+
+            }
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                pstmt.setString(1, localizac);
+
+            }
+            if (!formato.trim().isEmpty() && localizac.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                pstmt.setString(1, formato);
+
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -220,6 +288,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
     public void mostrarAuxiliares() {
 
         String nombre = jtakeNombre.getText();
+        String formato = (String) jComboBoxFormato.getSelectedItem();
+        String ubicacion = (String) jComboBoxUbi.getSelectedItem();
+        String localizacion = (String) jComboBoxLocal.getSelectedItem();
         System.out.println(nombre);
         tabla = "auxiliares";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
@@ -246,15 +317,34 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     + "LEFT JOIN ubicaciones U ON IM.ID_Ubicacion = U.ID ";
 
             // Si el nombre no está vacío, agregar filtro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubicacion.trim().isEmpty() && localizacion.trim().isEmpty()) {
                 query += "WHERE A.Nombre = ?";
+
+            }
+
+            if (!ubicacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizacion.trim().isEmpty()) {
+                query += "WHERE U.Ubicacion = ?";
+
+            }
+
+            if (!localizacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubicacion.trim().isEmpty()) {
+                query += "WHERE AL.Nombre = ?";
+
             }
 
             PreparedStatement pstmt = con.prepareStatement(query);
 
             // Si el nombre no está vacío, asignar el valor como parámetro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubicacion.trim().isEmpty() && localizacion.trim().isEmpty()) {
                 pstmt.setString(1, nombre);
+            }
+            if (!ubicacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizacion.trim().isEmpty()) {
+                pstmt.setString(1, ubicacion);
+
+            }
+            if (!localizacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubicacion.trim().isEmpty()) {
+                pstmt.setString(1, localizacion);
+
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -283,6 +373,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
+
 
     public void crearArchivo() {
         // Conectar a la base de datos
@@ -520,7 +611,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 24, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -555,7 +646,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
                             .addComponent(jButton1)
                             .addComponent(jBmodificar)
                             .addComponent(jBeliminar))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(66, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jBsalir)
@@ -626,11 +717,91 @@ public class busquedaAdmin extends javax.swing.JFrame {
             String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
             String formato = (String) modelo.getValueAt(filaSeleccionada, 2);
             String pureza = (String) modelo.getValueAt(filaSeleccionada, 3);
-            this.reactivo = new Reactivos(nombre, formato, pureza);
-            modif = new ModificacionReactivo(this.reactivo, idRegistro);
-            modif.setVisible(true);
-        }
+            this.reactivo = crearReactivos(nombre, formato, pureza);
 
+            String almacen = (String) modelo.getValueAt(filaSeleccionada, 4);
+            String ubicacion = (String) modelo.getValueAt(filaSeleccionada, 5);
+            String cantidadStr = (String) modelo.getValueAt(filaSeleccionada, 6);
+            int cantidad = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
+            if (!cantidadStr.isEmpty()) {
+                cantidad = Integer.parseInt(cantidadStr);
+            }
+
+            String stockMinimoStr = (String) modelo.getValueAt(filaSeleccionada, 7);
+            int stockMinimo = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
+            if (!stockMinimoStr.isEmpty()) {
+                stockMinimo = Integer.parseInt(stockMinimoStr);
+            }
+            String fechaCaducidad = (String) modelo.getValueAt(filaSeleccionada, 8);
+            this.inventarioReactivoMateriales = new InventarioReactivosMateriales(almacen, ubicacion, cantidad, stockMinimo, fechaCaducidad);
+            modifReact = new ModificacionReactivo(this.reactivo, this.inventarioReactivoMateriales, idRegistro);
+            modifReact.setVisible(true);
+        }
+        
+        
+        if (tabla.equals("materiales")) {
+            // Selecciona la fila que esocge el usaurio
+            int filaSeleccionada = jTable1.getSelectedRow();
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int idRegistro = (int) modelo.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
+            String tipoMaterial = (String) modelo.getValueAt(filaSeleccionada, 2);
+            String descripcion = (String) modelo.getValueAt(filaSeleccionada, 3);
+            String nºserieStr = (String) modelo.getValueAt(filaSeleccionada, 4);
+            int nºserie = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
+            if (!nºserieStr.isEmpty()) {
+                nºserie = Integer.parseInt(nºserieStr);
+            }
+            this.material = crearMateriales(nombre, tipoMaterial, descripcion, nºserie);
+
+            String almacen = (String) modelo.getValueAt(filaSeleccionada, 5);
+            String ubicacion = (String) modelo.getValueAt(filaSeleccionada, 6);
+            String cantidadStr = (String) modelo.getValueAt(filaSeleccionada, 7);
+            int cantidad = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
+            if (!cantidadStr.isEmpty()) {
+                cantidad = Integer.parseInt(cantidadStr);
+            }
+
+            String stockMinimoStr = (String) modelo.getValueAt(filaSeleccionada, 8);
+            int stockMinimo = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
+            if (!stockMinimoStr.isEmpty()) {
+                stockMinimo = Integer.parseInt(stockMinimoStr);
+            }
+            String fechaCompra = (String) modelo.getValueAt(filaSeleccionada, 9);
+            this.inventarioReactivoMateriales = new InventarioReactivosMateriales(almacen, ubicacion, cantidad, stockMinimo, fechaCompra);
+            modifMat = new ModificacionMaterial(this.material, this.inventarioReactivoMateriales, idRegistro);
+            modifMat.setVisible(true);
+        }
+        
+        
+        if(tabla.equals("auxiliares")){
+             // Selecciona la fila que esocge el usaurio
+            int filaSeleccionada = jTable1.getSelectedRow();
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            int idRegistro = (int) modelo.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
+            String tipoMaterial = (String) modelo.getValueAt(filaSeleccionada, 2);
+            this.auxiliar = crearAuxiliar(nombre, tipoMaterial);
+
+            String almacen = (String) modelo.getValueAt(filaSeleccionada, 3);
+            String ubicacion = (String) modelo.getValueAt(filaSeleccionada, 4);
+            String cantidadStr = (String) modelo.getValueAt(filaSeleccionada, 5);
+            int cantidad = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
+            if (!cantidadStr.isEmpty()) {
+                cantidad = Integer.parseInt(cantidadStr);
+            }
+
+            String stockMinimoStr = (String) modelo.getValueAt(filaSeleccionada, 6);
+            int stockMinimo = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
+            if (!stockMinimoStr.isEmpty()) {
+                stockMinimo = Integer.parseInt(stockMinimoStr);
+            }
+            
+            this.inventarioAuxiliar = new InventarioAuxiliares(almacen, ubicacion, cantidad, stockMinimo);
+            modifAux = new ModificacionAuxiliar(this.auxiliar, this.inventarioAuxiliar, idRegistro);
+            modifAux.setVisible(true);
+        }
+        
     }//GEN-LAST:event_jBmodificarActionPerformed
 
     private void jBsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBsalirActionPerformed
@@ -750,6 +921,8 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     int filasEliminadas = stmt.executeUpdate(sqlEliminarInventario);
                     if (filasEliminadas > 0) {
                         modelo.removeRow(filaSeleccionada);
+                        modelo.fireTableDataChanged();
+
 
                         System.out.println("Registro eliminado correctamente del inventario ");
                     } else {

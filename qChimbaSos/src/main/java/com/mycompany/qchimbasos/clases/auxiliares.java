@@ -11,7 +11,7 @@ import Excepciones.NombreIncorrectoException;
  * @author tadeo
  */
 public class Auxiliares {
-
+// Creamos atributos
     private String nombre;
     private String tipo_material;
 

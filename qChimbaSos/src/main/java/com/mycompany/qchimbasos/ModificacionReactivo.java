@@ -5,33 +5,65 @@
 package com.mycompany.qchimbasos;
 
 import com.mycompany.qchimbasos.clases.Conexion;
+import com.mycompany.qchimbasos.clases.InventarioReactivosMateriales;
 import com.mycompany.qchimbasos.clases.Reactivos;
 import static com.mycompany.qchimbasos.clases.Reactivos.crearReactivos;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 
 public class ModificacionReactivo extends javax.swing.JFrame {
     private Conexion conexion;
     private Reactivos reactivos;
+    private InventarioReactivosMateriales inventarioReactivoMateriales;
     private int id;
     PreparedStatement ps = null;
     ResultSet rs = null;
     
-    public ModificacionReactivo(Reactivos producto, int id) {
+    
+    private void cerrarVentana() {
+        String botones[] = {"Cerrar", "Cancelar"};
+        int eleccion = JOptionPane.showOptionDialog(rootPane, "¿Quieres cerrar la aplicación?", "¡Cuidado!",
+                0, 0, null, botones, EXIT_ON_CLOSE);
+        if (eleccion == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        } else if (eleccion == JOptionPane.NO_OPTION) {
+            System.out.println("Cierre cancelado");
+        }
+        
+    }
+    
+    
+    public ModificacionReactivo(Reactivos producto, InventarioReactivosMateriales inventario, int id) {
         initComponents();
         this.jTextNombre.setText(producto.getNombre());
         this.jTextGP.setText(producto.getIdFormato());
+        this.jTextFieldCanti.setText(String.valueOf(inventario.getCantidad()));
+        this.jTextFieldStock.setText(String.valueOf(inventario.getStockMinimo()));
+        this.jTextFieldFecha.setText(inventario.getFechaCaducidad());
+        
         setLocationRelativeTo(null);
+        
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cerrarVentana();
+            }
+
+        });
         
     }
 
     private ModificacionReactivo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -139,17 +171,6 @@ public class ModificacionReactivo extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(29, 29, 29)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTextFieldStock))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(31, 31, 31)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jTextFieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -177,7 +198,18 @@ public class ModificacionReactivo extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(690, 690, 690)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldStock)))
+                        .addGap(314, 314, 314)
                         .addComponent(jBSalir)))
                 .addContainerGap(156, Short.MAX_VALUE))
         );
@@ -220,16 +252,16 @@ public class ModificacionReactivo extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(jTextFieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
                         .addGap(26, 26, 26))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBSalir)
                         .addGap(2, 2, 2)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextFieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
 
@@ -252,12 +284,17 @@ public class ModificacionReactivo extends javax.swing.JFrame {
             ps.setString(1, this.reactivos.getNombre());
             ps.setInt(2, this.reactivos.getCodigoFormat());
             ps.setString(3, this.reactivos.getGradoPuereza());
+            ps.setString(4, this.inventarioReactivoMateriales.getIdAlmacen());
+            ps.setString(5, this.inventarioReactivoMateriales.getIdUbicacion());
+            ps.setInt(6, this.inventarioReactivoMateriales.getCantidad());
+            ps.setInt(7, this.inventarioReactivoMateriales.getStockMinimo());
+            ps.setString(8, this.inventarioReactivoMateriales.getFechaCaducidad());
 
             int filasInsertadas = ps.executeUpdate();
 
             if (filasInsertadas > 0) {
                 // Si las credenciales son correctas, muestra un mensaje de éxito
-                javax.swing.JOptionPane.showMessageDialog(null, "Producto agregado");
+                javax.swing.JOptionPane.showMessageDialog(null, "Producto modificado");
 
                 // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
             } else {

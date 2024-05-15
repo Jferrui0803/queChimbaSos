@@ -53,8 +53,11 @@ public class busquedaAlum extends javax.swing.JFrame {
 
     }
 
-    public void mostrarMateriales() {
+   public void mostrarMateriales() {
         String nombre = jtakeNombre.getText();
+        String formato = (String) jComboBoxFormato.getSelectedItem();
+        String ubi = (String) jComboBoxUbi.getSelectedItem();
+        String localizac = (String) jComboBoxLocal.getSelectedItem();
 
         tabla = "materiales";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
@@ -85,15 +88,35 @@ public class busquedaAlum extends javax.swing.JFrame {
                     + "JOIN Ubicaciones U ON IM.ID_ubicacion = U.ID ";
 
             // Si el nombre no está vacío, agregar filtro
-            if (!nombre.trim().isEmpty()) {
-                query += "WHERE M.Nombre = ?";
+                // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
+                query += "WHERE p.Nombre = ?";
+
+            }
+
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                query += "WHERE U.Ubicacion = ?";
+
+            }
+
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                query += "WHERE AL.Nombre = ?";
+
             }
 
             PreparedStatement pstmt = con.prepareStatement(query);
 
             // Si el nombre no está vacío, asignar el valor como parámetro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
                 pstmt.setString(1, nombre);
+            }
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                pstmt.setString(1, ubi);
+
+            }
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                pstmt.setString(1, localizac);
+
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -129,6 +152,9 @@ public class busquedaAlum extends javax.swing.JFrame {
 
     public void mostrarReactivos() {
         String nombre = jtakeNombre.getText();
+        String formato = (String) jComboBoxFormato.getSelectedItem();
+        String ubi = (String) jComboBoxUbi.getSelectedItem();
+        String localizac = (String) jComboBoxLocal.getSelectedItem();
 
         tabla = "productos_quimicos";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
@@ -157,16 +183,45 @@ public class busquedaAlum extends javax.swing.JFrame {
                     + "JOIN ALMACENES AL ON IM.ID_almacen = AL.ID "
                     + "JOIN UBICACIONES U ON IM.ID_UBICACION = U.ID ";
 
-            // Si el nombre no está vacío, agregar filtro
-            if (!nombre.trim().isEmpty()) {
+             // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
                 query += "WHERE p.Nombre = ?";
+
             }
+
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                query += "WHERE U.Ubicacion = ?";
+
+            }
+
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                query += "WHERE AL.Nombre = ?";
+
+            }
+            
+            if (!formato.trim().isEmpty() && localizac.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                query += "WHERE f.formato = ?";
+
+            }
+
 
             PreparedStatement pstmt = con.prepareStatement(query);
 
             // Si el nombre no está vacío, asignar el valor como parámetro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
                 pstmt.setString(1, nombre);
+            }
+            if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
+                pstmt.setString(1, ubi);
+
+            }
+            if (!localizac.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                pstmt.setString(1, localizac);
+
+            }
+            if (!formato.trim().isEmpty() && localizac.trim().isEmpty() && nombre.trim().isEmpty() && ubi.trim().isEmpty()) {
+                pstmt.setString(1, formato);
+
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -202,6 +257,9 @@ public class busquedaAlum extends javax.swing.JFrame {
     public void mostrarAuxiliares() {
 
         String nombre = jtakeNombre.getText();
+        String formato = (String) jComboBoxFormato.getSelectedItem();
+        String ubicacion = (String) jComboBoxUbi.getSelectedItem();
+        String localizacion = (String) jComboBoxLocal.getSelectedItem();
         System.out.println(nombre);
         tabla = "auxiliares";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
@@ -228,15 +286,34 @@ public class busquedaAlum extends javax.swing.JFrame {
                     + "LEFT JOIN ubicaciones U ON IM.ID_Ubicacion = U.ID ";
 
             // Si el nombre no está vacío, agregar filtro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubicacion.trim().isEmpty() && localizacion.trim().isEmpty()) {
                 query += "WHERE A.Nombre = ?";
+
+            }
+
+            if (!ubicacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizacion.trim().isEmpty()) {
+                query += "WHERE U.Ubicacion = ?";
+
+            }
+
+            if (!localizacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubicacion.trim().isEmpty()) {
+                query += "WHERE AL.Nombre = ?";
+
             }
 
             PreparedStatement pstmt = con.prepareStatement(query);
 
             // Si el nombre no está vacío, asignar el valor como parámetro
-            if (!nombre.trim().isEmpty()) {
+            if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubicacion.trim().isEmpty() && localizacion.trim().isEmpty()) {
                 pstmt.setString(1, nombre);
+            }
+            if (!ubicacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizacion.trim().isEmpty()) {
+                pstmt.setString(1, ubicacion);
+
+            }
+            if (!localizacion.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && ubicacion.trim().isEmpty()) {
+                pstmt.setString(1, localizacion);
+
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -423,39 +500,36 @@ public class busquedaAlum extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLnombre)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLproductos, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLubicacion)
-                                            .addComponent(jLproductos1)
-                                            .addComponent(jLubicacion1)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jComboBoxFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBoxUbi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBoxLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGap(26, 26, 26)
-                            .addComponent(jBbuscar)
-                            .addGap(18, 18, 18)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(38, 38, 38)
-                            .addComponent(jBsalir)
-                            .addGap(16, 16, 16))
-                        .addComponent(jLabel1))
-                    .addComponent(jBotonUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 61, Short.MAX_VALUE))
+                            .addComponent(jLnombre)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLproductos, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLubicacion)
+                                    .addComponent(jLproductos1)
+                                    .addComponent(jLubicacion1)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jComboBoxFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBoxUbi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBoxLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGap(26, 26, 26)
+                    .addComponent(jBbuscar)
+                    .addGap(18, 18, 18)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(38, 38, 38)
+                    .addComponent(jBsalir)
+                    .addGap(16, 16, 16))
+                .addComponent(jLabel1))
+            .addComponent(jBotonUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setJMenuBar(jMenuBar2);
@@ -468,9 +542,7 @@ public class busquedaAlum extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

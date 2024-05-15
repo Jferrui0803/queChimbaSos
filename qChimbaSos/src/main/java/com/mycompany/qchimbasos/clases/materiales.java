@@ -18,7 +18,7 @@ public class Materiales {
     private String descripcion;
     private int numeroSerie;
 
-    public Materiales(String nombre, String tipo_material, String descripcion, int numero_serie) {
+    private Materiales(String nombre, String tipo_material, String descripcion, int numero_serie) {
         this.nombre = nombre;
         this.tipoMaterial = tipo_material;
         this.descripcion = descripcion;

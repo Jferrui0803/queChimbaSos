@@ -120,8 +120,8 @@ public class AgregacionMaterial extends javax.swing.JFrame implements metdodosMe
         this.inventarioReactivosMateriales = new InventarioReactivosMateriales((String) jComboBoxLocal.getSelectedItem(),
                 (String) jComboBoxUbi.getSelectedItem(),
                 Integer.parseInt(jTextFieldCanti.getText()),
-                jTextFieldFecha.getText(),
-                Integer.parseInt(jTextFieldStock.getText()));
+                Integer.parseInt(jTextFieldStock.getText()),
+        jTextFieldFecha.getText());
 
         try {
             Connection conec = this.conexion.conecta();

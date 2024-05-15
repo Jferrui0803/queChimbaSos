@@ -12,14 +12,14 @@ import Excepciones.NombreIncorrectoException;
  * @author tadeo
  */
 public class Reactivos {
-
+ // Creamos atributos
     private String nombre;
     private String idFormato;
     private int codigoFormat;
     private String gradoPuereza;
     
 
-    public Reactivos(String nombre, String id_formato, String grado_pureza) {
+    private Reactivos(String nombre, String id_formato, String grado_pureza) {
 
         this.nombre = nombre;
         this.idFormato = id_formato;
@@ -83,7 +83,7 @@ public class Reactivos {
 
     public void setCodigoFormat(String id_formato) {
         switch (id_formato) {
-            case "1kg" -> {
+            case "1 Kg" -> {
                 this.codigoFormat = 1;
             }
             case "100 g" -> {

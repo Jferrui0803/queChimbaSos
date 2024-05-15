@@ -6,6 +6,7 @@ package com.mycompany.qchimbasos;
 
 import com.mycompany.qchimbasos.clases.Auxiliares;
 import com.mycompany.qchimbasos.clases.Conexion;
+import com.mycompany.qchimbasos.clases.InventarioAuxiliares;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,10 +24,20 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
      */
     private Conexion conexion;
     private Auxiliares auxiliar;
+    private InventarioAuxiliares invenaterioAuxiliar;
+    private int id;
     PreparedStatement ps = null;
     ResultSet rs = null;
-    public ModificacionAuxiliar() {
+    public ModificacionAuxiliar(Auxiliares aux, InventarioAuxiliares inventario, int id) {
         initComponents();
+        this.jTextNombre.setText(aux.getNombre());
+        this.jTextTMaterial.setText(aux.getTipo_material());
+        this.jTextFieldCanti.setText(String.valueOf(inventario.getCantidad()));
+        this.jTextFieldStock.setText(String.valueOf(inventario.getStockMinimo()));
+           
+    }
+
+    private ModificacionAuxiliar() {
     }
 
     /**
@@ -237,33 +248,38 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
 
     private void jBañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBañadirActionPerformed
 
-//        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
-//
-//        try {
-//            Connection conec = this.conexion.conecta();
-//
-//            //Sentencia para añadir un nuevo usuario y contraseña
-//            String sql = "INSERT INTO productos_quimicos (Nombre, ID_Formato, Grado_Pureza) VALUES (?, ?, ?)";
-//
-//            ps = conec.prepareStatement(sql);
-//            ps.setString(1, this.materiales.getNombre());
-//            ps.setInt(2, this.materiales.getCodigoFormat());
-//            ps.setString(3, this.materiales.getGradoPuereza());
-//
-//            int filasInsertadas = ps.executeUpdate();
-//
-//            if (filasInsertadas > 0) {
-//                // Si las credenciales son correctas, muestra un mensaje de éxito
-//                javax.swing.JOptionPane.showMessageDialog(null, "Producto agregado");
-//
-//                // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
-//            } else {
-//                // Si las credenciales son incorrectas, muestra un mensaje de error
-//                JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//        }
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+
+        try {
+            Connection conec = this.conexion.conecta();
+
+            //Sentencia para añadir un nuevo usuario y contraseña
+            String sql = "INSERT INTO productos_quimicos (Nombre, ID_Formato, Grado_Pureza) VALUES (?, ?, ?)";
+
+            ps = conec.prepareStatement(sql);
+            ps.setString(1, this.auxiliar.getNombre());
+            ps.setString(2, this.auxiliar.getTipo_material());
+            ps.setString(3, this.invenaterioAuxiliar.getIdAlmacen());
+            ps.setString(4, this.invenaterioAuxiliar.getIdUbicacion());
+            ps.setInt(5, this.invenaterioAuxiliar.getCantidad());
+            ps.setInt(6, this.invenaterioAuxiliar.getStockMinimo());
+            
+            
+
+            int filasInsertadas = ps.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                // Si las credenciales son correctas, muestra un mensaje de éxito
+                javax.swing.JOptionPane.showMessageDialog(null, "Producto modificado");
+
+                // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
+            } else {
+                // Si las credenciales son incorrectas, muestra un mensaje de error
+                JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }//GEN-LAST:event_jBañadirActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed

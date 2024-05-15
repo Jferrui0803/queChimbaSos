@@ -71,6 +71,7 @@ com\mycompany\qchimbasos\AgregacionMaterial$9.class
 com\mycompany\qchimbasos\Login$11.class
 com\mycompany\qchimbasos\AgregacionAuxiliar$1.class
 com\mycompany\qchimbasos\ModificacionMaterial$4.class
+com\mycompany\qchimbasos\ModificacionReactivo$8.class
 com\mycompany\qchimbasos\clases\InventarioReactivosMateriales.class
 com\mycompany\qchimbasos\ModificacionReactivo$5.class
 com\mycompany\qchimbasos\AgregacionAuxiliar.class
@@ -103,6 +104,7 @@ com\mycompany\qchimbasos\AgregacionMaterial$7.class
 com\mycompany\qchimbasos\busquedaAdmin$4.class
 com\mycompany\qchimbasos\ModificacionAuxiliar$2.class
 com\mycompany\qchimbasos\Register$6.class
+com\mycompany\qchimbasos\ModificacionMaterial$10.class
 com\mycompany\qchimbasos\Login$8.class
 com\mycompany\qchimbasos\ModificacionMaterial$9.class
 com\mycompany\qchimbasos\AgregacionReactivo$1.class
