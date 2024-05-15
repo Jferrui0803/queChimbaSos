@@ -8,12 +8,12 @@ package com.mycompany.qchimbasos.clases;
  *
  * @author tadeo
  */
-public class InventarioReactivos extends Inventario{
+public class InventarioReactivosProvisional extends InventarioProvisional{
     private String fechaCaducidad;
     private int cantidad;
     private int stockMinimo;
 
-    public InventarioReactivos(int idAlmacen, int idProducto, int idUbicacion, int cantidad, String fechaCaducidad, int stockMinimo) {
+    public InventarioReactivosProvisional(int idAlmacen, int idProducto, int idUbicacion, int cantidad, String fechaCaducidad, int stockMinimo) {
         super(idAlmacen, idProducto, idUbicacion, cantidad, fechaCaducidad, stockMinimo);
         this.cantidad = cantidad;
         this.fechaCaducidad = fechaCaducidad;

@@ -5,7 +5,7 @@
 package com.mycompany.qchimbasos;
 
 import com.mycompany.qchimbasos.clases.Conexion;
-import com.mycompany.qchimbasos.clases.InventarioReactivos;
+import com.mycompany.qchimbasos.clases.InventarioReactivosProvisional;
 import com.mycompany.qchimbasos.clases.Reactivos;
 import static com.mycompany.qchimbasos.clases.Reactivos.crearReactivos;
 import java.sql.Connection;
@@ -25,12 +25,14 @@ import javax.swing.event.DocumentListener;
 public class Almacen1 extends javax.swing.JFrame {
 
     private Conexion conexion;
-    private InventarioReactivos inventario;
+    private InventarioReactivosProvisional inventario;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     public Almacen1() {
         initComponents();
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -178,7 +180,7 @@ public class Almacen1 extends javax.swing.JFrame {
     private void jañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jañadirActionPerformed
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
 
-        this.inventario = new InventarioReactivos(Integer.parseInt(jIDalmacen.getText()), Integer.parseInt(jIDproducto.getText()), Integer.parseInt(jIDubicacion.getText()), Integer.parseInt(jIDcantidad.getText()),jfechaCaducidad.getText(), Integer.parseInt(jIDalmacen.getText()));
+        this.inventario = new InventarioReactivosProvisional(Integer.parseInt(jIDalmacen.getText()), Integer.parseInt(jIDproducto.getText()), Integer.parseInt(jIDubicacion.getText()), Integer.parseInt(jIDcantidad.getText()),jfechaCaducidad.getText(), Integer.parseInt(jIDalmacen.getText()));
 
         try {
             Connection conec = this.conexion.conecta();

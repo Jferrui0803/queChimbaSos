@@ -8,7 +8,7 @@ package com.mycompany.qchimbasos.clases;
  *
  * @author tadeo
  */
-public abstract class Inventario {
+public abstract class InventarioProvisional {
     private int idAlmacen;
     private int idProducto;
     private int idUbicacion;
@@ -16,7 +16,7 @@ public abstract class Inventario {
     private String fechaCaducidad;
     private int stockMinimo;
 
-    public Inventario(int idAlmacen, int idProducto, int idUbicacion, int cantidad, String fechaCaducidad, int stockMinimo) {
+    public InventarioProvisional(int idAlmacen, int idProducto, int idUbicacion, int cantidad, String fechaCaducidad, int stockMinimo) {
         this.idAlmacen = idAlmacen;
         this.idProducto = idProducto;
         this.idUbicacion = idUbicacion;

@@ -32,10 +32,11 @@ public class busquedaAdmin extends javax.swing.JFrame {
     /**
      * Creates new form busquedaAlum
      */
+    // Creamos la variable global tabla
     String tabla;
     private Conexion conexion;
     private Reactivos reactivo;
-    
+
     public static Modificacion modif;
     public static Login log;
     public static AgregacionReactivo reac;
@@ -69,7 +70,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }
 
     public void mostrarMateriales() {
-        tabla = "Materiales";
+        String nombre = jtakeNombre.getText();
+
+        tabla = "materiales";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
         DefaultTableModel mt = new DefaultTableModel();
         mt.addColumn("ID");
@@ -77,32 +80,62 @@ public class busquedaAdmin extends javax.swing.JFrame {
         mt.addColumn("Tipo_Material");
         mt.addColumn("Descripcion");
         mt.addColumn("Nº_Serie");
+        mt.addColumn("Localizacion");
+        mt.addColumn("Ubicacion");
+        mt.addColumn("Cantidad");
+        mt.addColumn("Stock_Minimo");
+        mt.addColumn("Fecha_compra");
 
-        //Falta la Ubicacion y la Localizacion INNER JOIN 
         jTable1.setModel(mt);
 
         try {
             Connection con = this.conexion.conecta();
-            Statement stmt = con.createStatement();
-            String query = "SELECT ID, Nombre, Tipo_Material, Descripcion, Nº_Serie FROM Materiales ";
-            ResultSet rs = stmt.executeQuery(query);
+
+            // Construir la consulta SQL
+            String query = "SELECT M.ID, M.Nombre, M.Tipo_Material, M.Descripcion, "
+                    + "M.Nº_Serie, AL.Nombre AS Localizacion, U.Ubicacion, "
+                    + "IM.Cantidad, IM.Stock_minimo, IM.Fecha_compra "
+                    + "FROM Materiales M "
+                    + "JOIN Inventario_Materiales IM ON M.ID = IM.ID_Material "
+                    + "JOIN almacenes AL ON IM.ID_almacen = AL.ID "
+                    + "JOIN Ubicaciones U ON IM.ID_ubicacion = U.ID ";
+
+            // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty()) {
+                query += "WHERE M.Nombre = ?";
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            // Si el nombre no está vacío, asignar el valor como parámetro
+            if (!nombre.trim().isEmpty()) {
+                pstmt.setString(1, nombre);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
 
             // Limpiar la tabla antes de agregar nuevos datos
             mt.setRowCount(0);
 
             // Iterar a través de los resultados y agregarlos a la tabla
             while (rs.next()) {
-                int id = rs.getInt("ID");
-                String nombreProducto = rs.getString("Nombre");
-                String tipoMaterial = rs.getString("Tipo_Material");
-                String descripcion = rs.getString("Descripcion");
-                String numeroSerie = rs.getString("Nº_Serie");
-                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion, numeroSerie});
+                int id = rs.getInt("M.ID");
+                String nombreProducto = rs.getString("M.Nombre");
+                String tipoMaterial = rs.getString("M.Tipo_Material");
+                String descripcion = rs.getString("M.Descripcion");
+                String numeroSerie = rs.getString("M.Nº_Serie");
+                String localizacion = rs.getString("Localizacion");
+                String ubicacion = rs.getString("U.Ubicacion");
+                String cantidad = rs.getString("IM.Cantidad");
+                String stock = rs.getString("IM.Stock_minimo");
+                String fecha = rs.getString("IM.Fecha_compra");
+
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion, numeroSerie, localizacion, ubicacion, cantidad, stock, fecha});
             }
 
             // Cerrar la conexión
             rs.close();
-            stmt.close();
+            pstmt.close();
             con.close();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -111,6 +144,8 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }
 
     public void mostrarReactivos() {
+        String nombre = jtakeNombre.getText();
+
         tabla = "productos_quimicos";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
         DefaultTableModel mt = new DefaultTableModel();
@@ -118,15 +153,39 @@ public class busquedaAdmin extends javax.swing.JFrame {
         mt.addColumn("Nombre");
         mt.addColumn("Grado de Pureza");
         mt.addColumn("Formato");
+        mt.addColumn("Localizacion");
+        mt.addColumn("Ubicacion");
+        mt.addColumn("Cantidad");
+        mt.addColumn("Stock_Minimo");
+        mt.addColumn("Fecha_caducidad");
 
-        //Falta la Ubicacion y la Localizacion INNER JOIN 
         jTable1.setModel(mt);
 
         try {
             Connection con = this.conexion.conecta();
-            Statement stmt = con.createStatement();
-            String query = "SELECT p.ID, p.Nombre , p.Grado_pureza , f.formato FROM productos_quimicos p  JOIN formato f  ON p.ID_formato = f.ID ";
-            ResultSet rs = stmt.executeQuery(query);
+
+            // Construir la consulta SQL
+            String query = "SELECT p.ID, p.Nombre, p.Grado_pureza, f.formato, AL.Nombre AS Localizacion, "
+                    + "U.ubicacion, IM.Cantidad, IM.Stock_minimo, IM.Fecha_caducidad "
+                    + "FROM productos_quimicos p "
+                    + "JOIN formato f ON p.ID_formato = f.ID "
+                    + "JOIN inventario_reactivos IM ON p.ID = IM.ID_Producto "
+                    + "JOIN ALMACENES AL ON IM.ID_almacen = AL.ID "
+                    + "JOIN UBICACIONES U ON IM.ID_UBICACION = U.ID ";
+
+            // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty()) {
+                query += "WHERE p.Nombre = ?";
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            // Si el nombre no está vacío, asignar el valor como parámetro
+            if (!nombre.trim().isEmpty()) {
+                pstmt.setString(1, nombre);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
 
             // Limpiar la tabla antes de agregar nuevos datos
             mt.setRowCount(0);
@@ -134,16 +193,21 @@ public class busquedaAdmin extends javax.swing.JFrame {
             // Iterar a través de los resultados y agregarlos a la tabla
             while (rs.next()) {
                 int id = rs.getInt("p.ID");
-                String nombreProducto = rs.getString("P.Nombre");
+                String nombreProducto = rs.getString("p.Nombre");
                 String tipoMaterial = rs.getString("p.Grado_pureza");
                 String descripcion = rs.getString("f.formato");
+                String localizacion = rs.getString("Localizacion");
+                String ubicacion = rs.getString("U.ubicacion");
+                String cantidad = rs.getString("IM.Cantidad");
+                String stock = rs.getString("IM.Stock_minimo");
+                String fecha = rs.getString("IM.Fecha_caducidad");
 
-                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion});
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, descripcion, localizacion, ubicacion, cantidad, stock, fecha});
             }
 
             // Cerrar la conexión
             rs.close();
-            stmt.close();
+            pstmt.close();
             con.close();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -152,21 +216,46 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }
 
     public void mostrarAuxiliares() {
+
+        String nombre = jtakeNombre.getText();
+        System.out.println(nombre);
         tabla = "auxiliares";
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
         DefaultTableModel mt = new DefaultTableModel();
         mt.addColumn("ID");
         mt.addColumn("Nombre");
         mt.addColumn("Tipo_Material");
+        mt.addColumn("Almacen");
+        mt.addColumn("Ubicacion");
+        mt.addColumn("Cantidad");
+        mt.addColumn("Stock_minimo");
 
-        //Falta la Ubicacion y la Localizacion INNER JOIN 
+//Falta la Ubicacion y la Localizacion INNER JOIN 
         jTable1.setModel(mt);
 
         try {
             Connection con = this.conexion.conecta();
-            Statement stmt = con.createStatement();
-            String query = "SELECT ID, nombre, tipo_material FROM auxiliares";
-            ResultSet rs = stmt.executeQuery(query);
+
+            // Usando una consulta preparada con parámetros
+            String query = "SELECT A.ID, A.nombre, A.tipo_material, AL.Nombre AS Almacen, "
+                    + "U.Ubicacion AS Ubicacion, IM.Cantidad, IM.Stock_Minimo FROM auxiliares A "
+                    + "LEFT JOIN inventario_auxiliares IM ON A.ID = IM.ID_Auxiliares "
+                    + "LEFT JOIN almacenes AL ON IM.ID_Almacen = AL.ID "
+                    + "LEFT JOIN ubicaciones U ON IM.ID_Ubicacion = U.ID ";
+
+            // Si el nombre no está vacío, agregar filtro
+            if (!nombre.trim().isEmpty()) {
+                query += "WHERE A.Nombre = ?";
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            // Si el nombre no está vacío, asignar el valor como parámetro
+            if (!nombre.trim().isEmpty()) {
+                pstmt.setString(1, nombre);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
 
             // Limpiar la tabla antes de agregar nuevos datos
             mt.setRowCount(0);
@@ -176,18 +265,21 @@ public class busquedaAdmin extends javax.swing.JFrame {
                 int id = rs.getInt("ID");
                 String nombreProducto = rs.getString("nombre");
                 String tipoMaterial = rs.getString("tipo_material");
+                String almacen = rs.getString("Almacen");
+                String ubi = rs.getString("Ubicacion");
+                String cantidad = rs.getString("Cantidad");
+                String stock = rs.getString("Stock_Minimo");
 
-                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial});
+                mt.addRow(new Object[]{id, nombreProducto, tipoMaterial, almacen, ubi, cantidad, stock});
             }
 
             // Cerrar la conexión
             rs.close();
-            stmt.close();
+            pstmt.close();
             con.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     /**
@@ -223,10 +315,6 @@ public class busquedaAdmin extends javax.swing.JFrame {
         jMenuReactivo = new javax.swing.JMenuItem();
         jMenuAuxiliar = new javax.swing.JMenuItem();
         jMenuMaterial = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -336,47 +424,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1)
-                        .addGap(22, 22, 22))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLproductos))
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(jLnombre))
-                            .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(jLproductos1))
-                            .addComponent(jtakeFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(jLubicacion))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(jtakeUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLubicacion1))
-                            .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(298, 298, 298)
-                                .addComponent(jBbuscar))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGap(134, 134, 134)
                                 .addComponent(jButton1)
@@ -385,14 +433,55 @@ public class busquedaAdmin extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jBeliminar)
                                 .addGap(67, 67, 67)
-                                .addComponent(jBsalir)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jBsalir))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(287, 287, 287)
+                                .addComponent(jBbuscar)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(12, 12, 12)
+                                        .addComponent(jLproductos))
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(44, 44, 44)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(32, 32, 32)
+                                        .addComponent(jLnombre))
+                                    .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(32, 32, 32)
+                                        .addComponent(jLproductos1))
+                                    .addComponent(jtakeFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(54, 54, 54)
+                                        .addComponent(jLubicacion))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(44, 44, 44)
+                                        .addComponent(jtakeUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(44, 44, 44)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLubicacion1))
+                                    .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(26, 26, 26))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 29, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -416,9 +505,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
                         .addComponent(jLubicacion1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBbuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBbuscar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jBsalir)
@@ -461,19 +550,6 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Agregar Inventario");
-
-        jMenuItem4.setText("Almacen1/principal");
-        jMenu2.add(jMenuItem4);
-
-        jMenuItem5.setText("Almacen General");
-        jMenu2.add(jMenuItem5);
-
-        jMenuItem6.setText("Laboratorio Instrumental");
-        jMenu2.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -511,8 +587,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jtakeUbicacion1ActionPerformed
 
     private void jBmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBmodificarActionPerformed
-        
+
         if (tabla.equals("productos_quimicos")) {
+            // Selecciona la fila que esocge el usaurio
             int filaSeleccionada = jTable1.getSelectedRow();
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             int idRegistro = (int) modelo.getValueAt(filaSeleccionada, 0);
@@ -627,16 +704,83 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
                 this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
                 Statement stmt = this.conexion.conecta().createStatement();
+                if (tabla.equals("materiales")) {
+                   String sqlEliminarInventario = "DELETE FROM inventario_materiales WHERE ID = " + idRegistro;
+                    int filasEliminadas = stmt.executeUpdate(sqlEliminarInventario);
+                    if (filasEliminadas > 0) {
+                        modelo.removeRow(filaSeleccionada);
 
-                String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
-                int filasEliminadas = stmt.executeUpdate(sqlEliminar);
+                        System.out.println("Registro eliminado correctamente del inventario ");
+                    } else {
+                        System.out.println("No se pudo eliminar el registro de la base de datos.");
+                    }
+                    
+                    System.out.println("SA eliminao el producto del inveataiorasikjdoa");
+                    String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
+                    filasEliminadas = stmt.executeUpdate(sqlEliminar);
+                    System.out.println("SA eliminao el producto entero");
 
-                if (filasEliminadas > 0) {
-                    modelo.removeRow(filaSeleccionada);
+                    if (filasEliminadas > 0) {
+                        modelo.removeRow(filaSeleccionada);
 
-                    System.out.println("Registro eliminado correctamente de la base de datos y de la tabla.");
-                } else {
-                    System.out.println("No se pudo eliminar el registro de la base de datos.");
+                        System.out.println("Registro eliminado correctamente de la base de datos y de la tabla.");
+                    } else {
+                        System.out.println("No se pudo eliminar el registro de la base de datos.");
+                    }
+
+                }
+
+                if (tabla.equals("auxiliares")) {
+                    String sqlEliminarInventario = "DELETE FROM inventario_auxiliares WHERE ID = " + idRegistro;
+                    int filasEliminadas = stmt.executeUpdate(sqlEliminarInventario);
+                    if (filasEliminadas > 0) {
+                        modelo.removeRow(filaSeleccionada);
+
+                        System.out.println("Registro eliminado correctamente del inventario ");
+                    } else {
+                        System.out.println("No se pudo eliminar el registro de la base de datos.");
+                    }
+                    
+                    System.out.println("SA eliminao el producto del inveataiorasikjdoa");
+                    String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
+                    filasEliminadas = stmt.executeUpdate(sqlEliminar);
+                    System.out.println("SA eliminao el producto entero");
+                    
+                    
+                    
+                    if (filasEliminadas > 0) {
+                        modelo.removeRow(filaSeleccionada);
+
+                        System.out.println("Registro eliminado correctamente de la base de datos y de la tabla.");
+                    } else {
+                        System.out.println("No se pudo eliminar el registro de la base de datos.");
+                    }
+
+                }
+                if (tabla.equals("productos_quimicos")) {
+                    String sqlEliminarInventario = "DELETE FROM inventario_reactivos WHERE id_producto = " + idRegistro;
+                    int filasEliminadas = stmt.executeUpdate(sqlEliminarInventario);
+                    if (filasEliminadas > 0) {
+                        modelo.removeRow(filaSeleccionada);
+
+                        System.out.println("Registro eliminado correctamente del inventario ");
+                    } else {
+                        System.out.println("No se pudo eliminar el registro de la base de datos.");
+                    }
+                    
+                    System.out.println("SA eliminao el producto del inveataiorasikjdoa");
+                    String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
+                    filasEliminadas = stmt.executeUpdate(sqlEliminar);
+                    System.out.println("SA eliminao el producto entero");
+
+                    if (filasEliminadas > 0) {
+                        modelo.removeRow(filaSeleccionada);
+
+                        System.out.println("Registro eliminado correctamente de la base de datos y de la tabla.");
+                    } else {
+                        System.out.println("No se pudo eliminar el registro de la base de datos.");
+                    }
+
                 }
 
                 this.conexion.cerrar();
@@ -715,12 +859,8 @@ public class busquedaAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLubicacion;
     private javax.swing.JLabel jLubicacion1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuAuxiliar;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuMaterial;
     private javax.swing.JMenuItem jMenuReactivo;
     private javax.swing.JPanel jPanel1;

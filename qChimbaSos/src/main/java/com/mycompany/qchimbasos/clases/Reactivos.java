@@ -15,8 +15,9 @@ public class Reactivos {
 
     private String nombre;
     private String idFormato;
-    private String gradoPuereza;
     private int codigoFormat;
+    private String gradoPuereza;
+    
 
     public Reactivos(String nombre, String id_formato, String grado_pureza) {
 
