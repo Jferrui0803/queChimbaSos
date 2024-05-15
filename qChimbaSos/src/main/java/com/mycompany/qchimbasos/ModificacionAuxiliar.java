@@ -28,13 +28,16 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
     private int id;
     PreparedStatement ps = null;
     ResultSet rs = null;
+
     public ModificacionAuxiliar(Auxiliares aux, InventarioAuxiliares inventario, int id) {
         initComponents();
+        this.auxiliar = aux;
         this.jTextNombre.setText(aux.getNombre());
         this.jTextTMaterial.setText(aux.getTipo_material());
         this.jTextFieldCanti.setText(String.valueOf(inventario.getCantidad()));
         this.jTextFieldStock.setText(String.valueOf(inventario.getStockMinimo()));
-           
+        this.id = id;
+
     }
 
     private ModificacionAuxiliar() {
@@ -247,25 +250,26 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldCantiActionPerformed
 
     private void jBañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBañadirActionPerformed
-
+        System.out.println(jTextNombre.getText());
+        System.out.println(id);
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
 
         try {
             Connection conec = this.conexion.conecta();
 
             //Sentencia para añadir un nuevo usuario y contraseña
-            String sql = "INSERT INTO productos_quimicos (Nombre, ID_Formato, Grado_Pureza) VALUES (?, ?, ?)";
+            String sql
+                    = "UPDATE auxiliares SET Nombre= ? ,Tipo_Material= ? WHERE ID = ?";
 
             ps = conec.prepareStatement(sql);
             ps.setString(1, this.auxiliar.getNombre());
             ps.setString(2, this.auxiliar.getTipo_material());
-            ps.setString(3, this.invenaterioAuxiliar.getIdAlmacen());
-            ps.setString(4, this.invenaterioAuxiliar.getIdUbicacion());
-            ps.setInt(5, this.invenaterioAuxiliar.getCantidad());
-            ps.setInt(6, this.invenaterioAuxiliar.getStockMinimo());
-            
-            
+            ps.setInt(3, id);
 
+//            ps.setString(4, this.invenaterioAuxiliar.getIdUbicacion());
+//            ps.setInt(5, this.invenaterioAuxiliar.getCantidad());
+//            ps.setInt(6, this.invenaterioAuxiliar.getStockMinimo());
+//            
             int filasInsertadas = ps.executeUpdate();
 
             if (filasInsertadas > 0) {
