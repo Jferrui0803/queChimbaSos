@@ -1,17 +1,19 @@
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\metdodosMeter.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Conexion.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\InventarioReactivosMateriales.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\InventarioAuxiliares.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Materiales.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Reactivos.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\AgregacionAuxiliar.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Auxiliares.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\Login.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\Excepciones\NombreIncorrectoException.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\AgregacionReactivo.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\Excepciones\LongitudNSerieIncorrectaException.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\Modificacion.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\Register.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\busquedaAdmin.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\busquedaAlum.java
-C:\Users\DAW MAÑANA\Desktop\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\AgregacionMaterial.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\busquedaAlum.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\InventarioReactivosMateriales.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Materiales.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Reactivos.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\metdodosMeter.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\ModificacionReactivo.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\Excepciones\LongitudNSerieIncorrectaException.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Conexion.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\Excepciones\NombreIncorrectoException.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\Auxiliares.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\ModificacionAuxiliar.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\AgregacionAuxiliar.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\Login.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\clases\InventarioAuxiliares.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\AgregacionMaterial.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\Register.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\busquedaAdmin.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\ModificacionMaterial.java
+C:\Users\tadeo\OneDrive\Escritorio\queChimbaSos\qChimbaSos\src\main\java\com\mycompany\qchimbasos\AgregacionReactivo.java

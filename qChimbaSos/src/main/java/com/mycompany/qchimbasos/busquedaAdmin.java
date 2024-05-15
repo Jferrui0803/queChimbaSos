@@ -18,6 +18,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -37,7 +39,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
     private Conexion conexion;
     private Reactivos reactivo;
 
-    public static Modificacion modif;
+    public static ModificacionReactivo modif;
     public static Login log;
     public static AgregacionReactivo reac;
     public static AgregacionMaterial mat;
@@ -282,6 +284,54 @@ public class busquedaAdmin extends javax.swing.JFrame {
         }
     }
 
+    public void crearArchivo() {
+        // Conectar a la base de datos
+        this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
+
+        try {
+
+            // Crear una declaración
+            Connection con = this.conexion.conecta();
+            Statement stmt = con.createStatement();
+
+            // Ejecutar una consulta SQL para recuperar los datos de tipo_riesgos
+            String sql = "SELECT nombre, descripcion FROM tipo_riesgos";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Crear un HashMap para almacenar los datos
+            HashMap<String, String> tipoRiesgosMap = new HashMap<>();
+
+            // Leer los datos de la base de datos y almacenarlos en el HashMap
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String descripcion = rs.getString("descripcion");
+                tipoRiesgosMap.put(nombre, descripcion);
+            }
+
+            // Cerrar la conexión a la base de datos
+            con.close();
+
+            // Crear un nuevo archivo de texto
+            String Riesgos_productos = "tipo_riesgos.txt";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(Riesgos_productos));
+
+            // Escribir los datos del HashMap en el archivo de texto
+            for (Map.Entry<String, String> entry : tipoRiesgosMap.entrySet()) {
+                writer.write("Nombre: " + entry.getKey() + "\n");
+                writer.write("Descripción: " + entry.getValue() + "\n\n");
+            }
+
+            // Cerrar el escritor
+            writer.close();
+
+            System.out.println("Archivo de texto creado exitosamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -298,18 +348,18 @@ public class busquedaAdmin extends javax.swing.JFrame {
         jLproductos = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jtakeFormato = new javax.swing.JTextField();
         jLproductos1 = new javax.swing.JLabel();
-        jtakeUbicacion = new javax.swing.JTextField();
         jtakeNombre = new javax.swing.JTextField();
         jLnombre = new javax.swing.JLabel();
         jLubicacion = new javax.swing.JLabel();
         jLubicacion1 = new javax.swing.JLabel();
-        jtakeUbicacion1 = new javax.swing.JTextField();
         jBmodificar = new javax.swing.JButton();
         jBbuscar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jBeliminar = new javax.swing.JButton();
+        jComboBoxLocal = new javax.swing.JComboBox<>();
+        jComboBoxFormato = new javax.swing.JComboBox<>();
+        jComboBoxUbi = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuReactivo = new javax.swing.JMenuItem();
@@ -352,20 +402,8 @@ public class busquedaAdmin extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jtakeFormato.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtakeFormatoActionPerformed(evt);
-            }
-        });
-
         jLproductos1.setForeground(new java.awt.Color(102, 102, 102));
         jLproductos1.setText("Formato");
-
-        jtakeUbicacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtakeUbicacionActionPerformed(evt);
-            }
-        });
 
         jtakeNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -381,12 +419,6 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
         jLubicacion1.setForeground(new java.awt.Color(102, 102, 102));
         jLubicacion1.setText("Localización");
-
-        jtakeUbicacion1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtakeUbicacion1ActionPerformed(evt);
-            }
-        });
 
         jBmodificar.setText("Modificar");
         jBmodificar.addActionListener(new java.awt.event.ActionListener() {
@@ -416,6 +448,17 @@ public class busquedaAdmin extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxLocal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Almacen 1 /principal", "Almacen General", "Laboratorio Instrumental" }));
+
+        jComboBoxFormato.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "1 Kg", "100 g", "250 g", "500 g", "5 g", "No viene reflejado", "1 L", "500 mL", "5 Kg", "2", "5 L", "250 mL", "100 mL", "250 g", "1 kg", "10 g" }));
+
+        jComboBoxUbi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "1CA", "2N", "3N", "4N", "5N", "8l", "estantería 1, balda 3", "estantería 1,balda 4", "C1", "C2", "P1", "P2", "Estantería 0, balda 4 ", " " }));
+        jComboBoxUbi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxUbiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -423,63 +466,61 @@ public class busquedaAdmin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLproductos))
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(jLnombre)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(96, 96, 96)
-                        .addComponent(jLproductos1)
-                        .addGap(142, 142, 142)
-                        .addComponent(jLubicacion)
-                        .addGap(150, 150, 150)
-                        .addComponent(jLubicacion1)
-                        .addGap(129, 129, 129))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBsalir)
-                        .addGap(204, 204, 204))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1)
+                        .addGap(126, 126, 126)
+                        .addComponent(jButton1)
+                        .addGap(26, 26, 26)
+                        .addComponent(jBmodificar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jBeliminar)
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(134, 134, 134)
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBmodificar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jBeliminar))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(349, 349, 349)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 68, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jtakeFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(86, 86, 86)
-                                        .addComponent(jtakeUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(115, 115, 115)
-                                        .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jBbuscar))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addGap(12, 12, 12)
+                                        .addComponent(jLproductos))
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(85, 85, 85)
+                                        .addComponent(jLnombre)
+                                        .addGap(122, 122, 122)
+                                        .addComponent(jLproductos1)
+                                        .addGap(139, 139, 139)
+                                        .addComponent(jLubicacion)
+                                        .addGap(153, 153, 153)
+                                        .addComponent(jLubicacion1)
+                                        .addGap(129, 129, 129))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(54, 54, 54)
+                                        .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(69, 69, 69)
+                                        .addComponent(jComboBoxFormato, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(80, 80, 80)
+                                        .addComponent(jComboBoxUbi, 0, 0, Short.MAX_VALUE)
+                                        .addGap(73, 73, 73)
+                                        .addComponent(jComboBoxLocal, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(81, 81, 81))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jBsalir)
+                                .addGap(200, 200, 200))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jBbuscar)
+                                .addGap(455, 455, 455))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 29, Short.MAX_VALUE))
+                .addGap(0, 24, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -494,27 +535,31 @@ public class busquedaAdmin extends javax.swing.JFrame {
                                     .addComponent(jLubicacion)
                                     .addComponent(jLubicacion1))
                                 .addGap(6, 6, 6)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtakeFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtakeUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtakeUbicacion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxFormato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxUbi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtakeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLproductos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(33, 33, 33)
+                .addGap(27, 27, 27)
                 .addComponent(jBbuscar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jBmodificar)
-                    .addComponent(jBeliminar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jBsalir)
-                .addGap(42, 42, 42))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jBmodificar)
+                            .addComponent(jBeliminar))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBsalir)
+                        .addGap(41, 41, 41))))
         );
 
         jMenu1.setText("Agregar Producto");
@@ -551,7 +596,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -565,21 +612,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jtakeFormatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtakeFormatoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtakeFormatoActionPerformed
-
     private void jtakeNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtakeNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtakeNombreActionPerformed
-
-    private void jtakeUbicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtakeUbicacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtakeUbicacionActionPerformed
-
-    private void jtakeUbicacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtakeUbicacion1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtakeUbicacion1ActionPerformed
 
     private void jBmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBmodificarActionPerformed
 
@@ -592,7 +627,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
             String formato = (String) modelo.getValueAt(filaSeleccionada, 2);
             String pureza = (String) modelo.getValueAt(filaSeleccionada, 3);
             this.reactivo = new Reactivos(nombre, formato, pureza);
-            modif = new Modificacion(this.reactivo, idRegistro);
+            modif = new ModificacionReactivo(this.reactivo, idRegistro);
             modif.setVisible(true);
         }
 
@@ -638,47 +673,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
     // BOTONO PARA CREAR UN ARCHIVO DE TEXTO COON TODOS LOS RIESGOOOOS
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
-        try {
-            // Obtener la fila seleccionada en la tabla
-            int filaSeleccionada = jTable1.getSelectedRow();
-
-            // Verificar si se seleccionó una fila
-            if (filaSeleccionada != -1) {
-                // Obtener el ID del registro seleccionado en la tabla
-                DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-                int idRegistro = (int) modelo.getValueAt(filaSeleccionada, 0);
-
-                // Conectar a la base de datos
-                this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
-                Statement stmt = this.conexion.conecta().createStatement();
-
-                // Ejecutar una consulta SQL para eliminar el registro de la base de datos
-                String sqlEliminar = "DELETE FROM tipo_riesgos WHERE id = " + idRegistro; // Suponiendo que el campo de ID se llama "id"
-                int filasEliminadas = stmt.executeUpdate(sqlEliminar);
-
-                // Verificar si se eliminó correctamente el registro de la base de datos
-                if (filasEliminadas > 0) {
-                    // Eliminar la fila correspondiente de la tabla visual
-                    modelo.removeRow(filaSeleccionada);
-
-                    System.out.println("Registro eliminado correctamente de la base de datos y de la tabla.");
-                } else {
-                    System.out.println("No se pudo eliminar el registro de la base de datos.");
-                }
-
-                // Cerrar la conexión a la base de datos
-                this.conexion.cerrar();
-            } else {
-                System.out.println("No se ha seleccionado ninguna fila.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // TODO add your handling code here:
+        crearArchivo();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuAuxiliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAuxiliarActionPerformed
@@ -700,7 +695,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
                 this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
                 Statement stmt = this.conexion.conecta().createStatement();
                 if (tabla.equals("materiales")) {
-                   String sqlEliminarInventario = "DELETE FROM inventario_materiales WHERE ID = " + idRegistro;
+                    String sqlEliminarInventario = "DELETE FROM inventario_materiales WHERE ID = " + idRegistro;
                     int filasEliminadas = stmt.executeUpdate(sqlEliminarInventario);
                     if (filasEliminadas > 0) {
                         modelo.removeRow(filaSeleccionada);
@@ -709,7 +704,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     } else {
                         System.out.println("No se pudo eliminar el registro de la base de datos.");
                     }
-                    
+
                     System.out.println("SA eliminao el producto del inveataiorasikjdoa");
                     String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
                     filasEliminadas = stmt.executeUpdate(sqlEliminar);
@@ -735,14 +730,12 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     } else {
                         System.out.println("No se pudo eliminar el registro de la base de datos.");
                     }
-                    
+
                     System.out.println("SA eliminao el producto del inveataiorasikjdoa");
                     String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
                     filasEliminadas = stmt.executeUpdate(sqlEliminar);
                     System.out.println("SA eliminao el producto entero");
-                    
-                    
-                    
+
                     if (filasEliminadas > 0) {
                         modelo.removeRow(filaSeleccionada);
 
@@ -762,7 +755,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
                     } else {
                         System.out.println("No se pudo eliminar el registro de la base de datos.");
                     }
-                    
+
                     System.out.println("SA eliminao el producto del inveataiorasikjdoa");
                     String sqlEliminar = "DELETE FROM " + tabla + " WHERE id = " + idRegistro;
                     filasEliminadas = stmt.executeUpdate(sqlEliminar);
@@ -789,6 +782,10 @@ public class busquedaAdmin extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jBeliminarActionPerformed
+
+    private void jComboBoxUbiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUbiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxUbiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -847,6 +844,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
     private javax.swing.JButton jBsalir;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxFormato;
+    private javax.swing.JComboBox<String> jComboBoxLocal;
+    private javax.swing.JComboBox<String> jComboBoxUbi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLnombre;
     private javax.swing.JLabel jLproductos;
@@ -861,9 +861,6 @@ public class busquedaAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jtakeFormato;
     private javax.swing.JTextField jtakeNombre;
-    private javax.swing.JTextField jtakeUbicacion;
-    private javax.swing.JTextField jtakeUbicacion1;
     // End of variables declaration//GEN-END:variables
 }
