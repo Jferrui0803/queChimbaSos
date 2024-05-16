@@ -39,7 +39,6 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
         this.id = id;
         setLocationRelativeTo(null);
 
-
     }
 
     private ModificacionAuxiliar() {
@@ -253,7 +252,7 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
 
     private void jBañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBañadirActionPerformed
         System.out.println(jTextNombre.getText());
-        
+
         System.out.println(id);
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
 
@@ -261,13 +260,12 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
             Connection conec = this.conexion.conecta();
 
             //Sentencia para añadir un nuevo usuario y contraseña
-            String sql= "UPDATE auxiliares SET Nombre= ? ,Tipo_Material= ? WHERE ID = ?";
+            String sql = "UPDATE auxiliares SET Nombre= ? ,Tipo_Material= ? WHERE ID = ?";
 
             ps = conec.prepareStatement(sql);
             ps.setString(1, jTextNombre.getText());
             ps.setString(2, jTextTMaterial.getText());
             ps.setInt(3, id);
-            
 
 //            ps.setString(4, this.invenaterioAuxiliar.getIdUbicacion());
 //            ps.setInt(5, this.invenaterioAuxiliar.getCantidad());
@@ -277,18 +275,42 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
 
             if (filasInsertadas > 0) {
                 // Si las credenciales son correctas, muestra un mensaje de éxito
-                 javax.swing.JOptionPane.showMessageDialog(null, "Producto modificado");
+                System.out.println("Producto modificao");
 
                 // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
             } else {
                 // Si las credenciales son incorrectas, muestra un mensaje de error
                 JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
+
+            sql = "UPDATE inventario_auxiliares SET ID_Almacen= ? ,ID_Ubicacion= ? , cantidad  = ?  , Stock_minimo = ? WHERE ID = ?";
+
+            InventarioAuxiliares p = new InventarioAuxiliares((String) jComboBoxLocal.getSelectedItem(), (String) jComboBoxUbi.getSelectedItem(), Integer.parseInt(jTextFieldCanti.getText()), Integer.parseInt(jTextFieldStock.getText()));
+
+            ps = conec.prepareStatement(sql);
+            ps.setInt(1, p.getCodigoAlmacen());
+            ps.setInt(2, p.getCodigoUbicacion());
+            ps.setInt(3, p.getCantidad());
+            ps.setInt(4, p.getStockMinimo());
+            ps.setInt(5, id);
+
+
+            filasInsertadas = ps.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                // Si las credenciales son correctas, muestra un mensaje de éxito
+                javax.swing.JOptionPane.showMessageDialog(null, "Producto modificado");
+
+                // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
+            } else {
+                // Si las credenciales son incorrectas, muestra un mensaje de error
+                JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         this.conexion.cerrar();
     }//GEN-LAST:event_jBañadirActionPerformed
 
