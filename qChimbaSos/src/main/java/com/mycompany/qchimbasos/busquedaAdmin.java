@@ -182,7 +182,8 @@ public class busquedaAdmin extends javax.swing.JFrame {
     }
 
     public void mostrarReactivos() {
-        String nombre = jtakeNombre.getText();
+        String nombre =  jtakeNombre.getText();
+        System.out.println(nombre);
         String formato = (String) jComboBoxFormato.getSelectedItem();
         String ubi = (String) jComboBoxUbi.getSelectedItem();
         String localizac = (String) jComboBoxLocal.getSelectedItem();
@@ -216,7 +217,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
              // Si el nombre no está vacío, agregar filtro
             if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
-                query += "WHERE p.Nombre = ?";
+                query += "WHERE p.Nombre LIKE ?";
 
             }
 
@@ -240,7 +241,7 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
             // Si el nombre no está vacío, asignar el valor como parámetro
             if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
-                pstmt.setString(1, nombre);
+                pstmt.setString(1,"%" + nombre + "%");
             }
             if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
                 pstmt.setString(1, ubi);
@@ -721,17 +722,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
             String almacen = (String) modelo.getValueAt(filaSeleccionada, 4);
             String ubicacion = (String) modelo.getValueAt(filaSeleccionada, 5);
-            String cantidadStr = (String) modelo.getValueAt(filaSeleccionada, 6);
-            int cantidad = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
-            if (!cantidadStr.isEmpty()) {
-                cantidad = Integer.parseInt(cantidadStr);
-            }
-
-            String stockMinimoStr = (String) modelo.getValueAt(filaSeleccionada, 7);
-            int stockMinimo = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
-            if (!stockMinimoStr.isEmpty()) {
-                stockMinimo = Integer.parseInt(stockMinimoStr);
-            }
+            int cantidad = Integer.parseInt((String) modelo.getValueAt(filaSeleccionada, 6)); 
+            int stockMinimo = Integer.parseInt((String) modelo.getValueAt(filaSeleccionada, 7));
+           
             String fechaCaducidad = (String) modelo.getValueAt(filaSeleccionada, 8);
             this.inventarioReactivoMateriales = new InventarioReactivosMateriales(almacen, ubicacion, cantidad, stockMinimo, fechaCaducidad);
             modifReact = new ModificacionReactivo(this.reactivo, this.inventarioReactivoMateriales, idRegistro);
@@ -747,26 +740,13 @@ public class busquedaAdmin extends javax.swing.JFrame {
             String nombre = (String) modelo.getValueAt(filaSeleccionada, 1);
             String tipoMaterial = (String) modelo.getValueAt(filaSeleccionada, 2);
             String descripcion = (String) modelo.getValueAt(filaSeleccionada, 3);
-            String nºserieStr = (String) modelo.getValueAt(filaSeleccionada, 4);
-            int nºserie = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
-            if (!nºserieStr.isEmpty()) {
-                nºserie = Integer.parseInt(nºserieStr);
-            }
+            int nºserie = Integer.parseInt((String) modelo.getValueAt(filaSeleccionada, 4));             
             this.material = crearMateriales(nombre, tipoMaterial, descripcion, nºserie);
 
             String almacen = (String) modelo.getValueAt(filaSeleccionada, 5);
             String ubicacion = (String) modelo.getValueAt(filaSeleccionada, 6);
-            String cantidadStr = (String) modelo.getValueAt(filaSeleccionada, 7);
-            int cantidad = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
-            if (!cantidadStr.isEmpty()) {
-                cantidad = Integer.parseInt(cantidadStr);
-            }
-
-            String stockMinimoStr = (String) modelo.getValueAt(filaSeleccionada, 8);
-            int stockMinimo = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
-            if (!stockMinimoStr.isEmpty()) {
-                stockMinimo = Integer.parseInt(stockMinimoStr);
-            }
+            int cantidad = Integer.parseInt((String) modelo.getValueAt(filaSeleccionada, 7)); 
+            int stockMinimo = Integer.parseInt((String) modelo.getValueAt(filaSeleccionada, 8));
             String fechaCompra = (String) modelo.getValueAt(filaSeleccionada, 9);
             this.inventarioReactivoMateriales = new InventarioReactivosMateriales(almacen, ubicacion, cantidad, stockMinimo, fechaCompra);
             modifMat = new ModificacionMaterial(this.material, this.inventarioReactivoMateriales, idRegistro);
@@ -785,17 +765,9 @@ public class busquedaAdmin extends javax.swing.JFrame {
 
             String almacen = (String) modelo.getValueAt(filaSeleccionada, 3);
             String ubicacion = (String) modelo.getValueAt(filaSeleccionada, 4);
-            String cantidadStr = (String) modelo.getValueAt(filaSeleccionada, 5);
-            int cantidad = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
-            if (!cantidadStr.isEmpty()) {
-                cantidad = Integer.parseInt(cantidadStr);
-            }
-
-            String stockMinimoStr = (String) modelo.getValueAt(filaSeleccionada, 6);
-            int stockMinimo = 0; // Valor por defecto o un valor adecuado en caso de ser aplicable
-            if (!stockMinimoStr.isEmpty()) {
-                stockMinimo = Integer.parseInt(stockMinimoStr);
-            }
+            int cantidad = Integer.parseInt((String) modelo.getValueAt(filaSeleccionada, 5));
+            
+           int stockMinimo = Integer.parseInt((String) modelo.getValueAt(filaSeleccionada, 6));
             
             this.inventarioAuxiliar = new InventarioAuxiliares(almacen, ubicacion, cantidad, stockMinimo);
             modifAux = new ModificacionAuxiliar(this.auxiliar, this.inventarioAuxiliar, idRegistro);

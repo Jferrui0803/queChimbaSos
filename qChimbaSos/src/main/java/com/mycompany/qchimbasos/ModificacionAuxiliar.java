@@ -37,6 +37,8 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
         this.jTextFieldCanti.setText(String.valueOf(inventario.getCantidad()));
         this.jTextFieldStock.setText(String.valueOf(inventario.getStockMinimo()));
         this.id = id;
+        setLocationRelativeTo(null);
+
 
     }
 
@@ -251,6 +253,7 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
 
     private void jBañadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBañadirActionPerformed
         System.out.println(jTextNombre.getText());
+        
         System.out.println(id);
         this.conexion = new Conexion("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/qchimbasos", "root", "");
 
@@ -258,13 +261,13 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
             Connection conec = this.conexion.conecta();
 
             //Sentencia para añadir un nuevo usuario y contraseña
-            String sql
-                    = "UPDATE auxiliares SET Nombre= ? ,Tipo_Material= ? WHERE ID = ?";
+            String sql= "UPDATE auxiliares SET Nombre= ? ,Tipo_Material= ? WHERE ID = ?";
 
             ps = conec.prepareStatement(sql);
-            ps.setString(1, this.auxiliar.getNombre());
-            ps.setString(2, this.auxiliar.getTipo_material());
+            ps.setString(1, jTextNombre.getText());
+            ps.setString(2, jTextTMaterial.getText());
             ps.setInt(3, id);
+            
 
 //            ps.setString(4, this.invenaterioAuxiliar.getIdUbicacion());
 //            ps.setInt(5, this.invenaterioAuxiliar.getCantidad());
@@ -274,16 +277,19 @@ public class ModificacionAuxiliar extends javax.swing.JFrame {
 
             if (filasInsertadas > 0) {
                 // Si las credenciales son correctas, muestra un mensaje de éxito
-                javax.swing.JOptionPane.showMessageDialog(null, "Producto modificado");
+                 javax.swing.JOptionPane.showMessageDialog(null, "Producto modificado");
 
                 // Aquí puedes abrir la nueva ventana o realizar otras acciones necesarias
             } else {
                 // Si las credenciales son incorrectas, muestra un mensaje de error
                 JOptionPane.showMessageDialog(rootPane, "Algo salio mal", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+        
+        this.conexion.cerrar();
     }//GEN-LAST:event_jBañadirActionPerformed
 
     private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed

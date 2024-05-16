@@ -185,7 +185,7 @@ public class busquedaAlum extends javax.swing.JFrame {
 
              // Si el nombre no está vacío, agregar filtro
             if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
-                query += "WHERE p.Nombre = ?";
+                query += "WHERE p.Nombre LIKE ?";
 
             }
 
@@ -209,7 +209,7 @@ public class busquedaAlum extends javax.swing.JFrame {
 
             // Si el nombre no está vacío, asignar el valor como parámetro
             if (!nombre.trim().isEmpty() && formato.trim().isEmpty() && ubi.trim().isEmpty() && localizac.trim().isEmpty()) {
-                pstmt.setString(1, nombre);
+                pstmt.setString(1, "%" + nombre + "%");
             }
             if (!ubi.trim().isEmpty() && formato.trim().isEmpty() && nombre.trim().isEmpty() && localizac.trim().isEmpty()) {
                 pstmt.setString(1, ubi);
